@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: br_Rubber_Brush
   m_EditorClassIdentifier: 
   m_Cells:
-  - m_Tile: {fileID: 0}
+  - m_Tile: {fileID: 11400000, guid: f86cf570304d142debe5fa0048f191ff, type: 2}
     m_Matrix:
       e00: 1
       e01: 0
@@ -31,9 +31,10 @@ MonoBehaviour:
       e31: 0
       e32: 0
       e33: 1
-    m_Color: {r: 1, g: 1, b: 1, a: 1}
+    m_Color: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
   m_Size: {x: 1, y: 1, z: 1}
   m_Pivot: {x: 0, y: 0, z: 0}
   m_CanChangeZPosition: 0
   m_Anchor: {x: 0.5, y: 0.5, z: 0.5}
-  m_Prefab: {fileID: 0}
+  m_Prefab: {fileID: 1964362164472154730, guid: e5e0efd9238654f2e93122f49337076d,
+    type: 3}
