@@ -7,6 +7,8 @@ public class PlayerInputManager : MonoBehaviour
 {
     public Vector2 MovementVector { get; private set; }
 
+    public bool DashBegin { get; private set; }
+
     public void OnMovementInput(InputAction.CallbackContext context)
     {
         MovementVector = context.ReadValue<Vector2>();
@@ -16,6 +18,14 @@ public class PlayerInputManager : MonoBehaviour
 
     public void OnBeginDashInput(InputAction.CallbackContext context)
     {
-        Debug.Log("Begin Dash");
+        if (context.started)
+        {
+            DashBegin = true;
+        }
+
+        if (context.canceled)
+        {
+            DashBegin = false;
+        }
     }
 }

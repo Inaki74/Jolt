@@ -6,6 +6,7 @@ public class GroundedState : PlayerState
 {
     protected Vector2 moveInput;
     protected bool isGrounded;
+    protected bool isStartingDash;
 
     public GroundedState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
     {
@@ -32,11 +33,16 @@ public class GroundedState : PlayerState
 
         moveInput = player.InputManager.MovementVector;
         isGrounded = player.CheckIsGrounded();
+        isStartingDash = player.InputManager.DashBegin;
 
         //Isnt on ground -> airborne state
         if (!isGrounded)
         {
             stateMachine.ChangeState(player.AirborneState);
+        }
+        if (isStartingDash)
+        {
+            stateMachine.ChangeState(player.PreDashState);
         }
         //Else remain in whichever substate
     }

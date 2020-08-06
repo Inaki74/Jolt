@@ -7,7 +7,7 @@ public class PlayerState
     protected PlayerStateMachine stateMachine;
     protected Player player;
     protected PlayerData playerData;
-    protected Color associatedColor;
+    protected Color associatedColor; // string animBool
 
     protected float enterTime;
 

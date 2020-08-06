@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public IdleState IdleState { get; private set; }
     public AirborneState AirborneState { get; private set; }
     public RecoilState RecoilState { get; private set; }
+    public PreDashState PreDashState { get; private set; }
 
     [SerializeField]
     private PlayerData playerData;
@@ -22,7 +23,7 @@ public class Player : MonoBehaviour
     public SpriteRenderer Sr { get; private set; }
     #endregion
 
-    private Vector2 auxVector;
+    private Vector2 _auxVector;
     public Vector2 CurrentVelocity { get; private set; }
 
     public Transform groundCheckOne;
@@ -36,6 +37,7 @@ public class Player : MonoBehaviour
         IdleState = new IdleState(StateMachine, this, playerData, Color.yellow);
         AirborneState = new AirborneState(StateMachine, this, playerData, Color.red);
         RecoilState = new RecoilState(StateMachine, this, playerData, Color.magenta);
+        PreDashState = new PreDashState(StateMachine, this, playerData, Color.gray);
     }
 
     private void Start()
@@ -61,9 +63,9 @@ public class Player : MonoBehaviour
 
     public void SetMovementX(float velocity)
     {
-        auxVector.Set(velocity, CurrentVelocity.y);
-        Rb.velocity = auxVector;
-        CurrentVelocity = auxVector;
+        _auxVector.Set(velocity, CurrentVelocity.y);
+        Rb.velocity = _auxVector;
+        CurrentVelocity = _auxVector;
     }
 
     public bool CheckIsGrounded()

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class AirborneState : PlayerState
 {
-    private Vector2 moveInput;
+    private Vector2 _moveInput;
     private bool isGrounded;
+    private bool isStartingDash;
+
     public AirborneState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
     {
     }
@@ -29,17 +31,22 @@ public class AirborneState : PlayerState
     {
         base.LogicUpdate();
 
-        moveInput = player.InputManager.MovementVector;
+        _moveInput = player.InputManager.MovementVector;
         isGrounded = player.CheckIsGrounded();
+        isStartingDash = player.InputManager.DashBegin;
 
         // If it hits ground -> recoil
         if (isGrounded)
         {
             stateMachine.ChangeState(player.RecoilState);
         }
+        else if(isStartingDash)
+        {
+            stateMachine.ChangeState(player.PreDashState);
+        }
         else
         {
-            player.SetMovementX(playerData.movementSpeed * moveInput.x);
+            player.SetMovementX(playerData.movementSpeed * _moveInput.x);
         }
     }
 
