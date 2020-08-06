@@ -14,7 +14,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Dash",
+                    "name": "Begin Dash",
                     "type": "Value",
                     "id": "91557a09-1f77-4c8e-aa0e-4611e591f9c9",
                     "expectedControlType": "",
@@ -151,7 +151,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Dash",
+                    "action": "Begin Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6fbde11a-419e-4a1d-9df9-22f318fd7287",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard/Mouse",
+                    "action": "Begin Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -162,7 +173,18 @@
         {
             "name": "Keyboard/Mouse",
             "bindingGroup": "Keyboard/Mouse",
-            "devices": []
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
         }
     ]
 }

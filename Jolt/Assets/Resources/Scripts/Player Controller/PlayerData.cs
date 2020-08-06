@@ -6,5 +6,10 @@ using UnityEngine;
 
 public class PlayerData : ScriptableObject
 {
-    
+    [Header("Move State Variables")]
+    public float movementSpeed = 10.0f;
+
+    [Header("Checks Variables")]
+    public float checkGroundRadius = 0.05f;
+    public LayerMask whatIsGround;
 }

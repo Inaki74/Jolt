@@ -9,6 +9,8 @@ public class PlayerState
     protected PlayerData playerData;
     protected Color associatedColor;
 
+    protected float enterTime;
+
     public PlayerState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor)
     {
         this.stateMachine = stateMachine;
@@ -20,6 +22,10 @@ public class PlayerState
     public virtual void Enter()
     {
         DoChecks();
+
+        player.Sr.color = associatedColor;
+        enterTime = Time.time;
+        Debug.Log(ToString());
     }
 
     public virtual void Exit()
@@ -34,11 +40,12 @@ public class PlayerState
 
     public virtual void PhysicsUpdate()
     {
-
+        DoChecks();
     }
 
     public virtual void DoChecks()
     {
 
     }
+
 }

@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundedState : PlayerState
+public class AirborneState : PlayerState
 {
-    protected Vector2 moveInput;
-    protected bool isGrounded;
-
-    public GroundedState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+    private Vector2 moveInput;
+    private bool isGrounded;
+    public AirborneState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
     {
     }
 
@@ -33,16 +32,24 @@ public class GroundedState : PlayerState
         moveInput = player.InputManager.MovementVector;
         isGrounded = player.CheckIsGrounded();
 
-        //Isnt on ground -> airborne state
-        if (!isGrounded)
+        // If it hits ground -> recoil
+        if (isGrounded)
         {
-            stateMachine.ChangeState(player.AirborneState);
+            stateMachine.ChangeState(player.RecoilState);
         }
-        //Else remain in whichever substate
+        else
+        {
+            player.SetMovementX(playerData.movementSpeed * moveInput.x);
+        }
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+    }
+
+    public override string ToString()
+    {
+        return "AirborneState";
     }
 }

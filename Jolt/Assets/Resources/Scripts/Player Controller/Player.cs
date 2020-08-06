@@ -9,33 +9,49 @@ public class Player : MonoBehaviour
 
     public MoveState MoveState { get; private set; }
     public IdleState IdleState { get; private set; }
+    public AirborneState AirborneState { get; private set; }
+    public RecoilState RecoilState { get; private set; }
+
+    [SerializeField]
+    private PlayerData playerData;
     #endregion
 
     #region Components
-    public PlayerData PlayerData { get; private set; }
+    public PlayerInputManager InputManager { get; private set; }
     public Rigidbody2D Rb { get; private set; }
     public SpriteRenderer Sr { get; private set; }
     #endregion
+
+    private Vector2 auxVector;
+    public Vector2 CurrentVelocity { get; private set; }
+
+    public Transform groundCheckOne;
+    public Transform groundCheckTwo;
 
     private void Awake()
     {
         StateMachine = new PlayerStateMachine();
 
-        MoveState = new MoveState(StateMachine, this, PlayerData, Color.white);
-        IdleState = new IdleState(StateMachine, this, PlayerData, Color.yellow);
+        MoveState = new MoveState(StateMachine, this, playerData, Color.white);
+        IdleState = new IdleState(StateMachine, this, playerData, Color.yellow);
+        AirborneState = new AirborneState(StateMachine, this, playerData, Color.red);
+        RecoilState = new RecoilState(StateMachine, this, playerData, Color.magenta);
     }
 
     private void Start()
     {
         Rb = GetComponent<Rigidbody2D>();
         Sr = GetComponent<SpriteRenderer>();
+        InputManager = GetComponent<PlayerInputManager>();
 
         StateMachine.Initialize(IdleState);
     }
 
     private void Update()
     {
+        CurrentVelocity = Rb.velocity;
         StateMachine.CurrentState.LogicUpdate();
+
     }
 
     private void FixedUpdate()
@@ -43,5 +59,17 @@ public class Player : MonoBehaviour
         StateMachine.CurrentState.PhysicsUpdate();
     }
 
+    public void SetMovementX(float velocity)
+    {
+        auxVector.Set(velocity, CurrentVelocity.y);
+        Rb.velocity = auxVector;
+        CurrentVelocity = auxVector;
+    }
+
+    public bool CheckIsGrounded()
+    {
+        return Physics2D.OverlapCircle(groundCheckOne.position, playerData.checkGroundRadius, playerData.whatIsGround)
+            || Physics2D.OverlapCircle(groundCheckTwo.position, playerData.checkGroundRadius, playerData.whatIsGround);
+    }
 
 }

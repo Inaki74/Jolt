@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MoveState : GroundedState
 {
+
     public MoveState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
     {
     }
@@ -26,6 +27,17 @@ public class MoveState : GroundedState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+
+
+        // No movement -> idle state
+        if(moveInput.x == 0)
+        {
+            stateMachine.ChangeState(player.IdleState);
+        }
+        else
+        {
+            player.SetMovementX(playerData.movementSpeed * moveInput.x);
+        }
     }
 
     public override void PhysicsUpdate()
