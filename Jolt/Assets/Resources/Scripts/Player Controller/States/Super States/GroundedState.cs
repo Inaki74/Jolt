@@ -7,6 +7,7 @@ public class GroundedState : PlayerState
     protected Vector2 moveInput;
     protected bool isGrounded;
     protected bool isStartingDash;
+    protected bool isMoving;
 
     public GroundedState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
     {
@@ -15,6 +16,7 @@ public class GroundedState : PlayerState
     public override void DoChecks()
     {
         base.DoChecks();
+        isMoving = moveInput.x != 0;
     }
 
     public override void Enter()

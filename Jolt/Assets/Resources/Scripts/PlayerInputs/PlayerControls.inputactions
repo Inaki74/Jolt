@@ -17,7 +17,7 @@
                     "name": "Begin Dash",
                     "type": "Value",
                     "id": "91557a09-1f77-4c8e-aa0e-4611e591f9c9",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -157,7 +157,7 @@
                 },
                 {
                     "name": "",
-                    "id": "6fbde11a-419e-4a1d-9df9-22f318fd7287",
+                    "id": "82751ec5-9209-4ede-b66f-91713ebdb387",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",

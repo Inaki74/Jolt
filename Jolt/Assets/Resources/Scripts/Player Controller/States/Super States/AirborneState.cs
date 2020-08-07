@@ -7,6 +7,7 @@ public class AirborneState : PlayerState
     private Vector2 _moveInput;
     private bool isGrounded;
     private bool isStartingDash;
+    private bool isMoving;
 
     public AirborneState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
     {
@@ -15,6 +16,7 @@ public class AirborneState : PlayerState
     public override void DoChecks()
     {
         base.DoChecks();
+        isMoving = _moveInput.x != 0;
     }
 
     public override void Enter()
@@ -44,15 +46,19 @@ public class AirborneState : PlayerState
         {
             stateMachine.ChangeState(player.PreDashState);
         }
-        else
-        {
-            player.SetMovementX(playerData.movementSpeed * _moveInput.x);
-        }
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+        if (isMoving)
+        {
+            player.SetMovementX(playerData.movementSpeed * _moveInput.x);
+        }
+        else
+        {
+            player.SetMovementX(0f);
+        }
     }
 
     public override string ToString()

@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   movementSpeed: 10
+  timeSlow: 0.1
+  preDashTimeOut: 0.1
+  dashTimeOut: 0.2
+  dashSpeed: 30
   checkGroundRadius: 0.05
   whatIsGround:
     serializedVersion: 2

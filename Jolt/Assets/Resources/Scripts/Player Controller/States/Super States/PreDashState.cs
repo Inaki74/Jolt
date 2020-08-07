@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PreDashState : PlayerState
 {
-    private Vector2 moveInput;
-    private bool isGrounded;
     private bool isDashStarted;
     private float currentTime;
 
@@ -31,6 +29,7 @@ public class PreDashState : PlayerState
     {
         base.Exit();
 
+        player.DeactivateArrowRendering();
         Time.timeScale = 1f;
     }
 
@@ -39,41 +38,16 @@ public class PreDashState : PlayerState
         base.LogicUpdate();
 
         currentTime = Time.time;
-        isDashStarted = player.InputManager.DashBegin; // && (currentTime - enterTime > playerData.dashTimeOut);
-        isGrounded = player.CheckIsGrounded();
-        moveInput = player.InputManager.MovementVector;
-        
+        isDashStarted = player.InputManager.DashBegin && (currentTime - enterTime < playerData.preDashTimeOut);
 
-        //Cancelled (there must be a "dead zone" to allow cancellation and a timeout)
+        player.SetDashVectors(player.InputManager.InitialDashPoint, player.InputManager.FinalDashPoint);
+        player.SetArrowRendering();
+
+        //Cant be Cancelled, go to dashing when stopped pressing or after timeout
         if (!isDashStarted)
         {
-            if (isGrounded)
-            {
-                //Grounded and idle -> idle
-                if(moveInput.x == 0)
-                {
-                    stateMachine.ChangeState(player.IdleState);
-                }
-                //Grounded and moving -> move
-                else
-                {
-                    stateMachine.ChangeState(player.MoveState);
-                }
-            }
-            //!grounded -> airborne
-            else
-            {
-                stateMachine.ChangeState(player.AirborneState);
-            }
-        }
-        else
-        {
-            //Isnt cancelled
-            //Pre dash logic to dash
-
-            //Show arrow which updates with mouse position (starts outside of "dead zone")
-
-            //Once released, transition to dash state
+            // transition to dashing
+            stateMachine.ChangeState(player.DashingState);
         }
     }
 

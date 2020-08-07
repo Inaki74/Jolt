@@ -34,15 +34,15 @@ public class MoveState : GroundedState
         {
             stateMachine.ChangeState(player.IdleState);
         }
-        else
-        {
-            player.SetMovementX(playerData.movementSpeed * moveInput.x);
-        }
+            
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+
+        if(isMoving)
+            player.SetMovementX(playerData.movementSpeed * moveInput.x);
     }
 
     public override string ToString()
