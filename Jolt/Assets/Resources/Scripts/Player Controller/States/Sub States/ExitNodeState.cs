@@ -25,6 +25,7 @@ public class ExitNodeState : ConductorState
         enterTime = Time.time;
         isDashStarted = true;
         Time.timeScale = playerData.timeSlow;
+        player.PreDashState.DecreaseAmountOfDashes();
         //Time.fixedDeltaTime = 0.1f * 0.02f; Works but doubles the CPU usage. Use RigidBodies with interpolate instead
     }
 

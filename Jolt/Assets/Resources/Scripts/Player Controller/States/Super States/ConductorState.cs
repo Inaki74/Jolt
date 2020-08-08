@@ -19,6 +19,7 @@ public class ConductorState : PlayerState
         base.Enter();
         player.SetActiveSpriteRenderer(false);
         player.SetGravityScale(0f);
+        player.PreDashState.ResetAmountOfDashes();
     }
 
     public override void Exit()

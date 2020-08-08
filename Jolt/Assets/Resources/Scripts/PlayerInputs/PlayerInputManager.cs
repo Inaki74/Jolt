@@ -13,18 +13,23 @@ public class PlayerInputManager : MonoBehaviour
 
     public Vector3 FinalDashPoint { get; private set; }
 
+    private float dashCD = 0.2f;
+    private float currentDashCD;
+
 
     private void Start()
     {
-        
+        currentDashCD = -1;
     }
 
     private void Update()
     {
-        if (DashBegin)
+        if (DashBegin && currentDashCD < 0)
         {
             FinalDashPoint = Mouse.current.position.ReadValue();
         }
+
+        currentDashCD -= Time.deltaTime;
     }
 
     public void OnMovementInput(InputAction.CallbackContext context)
@@ -36,7 +41,7 @@ public class PlayerInputManager : MonoBehaviour
 
     public void OnBeginDashInput(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && currentDashCD < 0)
         {
             DashBegin = true;
             InitialDashPoint = Mouse.current.position.ReadValue();
@@ -45,6 +50,7 @@ public class PlayerInputManager : MonoBehaviour
         if (context.canceled)
         {
             DashBegin = false;
+            currentDashCD = dashCD;
         }
     }
 }
