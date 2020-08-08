@@ -12,6 +12,7 @@ public class PlayerData : ScriptableObject
     [Header("Pre-Dash State Variables")]
     public float timeSlow = 0.1f;
     public float preDashTimeOut;
+    public int amountOfDashes;
 
     [Header("Dashing State Variables")]
     public float dashTimeOut;

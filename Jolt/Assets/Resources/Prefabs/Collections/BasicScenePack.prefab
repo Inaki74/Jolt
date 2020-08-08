@@ -227,11 +227,11 @@ GameObject:
   - component: {fileID: 3921102808780605911}
   - component: {fileID: 3921102808780605910}
   - component: {fileID: 3921102808780605896}
-  - component: {fileID: 3921102808780605897}
   - component: {fileID: 1608995856620310989}
   - component: {fileID: 7398969852051576818}
   - component: {fileID: 1809678127443225644}
   - component: {fileID: 2295711815918167359}
+  - component: {fileID: 3607484881364949315}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -291,8 +291,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 649525185
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 5c9fd5c5f5de845d3874999399b48f4f, type: 3}
   m_Color: {r: 0.9737315, g: 1, b: 0, a: 1}
@@ -326,35 +326,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!60 &3921102808780605897
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3921102808780605899}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: 7af58456ae1154c7cb1b0a3a5df1cfb9, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0, y: 0.5}
-      - {x: -0.5, y: -0.000000029802322}
-      - {x: 0.000000059604645, y: -0.5}
-      - {x: 0.5, y: 0}
 --- !u!114 &1608995856620310989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -441,8 +412,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: ba3399ccbae124a6994c43ce4aefb04d, type: 2}
+  mainCamera: {fileID: 3921102809378517177}
   groundCheckOne: {fileID: 4821949831981677301}
   groundCheckTwo: {fileID: 312155112001187590}
+  isTouchingNode: 0
 --- !u!120 &2295711815918167359
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -479,9 +452,9 @@ LineRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 649525185
+  m_SortingLayer: 1
+  m_SortingOrder: 1
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
@@ -540,6 +513,22 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!58 &3607484881364949315
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3921102808780605899}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &3921102809378517178
 GameObject:
   m_ObjectHideFlags: 0

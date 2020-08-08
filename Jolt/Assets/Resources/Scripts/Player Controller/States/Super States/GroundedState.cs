@@ -22,6 +22,8 @@ public class GroundedState : PlayerState
     public override void Enter()
     {
         base.Enter();
+
+        player.PreDashState.ResetAmountOfDashes();
     }
 
     public override void Exit()

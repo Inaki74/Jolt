@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     public RecoilState RecoilState { get; private set; }
     public PreDashState PreDashState { get; private set; }
     public DashingState DashingState { get; private set; }
+    public In_NodeState InNodeState { get; private set; }
+    public ExitNodeState ExitNodeState { get; private set; }
 
     [SerializeField]
     private PlayerData playerData;
@@ -23,8 +25,8 @@ public class Player : MonoBehaviour
     public Rigidbody2D Rb { get; private set; }
     public SpriteRenderer Sr { get; private set; }
     public LineRenderer Lr { get; private set; }
-    [SerializeField]
-    private Camera mainCamera;
+    public CircleCollider2D Cc{ get; private set; }
+    [SerializeField] private Camera mainCamera;
     #endregion
 
     #region Auxiliary Variables
@@ -35,6 +37,13 @@ public class Player : MonoBehaviour
 
     private Vector3 DashStart;
     private Vector3 DashFinish;
+
+    private Vector3 cachedTransform;
+
+    [SerializeField] private bool isTouchingNode;
+    private bool isTouchingRail;
+
+    private Collider2D nodeInfo;
     #endregion
 
     #region Unity Callback Functions
@@ -48,6 +57,8 @@ public class Player : MonoBehaviour
         RecoilState = new RecoilState(StateMachine, this, playerData, Color.magenta);
         PreDashState = new PreDashState(StateMachine, this, playerData, Color.gray);
         DashingState = new DashingState(StateMachine, this, playerData, Color.cyan);
+        InNodeState = new In_NodeState(StateMachine, this, playerData, Color.clear);
+        ExitNodeState = new ExitNodeState(StateMachine, this, playerData, Color.magenta);
     }
 
     private void Start()
@@ -56,6 +67,8 @@ public class Player : MonoBehaviour
         Sr = GetComponent<SpriteRenderer>();
         InputManager = GetComponent<PlayerInputManager>();
         Lr = GetComponent<LineRenderer>();
+        Cc = GetComponent<CircleCollider2D>();
+
 
         Lr.enabled = false;
         Lr.startWidth = 0.3f; Lr.endWidth = 0.001f;
@@ -74,6 +87,48 @@ public class Player : MonoBehaviour
     {
         StateMachine.CurrentState.PhysicsUpdate();
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "Node" && StateMachine.GetState() == "DashingState")
+        {
+            isTouchingNode = true;
+            nodeInfo = collision;
+            collision.GetComponent<SpriteRenderer>().color = Color.cyan;
+        }
+
+        if(collision.tag == "Rail" && StateMachine.GetState() == "DashingState")
+        {
+            isTouchingRail = true;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag == "Node")
+        {
+            isTouchingNode = false;
+        }
+
+        if (collision.tag == "Rail" && StateMachine.GetState() == "DashingState")
+        {
+            //isTouchingRail = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Node" && StateMachine.GetState() == "DashingState")
+        {
+            isTouchingNode = false;
+            collision.GetComponent<SpriteRenderer>().color = Color.grey;
+        }
+
+        if (collision.tag == "Rail" && StateMachine.GetState() == "DashingState")
+        {
+            isTouchingRail = false;
+        }
+    }
     #endregion
 
     #region Set Functions
@@ -90,8 +145,6 @@ public class Player : MonoBehaviour
         Rb.velocity = _auxVector;
         CurrentVelocity = _auxVector;
     }
-
-    Vector3 cachedTransform;
 
     public void SetDashMovement(float velocity)
     {
@@ -126,10 +179,13 @@ public class Player : MonoBehaviour
         cachedTransform = transform.position;
     }
 
-    public void SetGravityScale(float gravity)
-    {
-        Rb.gravityScale = gravity;
-    }
+    public void SetGravityScale(float gravity) { Rb.gravityScale = gravity; }
+
+    public void SetPosition(Vector2 pos) { transform.position = pos; }
+
+    public void SetActivePhysicsCollider(bool set) { Cc.enabled = set; }
+
+    public void SetActiveSpriteRenderer(bool set) { Sr.enabled = set; }
     #endregion
 
     #region Check Functions
@@ -138,7 +194,13 @@ public class Player : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheckOne.position, playerData.checkGroundRadius, playerData.whatIsGround)
             || Physics2D.OverlapCircle(groundCheckTwo.position, playerData.checkGroundRadius, playerData.whatIsGround);
     }
+
+    public bool CheckIsTouchingNode() { return isTouchingNode; }
+
+    public bool CheckIsTouchingRail() { return isTouchingRail; }
     #endregion
+
+    public Collider2D GetNodeInfo() { return nodeInfo; }
 
     public void DeactivateArrowRendering()
     {

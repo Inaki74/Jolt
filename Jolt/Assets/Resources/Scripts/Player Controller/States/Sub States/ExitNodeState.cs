@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PreDashState : PlayerState
+public class ExitNodeState : ConductorState
 {
+    // Known bug: If two nodes are too close to each other, doesnt work appropiately
+
     private bool isDashStarted;
     private float currentTime;
-    private int amountOfDashes;
 
-    public PreDashState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+    public ExitNodeState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
     {
-        ResetAmountOfDashes();
     }
 
     public override void DoChecks()
@@ -20,11 +20,11 @@ public class PreDashState : PlayerState
 
     public override void Enter()
     {
-        base.Enter();
+        //base.Enter();
 
+        enterTime = Time.time;
         isDashStarted = true;
         Time.timeScale = playerData.timeSlow;
-        DecreaseAmountOfDashes();
         //Time.fixedDeltaTime = 0.1f * 0.02f; Works but doubles the CPU usage. Use RigidBodies with interpolate instead
     }
 
@@ -57,25 +57,12 @@ public class PreDashState : PlayerState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+
+        player.SetPosition(player.GetNodeInfo().transform.position);
     }
 
     public override string ToString()
     {
-        return "PreDashState";
-    }
-
-    public bool CanDash()
-    {
-        return amountOfDashes > 0;
-    }
-
-    public void ResetAmountOfDashes()
-    {
-        amountOfDashes = playerData.amountOfDashes;
-    }
-
-    public void DecreaseAmountOfDashes()
-    {
-        amountOfDashes--;
+        return "ExitNodeState";
     }
 }

@@ -17,4 +17,9 @@ public class PlayerStateMachine
         CurrentState.Exit();
         Initialize(newState);
     }
+
+    public string GetState()
+    {
+        return CurrentState.ToString();
+    }
 }

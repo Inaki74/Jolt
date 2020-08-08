@@ -22,6 +22,7 @@ public class AirborneState : PlayerState
     public override void Enter()
     {
         base.Enter();
+
     }
 
     public override void Exit()
@@ -42,7 +43,7 @@ public class AirborneState : PlayerState
         {
             stateMachine.ChangeState(player.RecoilState);
         }
-        else if(isStartingDash)
+        else if(isStartingDash && player.PreDashState.CanDash())
         {
             stateMachine.ChangeState(player.PreDashState);
         }

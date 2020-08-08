@@ -7,6 +7,8 @@ public class DashingState : PlayerState
     private bool isGrounded;
     private Vector2 moveInput;
     private float currentTime;
+    private bool isTouchingNode;
+    private bool isTouchingRail;
 
     private bool playOnce;
 
@@ -41,7 +43,8 @@ public class DashingState : PlayerState
         currentTime = Time.time;
         isGrounded = player.CheckIsGrounded();
         moveInput = player.InputManager.MovementVector;
-
+        isTouchingNode = player.CheckIsTouchingNode();
+        isTouchingRail = player.CheckIsTouchingRail();
 
 
         if (currentTime - enterTime > playerData.dashTimeOut)
@@ -61,6 +64,15 @@ public class DashingState : PlayerState
             {
                 stateMachine.ChangeState(player.AirborneState);
             }
+        }
+
+        if (isTouchingNode)
+        {
+            stateMachine.ChangeState(player.InNodeState);
+        }
+        else if (isTouchingRail)
+        {
+
         }
     }
 
