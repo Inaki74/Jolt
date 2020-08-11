@@ -31,8 +31,5 @@ public class SplineHelperFunctions
         {
             return n * Factorial(n - 1);
         }
-
     }
-
-    
 }

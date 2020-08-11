@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DashingState : PlayerState
+public class DashingState : AliveState
 {
     private bool isGrounded;
     private Vector2 moveInput;
@@ -72,7 +72,7 @@ public class DashingState : PlayerState
         }
         else if (isTouchingRail)
         {
-
+            stateMachine.ChangeState(player.InRailState);
         }
     }
 

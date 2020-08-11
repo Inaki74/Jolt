@@ -6,6 +6,8 @@ public class PlayerStateMachine
 {
     public PlayerState CurrentState { get; private set; }
 
+    public string LastState { get; private set; }
+
     public void Initialize(PlayerState startingState)
     {
         CurrentState = startingState;
@@ -15,6 +17,7 @@ public class PlayerStateMachine
     public void ChangeState(PlayerState newState)
     {
         CurrentState.Exit();
+        LastState = CurrentState.ToString();
         Initialize(newState);
     }
 

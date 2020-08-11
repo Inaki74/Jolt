@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerData : ScriptableObject
 {
     [Header("Move State Variables")]
-    public float movementSpeed = 10.0f;
+    public float movementSpeed = 6.0f;
 
     [Header("Pre-Dash State Variables")]
     public float timeSlow = 0.1f;
@@ -21,4 +21,11 @@ public class PlayerData : ScriptableObject
     [Header("Checks Variables")]
     public float checkGroundRadius = 0.05f;
     public LayerMask whatIsGround;
+
+    [Header("Rail States")]
+    public List<Vector2> allPaths = new List<Vector2>();
+
+    [Header("Dead State")]
+    public float deadTimer = 5f;
+    public Vector2 lastCheckpoint;
 }

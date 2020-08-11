@@ -28,7 +28,6 @@ public class MoveState : GroundedState
     {
         base.LogicUpdate();
 
-
         // No movement -> idle state
         if(moveInput.x == 0)
         {

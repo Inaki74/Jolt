@@ -22,3 +22,10 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
+  allPaths:
+  - {x: 15.510471, y: -0.09516206}
+  - {x: 15.46856, y: -0.033108488}
+  - {x: 15.430918, y: 0.04627121}
+  - {x: 15.395571, y: 0.14745975}
+  deadTimer: 2
+  lastCheckpoint: {x: 0, y: 0}

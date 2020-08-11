@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
     public DashingState DashingState { get; private set; }
     public In_NodeState InNodeState { get; private set; }
     public ExitNodeState ExitNodeState { get; private set; }
+    public In_RailState InRailState { get; private set; }
+    public ExitRailState ExitRailState { get; private set; }
+    public DeadState DeadState { get; private set; }
 
     [SerializeField]
     private PlayerData playerData;
@@ -27,6 +30,8 @@ public class Player : MonoBehaviour
     public LineRenderer Lr { get; private set; }
     public CircleCollider2D Cc{ get; private set; }
     [SerializeField] private Camera mainCamera;
+
+    public GameObject deathParticles;
     #endregion
 
     #region Auxiliary Variables
@@ -40,10 +45,12 @@ public class Player : MonoBehaviour
 
     private Vector3 cachedTransform;
 
-    [SerializeField] private bool isTouchingNode;
+    private bool isTouchingNode;
     private bool isTouchingRail;
+    [SerializeField] private bool isDead;
 
     private Collider2D nodeInfo;
+    private RailController firstRail;
     #endregion
 
     #region Unity Callback Functions
@@ -59,6 +66,9 @@ public class Player : MonoBehaviour
         DashingState = new DashingState(StateMachine, this, playerData, Color.cyan);
         InNodeState = new In_NodeState(StateMachine, this, playerData, Color.clear);
         ExitNodeState = new ExitNodeState(StateMachine, this, playerData, Color.magenta);
+        InRailState = new In_RailState(StateMachine, this, playerData, Color.cyan);
+        ExitRailState = new ExitRailState(StateMachine, this, playerData, Color.magenta);
+        DeadState = new DeadState(StateMachine, this, playerData, Color.clear);
     }
 
     private void Start()
@@ -69,7 +79,7 @@ public class Player : MonoBehaviour
         Lr = GetComponent<LineRenderer>();
         Cc = GetComponent<CircleCollider2D>();
 
-
+        isDead = false;
         Lr.enabled = false;
         Lr.startWidth = 0.3f; Lr.endWidth = 0.001f;
 
@@ -80,7 +90,6 @@ public class Player : MonoBehaviour
     {
         CurrentVelocity = Rb.velocity;
         StateMachine.CurrentState.LogicUpdate();
-
     }
 
     private void FixedUpdate()
@@ -97,9 +106,24 @@ public class Player : MonoBehaviour
             collision.GetComponent<SpriteRenderer>().color = Color.cyan;
         }
 
-        if(collision.tag == "Rail" && StateMachine.GetState() == "DashingState")
+        if((collision.tag == "Rail Entrance" || collision.tag == "Rail Exit") && StateMachine.GetState() == "DashingState")
         {
             isTouchingRail = true;
+            firstRail = collision.GetComponentInParent<RailController>();
+
+            SetPosition(collision.transform.position);
+
+            if (collision.tag == "Rail Entrance" && firstRail.Inverted)
+            {
+                firstRail.InvertControlPoints();
+            }
+
+            if (collision.tag == "Rail Exit" && !firstRail.Inverted)
+            {
+                firstRail.InvertControlPoints();
+            }
+                
+            collision.GetComponent<SpriteRenderer>().color = Color.cyan;
         }
     }
 
@@ -110,9 +134,9 @@ public class Player : MonoBehaviour
             isTouchingNode = false;
         }
 
-        if (collision.tag == "Rail" && StateMachine.GetState() == "DashingState")
+        if (collision.tag == "Rail Entrance" || collision.tag == "Rail Exit")
         {
-            //isTouchingRail = true;
+            isTouchingRail = false;
         }
     }
 
@@ -124,9 +148,30 @@ public class Player : MonoBehaviour
             collision.GetComponent<SpriteRenderer>().color = Color.grey;
         }
 
-        if (collision.tag == "Rail" && StateMachine.GetState() == "DashingState")
+        if (collision.tag == "Rail Entrance" || collision.tag == "Rail Exit")
         {
-            isTouchingRail = false;
+            collision.GetComponent<SpriteRenderer>().color = Color.grey;
+
+            if (StateMachine.GetState() == "DashingState")
+            {
+                isTouchingRail = false;
+            }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Rubber")
+        {
+            isDead = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Rubber")
+        {
+            isDead = false;
         }
     }
     #endregion
@@ -146,9 +191,14 @@ public class Player : MonoBehaviour
         CurrentVelocity = _auxVector;
     }
 
+    public void SetMovementXByForce(Vector2 direction, float speed)
+    {
+        _auxVector.Set(direction.x * speed, 0);
+        Rb.AddForce(_auxVector, ForceMode2D.Force);
+    }
+
     public void SetDashMovement(float velocity)
     {
-        //cachedTransform = transform.position
         _auxVector = DashFinish - cachedTransform;
         DashFinish = _auxVector;
         _auxVector.Set(DashFinish.normalized.x, DashFinish.normalized.y);
@@ -160,7 +210,6 @@ public class Player : MonoBehaviour
     {
         Lr.enabled = true;
 
-        //violeta
         Lr.SetPosition(0, DashStart);
         Lr.SetPosition(1, DashFinish);
     }
@@ -177,6 +226,19 @@ public class Player : MonoBehaviour
         DashFinish.Set(aux2.x + translationVector.x, aux2.y + translationVector.y, 0);
 
         cachedTransform = transform.position;
+    }
+
+    public void SetVelocityToGivenVector(Vector2 v, float speed)
+    {
+        _auxVector.Set(v.x * speed, v.y * speed);
+        Rb.velocity = _auxVector;
+        CurrentVelocity = _auxVector;
+    }
+
+    public void SetForceToGivenVector(Vector2 v, float speed)
+    {
+        _auxVector.Set(v.x * speed, v.y * speed);
+        Rb.AddForce(_auxVector, ForceMode2D.Impulse);
     }
 
     public void SetGravityScale(float gravity) { Rb.gravityScale = gravity; }
@@ -198,10 +260,28 @@ public class Player : MonoBehaviour
     public bool CheckIsTouchingNode() { return isTouchingNode; }
 
     public bool CheckIsTouchingRail() { return isTouchingRail; }
+
+    public bool CheckHasReachedPoint(Vector2 point)
+    {
+        //Debug.Log("Transform: (" + transform.position.x + " , " + transform.position.y + ") , Point: (" + point.x + " , " + point.y + ")");
+        return (Vector2)transform.position == point;
+    }
+
+    public bool CheckIfDead()
+    {
+        return isDead;
+    }
     #endregion
 
+    #region Get Functions
     public Collider2D GetNodeInfo() { return nodeInfo; }
 
+    public RailController GetRailInfo() { return firstRail; }
+
+    public Vector2 GetCurrentVelocity() { return Rb.velocity; }
+    #endregion
+
+    #region Other Functions
     public void DeactivateArrowRendering()
     {
         Lr.SetPosition(0, Vector2.zero);
@@ -210,4 +290,24 @@ public class Player : MonoBehaviour
         Lr.enabled = false;
     }
 
+    public void MoveTowardsVector(Vector2 v, float velocity)
+    {
+        //Debug.Log("Transform: (" + transform.position.x + " , " + transform.position.y + ") , Point: (" + v.x + " , " + v.y + ")");
+        _auxVector.Set(v.x, v.y);
+        transform.position = Vector2.MoveTowards(transform.position, _auxVector, velocity * Time.deltaTime);
+    }
+
+    public void ResetPosition()
+    {
+        // Instantiate particles
+        // Move player to last checkpoint (but here we will have only one checkpoint, so skip)
+        transform.position = Vector2.zero;
+        // Reset objects (but here they are immutable so skip)
+    }
+
+    public void InstantiateDeathParticles()
+    {
+        Instantiate(deathParticles, transform.position, Quaternion.identity);
+    }
+    #endregion
 }

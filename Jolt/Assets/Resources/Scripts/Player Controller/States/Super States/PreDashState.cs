@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PreDashState : PlayerState
+public class PreDashState : AliveState
 {
     private bool isDashStarted;
     private float currentTime;

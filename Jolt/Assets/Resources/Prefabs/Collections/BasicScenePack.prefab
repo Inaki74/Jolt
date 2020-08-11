@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Follow: {fileID: 3921102808780605911}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 5
+    OrthographicSize: 10
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -413,9 +413,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: ba3399ccbae124a6994c43ce4aefb04d, type: 2}
   mainCamera: {fileID: 3921102809378517177}
+  deathParticles: {fileID: 5644277276428357573, guid: 8f177f596a4184daca7c6a284581968f,
+    type: 3}
   groundCheckOne: {fileID: 4821949831981677301}
   groundCheckTwo: {fileID: 312155112001187590}
-  isTouchingNode: 0
+  isDead: 0
 --- !u!120 &2295711815918167359
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -589,7 +591,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
