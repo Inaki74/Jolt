@@ -301,7 +301,7 @@ public class Player : MonoBehaviour
     {
         // Instantiate particles
         // Move player to last checkpoint (but here we will have only one checkpoint, so skip)
-        transform.position = Vector2.zero;
+        transform.position = new Vector2(148.6f, 112.6f);
         // Reset objects (but here they are immutable so skip)
     }
 
