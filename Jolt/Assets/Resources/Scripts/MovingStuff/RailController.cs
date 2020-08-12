@@ -102,7 +102,7 @@ public class RailController : MonoBehaviour
         GizmoControlPoints = InitializeControlPoints();
         GCPL = GizmoControlPoints.Length;
 
-        for (float t = 0; t <= 1; t += 0.002f)
+        for (float t = 0; t <= 1; t += 0.05f)
         {
             gizmosPositions = SplineHelperFunctions.SplineCurve(GCPL - 1, 0, t, GizmoControlPoints);
 

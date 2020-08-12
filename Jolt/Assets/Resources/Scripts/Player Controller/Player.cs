@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     public PlayerInputManager InputManager { get; private set; }
     public Rigidbody2D Rb { get; private set; }
     public SpriteRenderer Sr { get; private set; }
-    public LineRenderer Lr { get; private set; }
+    public LineRenderer ArrowLr { get; private set; }
     public CircleCollider2D Cc{ get; private set; }
     [SerializeField] private Camera mainCamera;
 
@@ -35,10 +35,13 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Auxiliary Variables
-    private Vector2 _auxVector;
+    
     public Vector2 CurrentVelocity { get; private set; }
+    public CircleHelperFunctions circleDrawer;
     public Transform groundCheckOne;
     public Transform groundCheckTwo;
+
+    private Vector2 _auxVector;
 
     private Vector3 DashStart;
     private Vector3 DashFinish;
@@ -76,12 +79,12 @@ public class Player : MonoBehaviour
         Rb = GetComponent<Rigidbody2D>();
         Sr = GetComponent<SpriteRenderer>();
         InputManager = GetComponent<PlayerInputManager>();
-        Lr = GetComponent<LineRenderer>();
         Cc = GetComponent<CircleCollider2D>();
 
         isDead = false;
-        Lr.enabled = false;
-        Lr.startWidth = 0.3f; Lr.endWidth = 0.001f;
+        ArrowLr = GetComponent<LineRenderer>();
+        ArrowLr.enabled = false;
+        ArrowLr.startWidth = 0.3f; ArrowLr.endWidth = 0.001f;
 
         StateMachine.Initialize(IdleState);
     }
@@ -174,6 +177,21 @@ public class Player : MonoBehaviour
             isDead = false;
         }
     }
+
+    private void OnDrawGizmos()
+    {
+        //Vector2 center = new Vector2(1f, 0);
+        //float radius = 4;
+
+        //float x, y;
+        //for (int i = 0; i <= 50; i += 1)
+        //{
+        //    x = radius * Mathf.Cos(Mathf.Rad2Deg * i) + center.x;
+        //    y = radius * Mathf.Sin(Mathf.Rad2Deg * i) + center.y;
+
+        //    Gizmos.DrawSphere(new Vector2(x, y), 0.1f);
+        //}
+    }
     #endregion
 
     #region Set Functions
@@ -208,22 +226,30 @@ public class Player : MonoBehaviour
 
     public void SetArrowRendering()
     {
-        Lr.enabled = true;
+        ArrowLr.enabled = true;
 
-        Lr.SetPosition(0, DashStart);
-        Lr.SetPosition(1, DashFinish);
+        Vector2 aux1 = DashStart;
+        Vector2 aux2 = DashFinish;
+
+        ArrowLr.SetPosition(0, aux1);
+        ArrowLr.SetPosition(1, aux2);
     }
 
     public void SetDashVectors(Vector3 mouseStartPos, Vector3 mouseFinalPos)
     {
-        //To later move the camera towards the mouse point, we may need to capture Camera.main at the moment of touch
+        //TODO: To later move the camera towards the mouse point, we may need to capture Camera.main at the moment of touch
+        //TODO: Make the arrow length constant
         Vector2 aux1 = mainCamera.ScreenToWorldPoint(mouseStartPos);
         Vector2 aux2 = mainCamera.ScreenToWorldPoint(mouseFinalPos);
 
-        Vector2 translationVector = new Vector2(transform.position.x - aux1.x, transform.position.y - aux1.y);
+        Vector2 dashTranslationVector = new Vector2(transform.position.x - aux1.x, transform.position.y - aux1.y);
+        //Vector2 arrowTranslationVector = new Vector2(transform.position.normalized.x - aux1.normalized.x, transform.position.normalized.y - aux1.normalized.y);
 
-        DashStart.Set(aux1.x + translationVector.x, aux1.y + translationVector.y, 0);
-        DashFinish.Set(aux2.x + translationVector.x, aux2.y + translationVector.y, 0);
+        DashStart.Set(aux1.x + dashTranslationVector.x, aux1.y + dashTranslationVector.y, 0);
+        DashFinish.Set(aux2.x + dashTranslationVector.x, aux2.y + dashTranslationVector.y, 0);
+
+        //arrowStart.Set(aux1.x + arrowTranslationVector.x, aux1.y + arrowTranslationVector.y, 0);
+        //arrowFinish.Set(aux2.x + arrowTranslationVector.x, aux2.y + arrowTranslationVector.y, 0);
 
         cachedTransform = transform.position;
     }
@@ -284,10 +310,15 @@ public class Player : MonoBehaviour
     #region Other Functions
     public void DeactivateArrowRendering()
     {
-        Lr.SetPosition(0, Vector2.zero);
-        Lr.SetPosition(1, Vector2.zero);
+        ArrowLr.SetPosition(0, Vector2.zero);
+        ArrowLr.SetPosition(1, Vector2.zero);
 
-        Lr.enabled = false;
+        ArrowLr.enabled = false;
+    }
+
+    public void DeactivateCircleRendering()
+    {
+        circleDrawer.DerenderCircle();
     }
 
     public void MoveTowardsVector(Vector2 v, float velocity)
@@ -301,13 +332,20 @@ public class Player : MonoBehaviour
     {
         // Instantiate particles
         // Move player to last checkpoint (but here we will have only one checkpoint, so skip)
-        transform.position = new Vector2(148.6f, 112.6f);
+        transform.position = new Vector2(0f, 0f);
         // Reset objects (but here they are immutable so skip)
     }
 
     public void InstantiateDeathParticles()
     {
         Instantiate(deathParticles, transform.position, Quaternion.identity);
+    }
+
+    public void DrawCircle(Vector2 mouseStartPos, float radius)
+    {
+        Vector2 center = mainCamera.ScreenToWorldPoint(mouseStartPos);
+
+        circleDrawer.DrawCircle(center, radius);
     }
     #endregion
 }

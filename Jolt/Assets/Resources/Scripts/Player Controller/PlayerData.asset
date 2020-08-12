@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 10
   timeSlow: 0.1
-  preDashTimeOut: 0.1
+  preDashTimeOut: 2
   amountOfDashes: 2
+  circleRadius: 1.5
   dashTimeOut: 0.2
   dashSpeed: 30
   checkGroundRadius: 0.05
@@ -23,9 +24,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   allPaths:
-  - {x: 15.510471, y: -0.09516206}
-  - {x: 15.46856, y: -0.033108488}
-  - {x: 15.430918, y: 0.04627121}
-  - {x: 15.395571, y: 0.14745975}
-  deadTimer: 2
+  - {x: 12.039263, y: 7.574831}
+  - {x: 12.919605, y: 7.6172767}
+  - {x: 13.344573, y: 7.632291}
+  - {x: 13.769029, y: 7.6439853}
+  - {x: 14.604918, y: 7.6580133}
+  - {x: 15.526317, y: 7.660767}
+  - {x: 16.498274, y: 7.650605}
+  - {x: 17.498625, y: 7.6274667}
+  - {x: 18.023293, y: 7.610591}
+  - {x: 18.58899, y: 7.5889707}
+  - {x: 19.074686, y: 7.5677037}
+  deadTimer: 4
   lastCheckpoint: {x: 0, y: 0}

@@ -64,7 +64,7 @@ public class In_RailState : ConductorState
         }
         else if (t >= 1)
         {
-            t = Time.deltaTime;
+            t = 0;
             exiting = true;
         }
 
