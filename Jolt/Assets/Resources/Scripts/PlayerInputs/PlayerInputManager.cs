@@ -34,7 +34,18 @@ public class PlayerInputManager : MonoBehaviour
 
     public void OnMovementInput(InputAction.CallbackContext context)
     {
-        MovementVector = context.ReadValue<Vector2>();
+        if(context.ReadValue<Vector2>().x > 0)
+        {
+            MovementVector = Vector2.right;
+        }else if (context.ReadValue<Vector2>().x < 0)
+        {
+            MovementVector = Vector2.left;
+        }
+        else
+        {
+            MovementVector = Vector2.zero;
+        }
+        Debug.Log(MovementVector.x);
     }
 
     //Context -> value, phase(when it was started, performed and cancelled), 
