@@ -25,7 +25,7 @@ public class PlayerState
 
         player.Sr.color = associatedColor;
         enterTime = Time.time;
-        Debug.Log(ToString());
+        //Debug.Log(ToString());
     }
 
     public virtual void Exit()

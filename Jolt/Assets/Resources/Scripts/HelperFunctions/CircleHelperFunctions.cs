@@ -38,8 +38,6 @@ public class CircleHelperFunctions : MonoBehaviour
             x = radius * Mathf.Cos(Mathf.Rad2Deg * i) + center.x;
             y = radius * Mathf.Sin(Mathf.Rad2Deg * i) + center.y;
 
-            Debug.Log(x + " " + y);
-
             aux.Set(x, y);
 
             auxAr[i] = aux;

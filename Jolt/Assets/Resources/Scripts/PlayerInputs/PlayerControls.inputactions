@@ -17,7 +17,7 @@
                     "name": "Begin Dash",
                     "type": "Value",
                     "id": "91557a09-1f77-4c8e-aa0e-4611e591f9c9",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Touch",
                     "processors": "",
                     "interactions": ""
                 }
@@ -169,7 +169,7 @@
                 {
                     "name": "",
                     "id": "85942745-3d70-4f8d-af96-979a2e18188b",
-                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "path": "<Touchscreen>/primaryTouch",
                     "interactions": "",
                     "processors": "",
                     "groups": "Mobile",

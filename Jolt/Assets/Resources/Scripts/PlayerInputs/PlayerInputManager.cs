@@ -26,7 +26,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (DashBegin && currentDashCD < 0)
         {
-            FinalDashPoint = Mouse.current.position.ReadValue();
+            FinalDashPoint = Touchscreen.current.position.ReadValue();
         }
 
         currentDashCD -= Time.deltaTime;
@@ -45,23 +45,31 @@ public class PlayerInputManager : MonoBehaviour
         {
             MovementVector = Vector2.zero;
         }
-        Debug.Log(MovementVector.x);
     }
 
     //Context -> value, phase(when it was started, performed and cancelled), 
 
     public void OnBeginDashInput(InputAction.CallbackContext context)
     {
-        if (context.started && currentDashCD < 0)
+        bool isValid = ValidateInitialDashPoint(Touchscreen.current.primaryTouch.position.ReadValue(), 50, 290, 300, 40);
+
+        if ((Touchscreen.current.primaryTouch.phase.ReadValue() == UnityEngine.InputSystem.TouchPhase.Began && isValid) && currentDashCD < 0)
         {
             DashBegin = true;
-            InitialDashPoint = Mouse.current.position.ReadValue();
+            InitialDashPoint = Touchscreen.current.primaryTouch.position.ReadValue();
         }
 
-        if (context.canceled)
+        bool wasValid = ValidateInitialDashPoint(InitialDashPoint, 50, 290, 300, 40);
+
+        if ((Touchscreen.current.primaryTouch.phase.ReadValue() == UnityEngine.InputSystem.TouchPhase.Ended && wasValid))
         {
             DashBegin = false;
             currentDashCD = dashCD;
         }
+    }
+
+    private bool ValidateInitialDashPoint(Vector2 point, float xLowerBound, float yHigherBound, float xHigherBound, float yLowerBound)
+    {
+        return point.x < xLowerBound || point.x > xHigherBound || point.y < yLowerBound || point.y > yHigherBound;
     }
 }
