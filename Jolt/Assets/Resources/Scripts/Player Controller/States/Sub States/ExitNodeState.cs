@@ -25,6 +25,7 @@ public class ExitNodeState : ConductorState
         enterTime = Time.time;
         isDashStarted = true;
         Time.timeScale = playerData.timeSlow;
+        player.DrawCircle(player.InputManager.InitialDashPoint, playerData.circleRadius);
         player.PreDashState.DecreaseAmountOfDashes();
         //Time.fixedDeltaTime = 0.1f * 0.02f; Works but doubles the CPU usage. Use RigidBodies with interpolate instead
     }
@@ -34,6 +35,7 @@ public class ExitNodeState : ConductorState
         base.Exit();
 
         player.DeactivateArrowRendering();
+        player.DeactivateCircleRendering();
         Time.timeScale = 1f;
     }
 

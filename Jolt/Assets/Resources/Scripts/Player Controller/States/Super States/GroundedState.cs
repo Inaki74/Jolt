@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundedState : PlayerState
+public class GroundedState : AliveState
 {
     protected Vector2 moveInput;
     protected bool isGrounded;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PreDashState : PlayerState
+public class PreDashState : AliveState
 {
     private bool isDashStarted;
     private float currentTime;
@@ -24,6 +24,7 @@ public class PreDashState : PlayerState
 
         isDashStarted = true;
         Time.timeScale = playerData.timeSlow;
+        player.DrawCircle(player.InputManager.InitialDashPoint, playerData.circleRadius);
         DecreaseAmountOfDashes();
         //Time.fixedDeltaTime = 0.1f * 0.02f; Works but doubles the CPU usage. Use RigidBodies with interpolate instead
     }
@@ -33,6 +34,7 @@ public class PreDashState : PlayerState
         base.Exit();
 
         player.DeactivateArrowRendering();
+        player.DeactivateCircleRendering();
         Time.timeScale = 1f;
     }
 

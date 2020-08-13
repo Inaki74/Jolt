@@ -6,7 +6,8 @@ TagManager:
   tags:
   - Rubber
   - Node
-  - Rail
+  - Rail Entrance
+  - Rail Exit
   layers:
   - Default
   - TransparentFX

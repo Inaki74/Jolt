@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AirborneState : PlayerState
+public class AirborneState : AliveState
 {
     private Vector2 _moveInput;
     private bool isGrounded;
@@ -54,11 +54,15 @@ public class AirborneState : PlayerState
         base.PhysicsUpdate();
         if (isMoving)
         {
-            player.SetMovementX(playerData.movementSpeed * _moveInput.x);
+            if (stateMachine.LastState == "ExitRailState")
+                player.SetMovementXByForce(Vector2.right, playerData.movementSpeed * _moveInput.x);
+            else
+                player.SetMovementX(playerData.movementSpeed * _moveInput.x);
         }
         else
         {
-            player.SetMovementX(0f);
+            if (stateMachine.LastState != "ExitRailState")
+                player.SetMovementX(0f);
         }
     }
 
