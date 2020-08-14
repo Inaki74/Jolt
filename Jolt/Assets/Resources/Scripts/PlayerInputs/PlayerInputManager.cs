@@ -38,36 +38,65 @@ public class PlayerInputManager : MonoBehaviour
         if(context.ReadValue<Vector2>().x > 0)
         {
             MovementVector = Vector2.right;
+            moving = true;
         }else if (context.ReadValue<Vector2>().x < 0)
         {
             MovementVector = Vector2.left;
+            moving = true;
         }
         else
         {
             MovementVector = Vector2.zero;
+            moving = false;
         }
     }
 
     //Context -> value, phase(when it was started, performed and cancelled), 
     private bool runOnce;
     private bool found;
+    private bool moving;
     private int foundTouchId;
 
     public void OnBeginDashInput(InputAction.CallbackContext context)
     {
-        if (context.started)
-        {
-            Debug.Log("Started: " + context.started);
-        }
-        if (context.performed) { Debug.Log("Performed: " + context.performed); }
-        if (context.canceled) { Debug.Log("Ended: " + context.canceled); }
+        //if (context.started)
+        //{
+        //    Debug.Log("Started: " + context.started);
+        //}
+        //if (context.performed) {
+        //    Debug.Log("Performed: " + context.performed);
+        //}
+        //if (context.canceled) {
+        //    Debug.Log("Ended: " + context.canceled);
+        //}
 
+        Debug.Log("pene");
 
-        if (!runOnce)
+        if (moving)
         {
-            //Debug.Log("Run2");
-            StartCoroutine("CoManageTouches");
+            StartCoroutine("CoAux");
         }
+        else
+        {
+            if (!runOnce)
+            {
+                StartCoroutine("CoManageTouches");
+            }
+        }
+        
+    }
+
+    private IEnumerator CoAux()
+    {
+        while (moving)
+        {
+            if (!runOnce)
+            {
+                StartCoroutine("CoManageTouches");
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        
     }
 
     private IEnumerator CoManageTouches()
@@ -75,7 +104,7 @@ public class PlayerInputManager : MonoBehaviour
         for (int i = 0; i < Touchscreen.current.touches.Count && !found; i++)
         {
             //Find the first touch that is not using the joystick and is not null
-            if (ValidateInitialDashPoint(Touchscreen.current.touches[i].startPosition.ReadValue(), 50, 290, 300, 40) &&
+            if (ValidateInitialDashPoint(Touchscreen.current.touches[i].startPosition.ReadValue(), 80, 340, 360, 110) &&
                 Touchscreen.current.touches[i].startPosition.ReadValue() != Vector2.zero)
             {
                 runOnce = true;

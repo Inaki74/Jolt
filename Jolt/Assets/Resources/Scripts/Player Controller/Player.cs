@@ -128,6 +128,11 @@ public class Player : MonoBehaviour
                 
             collision.GetComponent<SpriteRenderer>().color = Color.cyan;
         }
+
+        if(collision.tag == "Checkpoint")
+        {
+            playerData.lastCheckpoint = collision.transform.position;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -239,6 +244,7 @@ public class Player : MonoBehaviour
     {
         //TODO: To later move the camera towards the mouse point, we may need to capture Camera.main at the moment of touch
         //TODO: Make the arrow length constant
+        Debug.Log(mouseStartPos);
         Vector2 aux1 = mainCamera.ScreenToWorldPoint(mouseStartPos);
         Vector2 aux2 = mainCamera.ScreenToWorldPoint(mouseFinalPos);
 
@@ -332,7 +338,7 @@ public class Player : MonoBehaviour
     {
         // Instantiate particles
         // Move player to last checkpoint (but here we will have only one checkpoint, so skip)
-        transform.position = new Vector2(0f, 0f);
+        transform.position = playerData.lastCheckpoint;
         // Reset objects (but here they are immutable so skip)
     }
 
