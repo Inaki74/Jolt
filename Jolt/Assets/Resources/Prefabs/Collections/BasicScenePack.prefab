@@ -280,14 +280,14 @@ RectTransform:
   m_GameObject: {fileID: 1727021644}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 840279776}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 175, y: 175}
+  m_AnchoredPosition: {x: 225, y: 225}
   m_SizeDelta: {x: 125, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1727021648
@@ -572,6 +572,21 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 91557a09-1f77-4c8e-aa0e-4611e591f9c9
     m_ActionName: Gameplay/Dash
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7398969852051576818}
+        m_MethodName: OnBeginDashInputMouse
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f04f8833-c562-4f32-bd7b-82b174911304
+    m_ActionName: Gameplay/Begin Dash (Mouse)[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay

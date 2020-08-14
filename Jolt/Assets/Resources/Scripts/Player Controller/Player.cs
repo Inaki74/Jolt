@@ -54,6 +54,8 @@ public class Player : MonoBehaviour
 
     private Collider2D nodeInfo;
     private RailController firstRail;
+
+    public Vector2 checkpoint;
     #endregion
 
     #region Unity Callback Functions
@@ -131,7 +133,7 @@ public class Player : MonoBehaviour
 
         if(collision.tag == "Checkpoint")
         {
-            playerData.lastCheckpoint = collision.transform.position;
+            checkpoint = collision.transform.position;
         }
     }
 
@@ -338,7 +340,7 @@ public class Player : MonoBehaviour
     {
         // Instantiate particles
         // Move player to last checkpoint (but here we will have only one checkpoint, so skip)
-        transform.position = playerData.lastCheckpoint;
+        transform.position = checkpoint;
         // Reset objects (but here they are immutable so skip)
     }
 

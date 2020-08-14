@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 public class PlayerInputManager : MonoBehaviour
 {
     public Vector2 MovementVector { get; private set; }
@@ -26,10 +27,19 @@ public class PlayerInputManager : MonoBehaviour
 
     private void Update()
     {
+        //MOBILE
         if (currentDashCD > 0)
         {
             currentDashCD -= Time.deltaTime;
         }
+
+        //OSX and Windows
+        //if (DashBegin && currentDashCD < 0)
+        //{
+        //    FinalDashPoint = Mouse.current.position.ReadValue();
+        //}
+
+        //currentDashCD -= Time.deltaTime;
 
     }
 
@@ -48,6 +58,21 @@ public class PlayerInputManager : MonoBehaviour
         {
             MovementVector = Vector2.zero;
             moving = false;
+        }
+    }
+
+    public void OnBeginDashInputMouse(InputAction.CallbackContext context)
+    {
+        if (context.started && currentDashCD < 0)
+        {
+            DashBegin = true;
+            InitialDashPoint = Mouse.current.position.ReadValue();
+        }
+
+        if (context.canceled)
+        {
+            DashBegin = false;
+            currentDashCD = dashCD;
         }
     }
 
