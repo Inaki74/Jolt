@@ -40,7 +40,7 @@ public class DashingState : AliveState
     {
         base.LogicUpdate();
 
-        currentTime = Time.time;
+        
         isGrounded = player.CheckIsGrounded();
         moveInput = player.InputManager.MovementVector;
         isTouchingNode = player.CheckIsTouchingNode();
@@ -79,6 +79,7 @@ public class DashingState : AliveState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+        currentTime = Time.time;
 
         if (playOnce)
         {
