@@ -5,7 +5,7 @@ using UnityEngine;
 public class CircleHelperFunctions : MonoBehaviour
 {
     private LineRenderer CircleLr;
-    private int positions = 299;
+    private int positions = 199;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,8 +37,6 @@ public class CircleHelperFunctions : MonoBehaviour
         {
             x = radius * Mathf.Cos(Mathf.Rad2Deg * i) + center.x;
             y = radius * Mathf.Sin(Mathf.Rad2Deg * i) + center.y;
-
-            Debug.Log(x + " " + y);
 
             aux.Set(x, y);
 

@@ -55,6 +55,10 @@ public class RecoilState : GroundedState
         {
             player.SetMovementX(playerData.movementSpeed * moveInput.x);
         }
+        else
+        {
+            player.SetMovementX(0f);
+        }
     }
 
     public override string ToString()

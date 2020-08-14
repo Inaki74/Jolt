@@ -8,6 +8,7 @@ TagManager:
   - Node
   - Rail Entrance
   - Rail Exit
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

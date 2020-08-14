@@ -17,7 +17,15 @@
                     "name": "Begin Dash",
                     "type": "Value",
                     "id": "91557a09-1f77-4c8e-aa0e-4611e591f9c9",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Touch",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Begin Dash (Mouse)",
+                    "type": "Value",
+                    "id": "f04f8833-c562-4f32-bd7b-82b174911304",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
                 }
@@ -169,11 +177,22 @@
                 {
                     "name": "",
                     "id": "85942745-3d70-4f8d-af96-979a2e18188b",
-                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "path": "<Touchscreen>/primaryTouch",
                     "interactions": "",
                     "processors": "",
                     "groups": "Mobile",
                     "action": "Begin Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "05f3fed7-a1e7-4fef-b98e-51c91b4da0eb",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mobile",
+                    "action": "Begin Dash (Mouse)",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
