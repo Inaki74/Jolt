@@ -339,7 +339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d677f1681015749b15c436eec6d880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MovementRange: 50
+  m_MovementRange: 100
   m_ControlPath: <Gamepad>/leftStick
 --- !u!1 &1620411148202119412
 GameObject:
@@ -624,6 +624,7 @@ MonoBehaviour:
   groundCheckOne: {fileID: 4821949831981677301}
   groundCheckTwo: {fileID: 312155112001187590}
   isDead: 0
+  checkpoint: {x: 0, y: 0}
 --- !u!120 &2295711815918167359
 LineRenderer:
   m_ObjectHideFlags: 0

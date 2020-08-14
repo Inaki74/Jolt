@@ -45,13 +45,10 @@ public class PlayerInputManager : MonoBehaviour
 
     public void OnMovementInput(InputAction.CallbackContext context)
     {
-        if(context.ReadValue<Vector2>().x > 0)
+        Debug.Log(context.ReadValue<Vector2>());
+        if(Mathf.Abs(context.ReadValue<Vector2>().x) > 0.2f)
         {
-            MovementVector = Vector2.right;
-            moving = true;
-        }else if (context.ReadValue<Vector2>().x < 0)
-        {
-            MovementVector = Vector2.left;
+            MovementVector = context.ReadValue<Vector2>();
             moving = true;
         }
         else
