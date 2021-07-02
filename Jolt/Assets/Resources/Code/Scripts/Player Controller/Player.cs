@@ -7,18 +7,6 @@ public class Player : MonoBehaviour
     #region States
     public PlayerStateMachine StateMachine { get; private set; }
 
-    public MoveState MoveState { get; private set; }
-    public IdleState IdleState { get; private set; }
-    public AirborneState AirborneState { get; private set; }
-    public RecoilState RecoilState { get; private set; }
-    public PreDashState PreDashState { get; private set; }
-    public DashingState DashingState { get; private set; }
-    public In_NodeState InNodeState { get; private set; }
-    public ExitNodeState ExitNodeState { get; private set; }
-    public In_RailState InRailState { get; private set; }
-    public ExitRailState ExitRailState { get; private set; }
-    public DeadState DeadState { get; private set; }
-
     [SerializeField]
     private PlayerData playerData;
     #endregion
@@ -61,19 +49,7 @@ public class Player : MonoBehaviour
     #region Unity Callback Functions
     private void Awake()
     {
-        StateMachine = new PlayerStateMachine();
-
-        MoveState = new MoveState(StateMachine, this, playerData, Color.white);
-        IdleState = new IdleState(StateMachine, this, playerData, Color.yellow);
-        AirborneState = new AirborneState(StateMachine, this, playerData, Color.red);
-        RecoilState = new RecoilState(StateMachine, this, playerData, Color.magenta);
-        PreDashState = new PreDashState(StateMachine, this, playerData, Color.gray);
-        DashingState = new DashingState(StateMachine, this, playerData, Color.cyan);
-        InNodeState = new In_NodeState(StateMachine, this, playerData, Color.clear);
-        ExitNodeState = new ExitNodeState(StateMachine, this, playerData, Color.magenta);
-        InRailState = new In_RailState(StateMachine, this, playerData, Color.cyan);
-        ExitRailState = new ExitRailState(StateMachine, this, playerData, Color.magenta);
-        DeadState = new DeadState(StateMachine, this, playerData, Color.clear);
+        StateMachine = new PlayerStateMachine(this, playerData);
     }
 
     private void Start()
@@ -90,7 +66,7 @@ public class Player : MonoBehaviour
         ArrowLr.enabled = false;
         ArrowLr.startWidth = 0.3f; ArrowLr.endWidth = 0.001f;
 
-        StateMachine.Initialize(IdleState);
+        StateMachine.Initialize();
     }
 
     private void Update()
