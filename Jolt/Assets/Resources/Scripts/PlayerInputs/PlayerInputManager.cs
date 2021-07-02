@@ -29,18 +29,18 @@ public class PlayerInputManager : MonoBehaviour
     private void Update()
     {
         //MOBILE
-        if (currentDashCD > 0)
-        {
-            currentDashCD -= Time.deltaTime;
-        }
-
-        //OSX and Windows
-        //if (DashBegin && currentDashCD < 0)
+        //if (currentDashCD > 0)
         //{
-        //    FinalDashPoint = Mouse.current.position.ReadValue();
+        //    currentDashCD -= Time.deltaTime;
         //}
 
-        //currentDashCD -= Time.deltaTime;
+        //OSX and Windows
+        if (DashBegin && currentDashCD < 0)
+        {
+            FinalDashPoint = Mouse.current.position.ReadValue();
+        }
+
+        currentDashCD -= Time.deltaTime;
 
     }
 
@@ -127,7 +127,7 @@ public class PlayerInputManager : MonoBehaviour
         for (int i = 0; i < Touchscreen.current.touches.Count && !found; i++)
         {
             //Find the first touch that is not using the joystick and is not null
-            if (ValidateInitialDashPoint(Touchscreen.current.touches[i].startPosition.ReadValue(), 80, 340, 360, 110) &&
+            if (ValidateInitialDashPoint(Touchscreen.current.touches[i].startPosition.ReadValue(), 0, 400, 400, 0) &&
                 Touchscreen.current.touches[i].startPosition.ReadValue() != Vector2.zero)
             {
                 runOnce = true;

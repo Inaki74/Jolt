@@ -78,6 +78,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        Application.targetFrameRate = 60; // This shouldnt be here, its for testing purposes.
+
         Rb = GetComponent<Rigidbody2D>();
         Sr = GetComponent<SpriteRenderer>();
         InputManager = GetComponent<PlayerInputManager>();
@@ -228,6 +230,7 @@ public class Player : MonoBehaviour
         DashFinish = _auxVector;
         _auxVector.Set(DashFinish.normalized.x, DashFinish.normalized.y);
         Rb.velocity = _auxVector * velocity;
+        Rb.velocity = Vector2.ClampMagnitude(Rb.velocity, velocity);
         CurrentVelocity = _auxVector * velocity;
     }
 

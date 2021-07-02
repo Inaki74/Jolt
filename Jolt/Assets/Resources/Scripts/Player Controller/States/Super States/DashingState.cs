@@ -46,6 +46,14 @@ public class DashingState : AliveState
         isTouchingNode = player.CheckIsTouchingNode();
         isTouchingRail = player.CheckIsTouchingRail();
 
+        if (isTouchingNode)
+        {
+            stateMachine.ChangeState(player.InNodeState);
+        }
+        else if (isTouchingRail)
+        {
+            stateMachine.ChangeState(player.InRailState);
+        }
 
         if (currentTime - enterTime > playerData.dashTimeOut)
         {
@@ -64,15 +72,6 @@ public class DashingState : AliveState
             {
                 stateMachine.ChangeState(player.AirborneState);
             }
-        }
-
-        if (isTouchingNode)
-        {
-            stateMachine.ChangeState(player.InNodeState);
-        }
-        else if (isTouchingRail)
-        {
-            stateMachine.ChangeState(player.InRailState);
         }
     }
 
