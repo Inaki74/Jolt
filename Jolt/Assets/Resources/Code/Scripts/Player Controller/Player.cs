@@ -12,13 +12,16 @@ public class Player : MonoBehaviour
     public LineRenderer ArrowLr { get; private set; }
     public CircleCollider2D Cc{ get; private set; }
     [SerializeField] private Camera mainCamera;
+
     [SerializeField] private PlayerData playerData;
+    private PlayerCollisions playerCollisions;
 
     public GameObject deathParticles;
     #endregion
 
     #region Auxiliary Variables
-    
+    public Vector2 checkpoint;
+
     public Vector2 CurrentVelocity { get; private set; }
     public CircleHelperFunctions circleDrawer;
     public Transform groundCheckOne;
@@ -31,20 +34,16 @@ public class Player : MonoBehaviour
 
     private Vector3 cachedTransform;
 
-    private bool isTouchingNode;
-    private bool isTouchingRail;
     [SerializeField] private bool isDead;
 
-    private Collider2D nodeInfo;
-    private RailController firstRail;
-
-    public Vector2 checkpoint;
+    
     #endregion
 
     #region Unity Callback Functions
     private void Awake()
     {
         StateMachine = new PlayerStateMachine(this, playerData);
+        playerCollisions = new PlayerCollisions(this);
     }
 
     private void Start()
@@ -77,85 +76,27 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Node" && StateMachine.GetState() == "DashingState")
-        {
-            isTouchingNode = true;
-            nodeInfo = collision;
-            collision.GetComponent<SpriteRenderer>().color = Color.cyan;
-        }
-
-        if((collision.tag == "Rail Entrance" || collision.tag == "Rail Exit") && StateMachine.GetState() == "DashingState")
-        {
-            isTouchingRail = true;
-            firstRail = collision.GetComponentInParent<RailController>();
-
-            SetPosition(collision.transform.position);
-
-            if (collision.tag == "Rail Entrance" && firstRail.Inverted)
-            {
-                firstRail.InvertControlPoints();
-            }
-
-            if (collision.tag == "Rail Exit" && !firstRail.Inverted)
-            {
-                firstRail.InvertControlPoints();
-            }
-                
-            collision.GetComponent<SpriteRenderer>().color = Color.cyan;
-        }
-
-        if(collision.tag == "Checkpoint")
-        {
-            checkpoint = collision.transform.position;
-        }
+        playerCollisions.TriggerEnter(collision, StateMachine.CurrentState);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Node")
-        {
-            isTouchingNode = false;
-        }
-
-        if (collision.tag == "Rail Entrance" || collision.tag == "Rail Exit")
-        {
-            isTouchingRail = false;
-        }
+        playerCollisions.TriggerStay(collision, StateMachine.CurrentState);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Node" && StateMachine.GetState() == "DashingState")
-        {
-            isTouchingNode = false;
-            collision.GetComponent<SpriteRenderer>().color = Color.grey;
-        }
-
-        if (collision.tag == "Rail Entrance" || collision.tag == "Rail Exit")
-        {
-            collision.GetComponent<SpriteRenderer>().color = Color.grey;
-
-            if (StateMachine.GetState() == "DashingState")
-            {
-                isTouchingRail = false;
-            }
-        }
+        playerCollisions.TriggerExit(collision, StateMachine.CurrentState);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Rubber")
-        {
-            isDead = true;
-        }
+        playerCollisions.CollisionEnter(collision, StateMachine.CurrentState);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Rubber")
-        {
-            isDead = false;
-        }
+        playerCollisions.CollisionExit(collision, StateMachine.CurrentState);
     }
 
     private void OnDrawGizmos()
@@ -251,8 +192,6 @@ public class Player : MonoBehaviour
 
     public void SetGravityScale(float gravity) { Rb.gravityScale = gravity; }
 
-    public void SetPosition(Vector2 pos) { transform.position = pos; }
-
     public void SetActivePhysicsCollider(bool set) { Cc.enabled = set; }
 
     public void SetActiveSpriteRenderer(bool set) { Sr.enabled = set; }
@@ -265,9 +204,15 @@ public class Player : MonoBehaviour
             || Physics2D.OverlapCircle(groundCheckTwo.position, playerData.checkGroundRadius, playerData.whatIsGround);
     }
 
-    public bool CheckIsTouchingNode() { return isTouchingNode; }
+    public bool CheckIsTouchingNode()
+    {
+        return playerCollisions.IsTouchingNode;
+    }
 
-    public bool CheckIsTouchingRail() { return isTouchingRail; }
+    public bool CheckIsTouchingRail()
+    {
+        return playerCollisions.IsTouchingRail;
+    }
 
     public bool CheckHasReachedPoint(Vector2 point)
     {
@@ -279,12 +224,19 @@ public class Player : MonoBehaviour
     {
         return isDead;
     }
+
     #endregion
 
     #region Get Functions
-    public Collider2D GetNodeInfo() { return nodeInfo; }
+    public Collider2D GetNodeInfo()
+    {
+        return playerCollisions.NodeInfo;
+    }
 
-    public RailController GetRailInfo() { return firstRail; }
+    public RailController GetRailInfo()
+    {
+        return playerCollisions.FirstRail;
+    }
 
     public Vector2 GetCurrentVelocity() { return Rb.velocity; }
     #endregion
