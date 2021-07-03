@@ -52,7 +52,7 @@ public class PreDashState : AliveState
         if (!isDashStarted)
         {
             // transition to dashing
-            stateMachine.ChangeState(player.DashingState);
+            stateMachine.ChangeState(stateMachine.DashingState);
         }
     }
 

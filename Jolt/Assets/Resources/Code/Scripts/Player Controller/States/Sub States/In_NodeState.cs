@@ -33,7 +33,7 @@ public class In_NodeState : ConductorState
 
         if (isStartingDash)
         {
-            stateMachine.ChangeState(player.ExitNodeState);
+            stateMachine.ChangeState(stateMachine.ExitNodeState);
         }
     }
 

@@ -24,7 +24,7 @@ public class AliveState : PlayerState
 
         if (!isAlive)
         {
-            stateMachine.ChangeState(player.DeadState);
+            stateMachine.ChangeState(stateMachine.DeadState);
         }
     }
 }

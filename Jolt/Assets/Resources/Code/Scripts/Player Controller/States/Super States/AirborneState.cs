@@ -41,11 +41,11 @@ public class AirborneState : AliveState
         // If it hits ground -> recoil
         if (isGrounded)
         {
-            stateMachine.ChangeState(player.RecoilState);
+            stateMachine.ChangeState(stateMachine.RecoilState);
         }
-        else if(isStartingDash && player.PreDashState.CanDash())
+        else if(isStartingDash && stateMachine.PreDashState.CanDash())
         {
-            stateMachine.ChangeState(player.PreDashState);
+            stateMachine.ChangeState(stateMachine.PreDashState);
         }
     }
 

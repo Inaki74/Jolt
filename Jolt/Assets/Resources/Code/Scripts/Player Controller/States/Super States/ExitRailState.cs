@@ -44,14 +44,14 @@ public class ExitRailState : AliveState
 
         if (isGrounded)
         {
-            stateMachine.ChangeState(player.RecoilState);
+            stateMachine.ChangeState(stateMachine.RecoilState);
         }
         else if(Mathf.Abs(player.GetCurrentVelocity().x) < 0.2f)
         {
-            stateMachine.ChangeState(player.AirborneState);
-        }else if (isStartingDash && player.PreDashState.CanDash())
+            stateMachine.ChangeState(stateMachine.AirborneState);
+        }else if (isStartingDash && stateMachine.PreDashState.CanDash())
         {
-            stateMachine.ChangeState(player.PreDashState);
+            stateMachine.ChangeState(stateMachine.PreDashState);
         }
     }
 

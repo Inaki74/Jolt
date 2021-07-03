@@ -44,8 +44,8 @@ public class In_RailState : ConductorState
         Vector2[] aux = playerData.allPaths.ToArray();
 
         //Debug.Log("PreLast: (" + aux[aux.Length - 2].x + " , " + aux[aux.Length - 2].y + ") , Last: (" + nextPath.x + " , " + nextPath.y + ")");
-        player.ExitRailState.exitVector = nextPath - aux[aux.Length - 2];
-        player.ExitRailState.ExitSpeed = speed;
+        stateMachine.ExitRailState.exitVector = nextPath - aux[aux.Length - 2];
+        stateMachine.ExitRailState.ExitSpeed = speed;
     }
 
     public override void LogicUpdate()
@@ -72,7 +72,7 @@ public class In_RailState : ConductorState
 
         if (exiting)
         {
-            stateMachine.ChangeState(player.ExitRailState);
+            stateMachine.ChangeState(stateMachine.ExitRailState);
         }
     }
 

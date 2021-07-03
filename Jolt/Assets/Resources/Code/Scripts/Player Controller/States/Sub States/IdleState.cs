@@ -34,7 +34,7 @@ public class IdleState : GroundedState
         // Theres movement -> MoveState
         if(moveInput.x != 0)
         {
-            stateMachine.ChangeState(player.MoveState);
+            stateMachine.ChangeState(stateMachine.MoveState);
         }
     }
 

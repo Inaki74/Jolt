@@ -38,12 +38,12 @@ public class RecoilState : GroundedState
             // Movement -> move
             if(moveInput.x != 0)
             {
-                stateMachine.ChangeState(player.MoveState);
+                stateMachine.ChangeState(stateMachine.MoveState);
             }
             // No Movement -> idle
             else
             {
-                stateMachine.ChangeState(player.IdleState);
+                stateMachine.ChangeState(stateMachine.IdleState);
             }
         }
     }

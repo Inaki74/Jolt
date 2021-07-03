@@ -4,20 +4,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    #region States
-    public PlayerStateMachine StateMachine { get; private set; }
-
-    [SerializeField]
-    private PlayerData playerData;
-    #endregion
-
     #region Components
+    public PlayerStateMachine StateMachine { get; private set; }
     public PlayerInputManager InputManager { get; private set; }
     public Rigidbody2D Rb { get; private set; }
     public SpriteRenderer Sr { get; private set; }
     public LineRenderer ArrowLr { get; private set; }
     public CircleCollider2D Cc{ get; private set; }
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private PlayerData playerData;
 
     public GameObject deathParticles;
     #endregion

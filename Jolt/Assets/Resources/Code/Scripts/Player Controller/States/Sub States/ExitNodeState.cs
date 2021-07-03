@@ -26,7 +26,7 @@ public class ExitNodeState : ConductorState
         isDashStarted = true;
         Time.timeScale = playerData.timeSlow;
         player.DrawCircle(player.InputManager.InitialDashPoint, playerData.circleRadius);
-        player.PreDashState.DecreaseAmountOfDashes();
+        stateMachine.PreDashState.DecreaseAmountOfDashes();
         //Time.fixedDeltaTime = 0.1f * 0.02f; Works but doubles the CPU usage. Use RigidBodies with interpolate instead
     }
 
@@ -53,7 +53,7 @@ public class ExitNodeState : ConductorState
         if (!isDashStarted)
         {
             // transition to dashing
-            stateMachine.ChangeState(player.DashingState);
+            stateMachine.ChangeState(stateMachine.DashingState);
         }
     }
 

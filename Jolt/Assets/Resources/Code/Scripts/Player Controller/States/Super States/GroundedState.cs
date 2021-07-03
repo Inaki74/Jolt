@@ -23,7 +23,7 @@ public class GroundedState : AliveState
     {
         base.Enter();
 
-        player.PreDashState.ResetAmountOfDashes();
+        stateMachine.PreDashState.ResetAmountOfDashes();
     }
 
     public override void Exit()
@@ -42,11 +42,11 @@ public class GroundedState : AliveState
         //Isnt on ground -> airborne state
         if (!isGrounded)
         {
-            stateMachine.ChangeState(player.AirborneState);
+            stateMachine.ChangeState(stateMachine.AirborneState);
         }
         if (isStartingDash)
         {
-            stateMachine.ChangeState(player.PreDashState);
+            stateMachine.ChangeState(stateMachine.PreDashState);
         }
         //Else remain in whichever substate
     }

@@ -18,7 +18,7 @@ public class ConductorState : AliveState
     {
         base.Enter();
         player.SetGravityScale(0f);
-        player.PreDashState.ResetAmountOfDashes();
+        stateMachine.PreDashState.ResetAmountOfDashes();
     }
 
     public override void Exit()

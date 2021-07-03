@@ -48,11 +48,11 @@ public class DashingState : AliveState
 
         if (isTouchingNode)
         {
-            stateMachine.ChangeState(player.InNodeState);
+            stateMachine.ChangeState(stateMachine.InNodeState);
         }
         else if (isTouchingRail)
         {
-            stateMachine.ChangeState(player.InRailState);
+            stateMachine.ChangeState(stateMachine.InRailState);
         }
 
         if (currentTime - enterTime > playerData.dashTimeOut)
@@ -61,16 +61,16 @@ public class DashingState : AliveState
             {
                 if(moveInput.x != 0)
                 {
-                    stateMachine.ChangeState(player.MoveState);
+                    stateMachine.ChangeState(stateMachine.MoveState);
                 }
                 else
                 {
-                    stateMachine.ChangeState(player.IdleState);
+                    stateMachine.ChangeState(stateMachine.IdleState);
                 }
             }
             else
             {
-                stateMachine.ChangeState(player.AirborneState);
+                stateMachine.ChangeState(stateMachine.AirborneState);
             }
         }
     }

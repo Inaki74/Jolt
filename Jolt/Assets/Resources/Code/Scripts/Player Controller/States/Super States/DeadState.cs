@@ -46,7 +46,7 @@ public class DeadState : PlayerState
 
         if(currentTime - enterTime > playerData.deadTimer)
         {
-            stateMachine.ChangeState(player.IdleState);
+            stateMachine.ChangeState(stateMachine.IdleState);
         }
     }
 
