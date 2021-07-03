@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
 
     private Vector3 cachedTransform;
 
-    [SerializeField] private bool isDead;
+    [SerializeField] public bool IsDead { private get; set; }
 
     
     #endregion
@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
         InputManager = GetComponent<PlayerInputManager>();
         Cc = GetComponent<CircleCollider2D>();
 
-        isDead = false;
+        IsDead = false;
         ArrowLr = GetComponent<LineRenderer>();
         ArrowLr.enabled = false;
         ArrowLr.startWidth = 0.3f; ArrowLr.endWidth = 0.001f;
@@ -190,6 +190,11 @@ public class Player : MonoBehaviour
         Rb.AddForce(_auxVector, ForceMode2D.Impulse);
     }
 
+    public void SetPosition(Vector2 pos)
+    {
+        transform.position = pos;
+    }
+
     public void SetGravityScale(float gravity) { Rb.gravityScale = gravity; }
 
     public void SetActivePhysicsCollider(bool set) { Cc.enabled = set; }
@@ -222,7 +227,7 @@ public class Player : MonoBehaviour
 
     public bool CheckIfDead()
     {
-        return isDead;
+        return IsDead;
     }
 
     #endregion

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,32 +19,9 @@ public class PlayerCollisions
 
     public void TriggerEnter(Collider2D collision, PlayerState state)
     {
-        if (collision.tag == "Node" && state.ToString() == "DashingState")
-        {
-            IsTouchingNode = true;
-            NodeInfo = collision;
-            collision.GetComponent<SpriteRenderer>().color = Color.cyan;
-        }
+        TriggerEnterNode(collision, state);
 
-        if ((collision.tag == "Rail Entrance" || collision.tag == "Rail Exit") && state.ToString() == "DashingState")
-        {
-            IsTouchingRail = true;
-            FirstRail = collision.GetComponentInParent<RailController>();
-
-            SetPosition(collision.transform.position);
-
-            if (collision.tag == "Rail Entrance" && FirstRail.Inverted)
-            {
-                FirstRail.InvertControlPoints();
-            }
-
-            if (collision.tag == "Rail Exit" && !FirstRail.Inverted)
-            {
-                FirstRail.InvertControlPoints();
-            }
-
-            collision.GetComponent<SpriteRenderer>().color = Color.cyan;
-        }
+        TriggerEnterRail(collision, state);
 
         if (collision.tag == "Checkpoint")
         {
@@ -76,7 +54,7 @@ public class PlayerCollisions
         {
             collision.GetComponent<SpriteRenderer>().color = Color.grey;
 
-            if (StateMachine.GetState() == "DashingState")
+            if (state.ToString() == "DashingState")
             {
                 IsTouchingRail = false;
             }
@@ -87,7 +65,7 @@ public class PlayerCollisions
     {
         if (collision.gameObject.tag == "Rubber")
         {
-            isDead = true;
+            player.IsDead = true;
         }
     }
 
@@ -95,12 +73,40 @@ public class PlayerCollisions
     {
         if (collision.gameObject.tag == "Rubber")
         {
-            isDead = false;
+            player.IsDead = false;
         }
     }
 
-    public void SetPosition(Vector2 pos)
+    private void TriggerEnterNode(Collider2D collision, PlayerState state)
     {
-        player.transform.position = pos;
+        if (collision.tag == "Node" && state.ToString() == "DashingState")
+        {
+            IsTouchingNode = true;
+            NodeInfo = collision;
+            collision.GetComponent<SpriteRenderer>().color = Color.cyan;
+        }
+    }
+
+    private void TriggerEnterRail(Collider2D collision, PlayerState state)
+    {
+        if ((collision.tag == "Rail Entrance" || collision.tag == "Rail Exit") && state.ToString() == "DashingState")
+        {
+            IsTouchingRail = true;
+            FirstRail = collision.GetComponentInParent<RailController>();
+
+            player.SetPosition(collision.transform.position);
+
+            if (collision.tag == "Rail Entrance" && FirstRail.Inverted)
+            {
+                FirstRail.InvertControlPoints();
+            }
+
+            if (collision.tag == "Rail Exit" && !FirstRail.Inverted)
+            {
+                FirstRail.InvertControlPoints();
+            }
+
+            collision.GetComponent<SpriteRenderer>().color = Color.cyan;
+        }
     }
 }
