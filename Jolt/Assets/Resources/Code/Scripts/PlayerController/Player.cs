@@ -6,20 +6,19 @@ namespace Jolt
 {
     namespace PlayerController
     {
-        using PlayerStates;
-
         public class Player : MonoBehaviour
         {
             #region Components
 
             [SerializeField]
             private PlayerData _playerData;
+
             private PlayerCollisions _playerCollisions;
             private PlayerArrowRendering _playerArrowRendering;
 
             public PlayerStateMachine StateMachine { get; private set; }
             public PlayerInputManager InputManager { get; private set; }
-            public CircleHelperFunctions CircleDrawer { get; private set; }
+            
 
             public Rigidbody2D Rb { get; private set; }
             public SpriteRenderer Sr { get; private set; }
@@ -277,24 +276,13 @@ namespace Jolt
                 // Instantiate particles
                 // Move player to last _checkpoint (but here we will have only one _checkpoint, so skip)
                 //transform.position = _checkpoint;
+                transform.position = Vector2.zero;
                 // Reset objects (but here they are immutable so skip)
             }
 
             public void InstantiateDeathParticles()
             {
                 Instantiate(_deathParticles, transform.position, Quaternion.identity);
-            }
-
-            public void DeactivateCircleRendering()
-            {
-                CircleDrawer.DerenderCircle();
-            }
-
-            public void DrawCircle(Vector2 mouseStartPos, float radius)
-            {
-                Vector2 center = _mainCamera.ScreenToWorldPoint(mouseStartPos);
-
-                CircleDrawer.DrawCircle(center, radius);
             }
             #endregion
         }

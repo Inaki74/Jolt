@@ -31,7 +31,6 @@ namespace Jolt
                     _enterTime = Time.time;
                     _isDashStarted = true;
                     Time.timeScale = _playerData.timeSlow;
-                    _player.DrawCircle(_player.InputManager.InitialDashPoint, _playerData.circleRadius);
                     _stateMachine.PreDashState.DecreaseAmountOfDashes();
                     //Time.fixedDeltaTime = 0.1f * 0.02f; Works but doubles the CPU usage. Use RigidBodies with interpolate instead
                 }
@@ -41,7 +40,6 @@ namespace Jolt
                     base.Exit();
 
                     _player.DeactivateArrowRendering();
-                    _player.DeactivateCircleRendering();
                     Time.timeScale = 1f;
                 }
 

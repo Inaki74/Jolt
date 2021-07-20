@@ -10,11 +10,23 @@ namespace Jolt
         {
             public class DesktopInputController : IInputController
             {
+                private bool _mouse;
+
+                public DesktopInputController(bool mouse)
+                {
+                    _mouse = mouse;
+                }
+
                 public void ManageDash(ref bool dashBegin, ref Vector3 initialDashPoint, ref Vector3 finalDashPoint)
                 {
-                    KeyboardDash(ref dashBegin, ref initialDashPoint, ref finalDashPoint);
-
-                    //MouseDash(ref dashBegin, ref initialDashPoint, ref finalDashPoint);
+                    if (_mouse)
+                    {
+                        MouseDash(ref dashBegin, ref initialDashPoint, ref finalDashPoint);
+                    }
+                    else
+                    {
+                        KeyboardDash(ref dashBegin, ref initialDashPoint, ref finalDashPoint);
+                    }
                 }
 
                 public void ManageJump(bool jumpingBool)
