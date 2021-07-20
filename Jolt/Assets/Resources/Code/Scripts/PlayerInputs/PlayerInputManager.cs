@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputManager : MonoBehaviour
 {
+    private IInputController inputController;
+
     public Vector2 MovementVector { get; private set; }
 
     public bool DashBegin { get; private set; }
@@ -21,6 +23,21 @@ public class PlayerInputManager : MonoBehaviour
 
     private void Start()
     {
+        if(SystemInfo.deviceType == DeviceType.Console)
+        {
+            inputController = new JoystickInputController();
+        }
+
+        if (SystemInfo.deviceType == DeviceType.Desktop)
+        {
+            inputController = new DesktopInputController();
+        }
+
+        if (SystemInfo.deviceType == DeviceType.Handheld)
+        {
+            inputController = new MobileInputController();
+        }
+
         currentDashCD = -1;
         runOnce = false;
         found = false;
@@ -28,6 +45,10 @@ public class PlayerInputManager : MonoBehaviour
 
     private void Update()
     {
+        inputController.ManageMovement(MovementVector);
+
+        inputController.ManageDash(InitialDashPoint, FinalDashPoint);
+
         //MOBILE
         //if (currentDashCD > 0)
         //{
@@ -35,12 +56,12 @@ public class PlayerInputManager : MonoBehaviour
         //}
 
         //OSX and Windows
-        if (DashBegin && currentDashCD < 0)
-        {
-            FinalDashPoint = Mouse.current.position.ReadValue();
-        }
+        //if (DashBegin && currentDashCD < 0)
+        //{
+        //    FinalDashPoint = Mouse.current.position.ReadValue();
+        //}
 
-        currentDashCD -= Time.deltaTime;
+        //currentDashCD -= Time.deltaTime;
 
     }
 
