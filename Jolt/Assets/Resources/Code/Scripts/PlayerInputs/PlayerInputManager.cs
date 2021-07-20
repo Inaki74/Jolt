@@ -9,17 +9,59 @@ public class PlayerInputManager : MonoBehaviour
 {
     private IInputController inputController;
 
-    public Vector2 MovementVector { get; private set; }
+    private Vector2 _movementVector;
+    public Vector2 MovementVector
+    {   get
+        {
+            return _movementVector;
+        }
+        set
+        {
+            _movementVector = value;
+        }
+    }
 
-    public bool DashBegin { get; private set; }
+    private bool _dashBegin;
+    public bool DashBegin
+    {
+        get
+        {
+            return _dashBegin;
+        }
+        set
+        {
+            _dashBegin = value;
+        }
+    }
 
-    public Vector3 InitialDashPoint { get; private set; }
+    private Vector3 _initialDashPoint;
+    public Vector3 InitialDashPoint
+    {
+        get
+        {
+            return _initialDashPoint;
+        }
+        set
+        {
+            _initialDashPoint = value;
+        }
+    }
 
-    public Vector3 FinalDashPoint { get; private set; }
+    private Vector3 _finalDashPoint;
+    public Vector3 FinalDashPoint
+    {
+        get
+        {
+            return _finalDashPoint;
+        }
+        set
+        {
+            _finalDashPoint = value;
+        }
+    }
 
     private float dashCD = 0.2f;
     private float currentDashCD;
-
 
     private void Start()
     {
@@ -45,9 +87,9 @@ public class PlayerInputManager : MonoBehaviour
 
     private void Update()
     {
-        inputController.ManageMovement(MovementVector);
+        inputController.ManageMovement(ref _movementVector);
 
-        inputController.ManageDash(InitialDashPoint, FinalDashPoint);
+        inputController.ManageDash(ref _dashBegin, ref _initialDashPoint, ref _finalDashPoint);
 
         //MOBILE
         //if (currentDashCD > 0)

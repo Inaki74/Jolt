@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class DesktopInputController : IInputController
 {
-    public void ManageDash(Vector2 initialDashPoint, Vector2 finalDashPoint)
+    public void ManageDash(ref bool dashBegin, ref Vector3 initialDashPoint, ref Vector3 finalDashPoint)
     {
-        throw new System.NotImplementedException();
+        if (Input.GetMouseButtonDown(0))
+        {
+            dashBegin = true;
+            initialDashPoint = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            dashBegin = false;
+            finalDashPoint = Input.mousePosition;
+        }
     }
 
     public void ManageJump(bool jumpingBool)
@@ -14,8 +24,24 @@ public class DesktopInputController : IInputController
         throw new System.NotImplementedException();
     }
 
-    public void ManageMovement(Vector2 movementVector)
+    public void ManageMovement(ref Vector2 movementVector)
     {
-        throw new System.NotImplementedException();
+        float horizontalInput = Input.GetAxis("Horizontal");
+
+
+        movementVector.Set(horizontalInput, movementVector.y);
+    }
+
+    private void AssureFixedMovementSpeed(ref float horizontalInput)
+    {
+        if (horizontalInput > 0)
+        {
+            horizontalInput = 1;
+        }
+
+        if (horizontalInput < 0)
+        {
+            horizontalInput = -1;
+        }
     }
 }

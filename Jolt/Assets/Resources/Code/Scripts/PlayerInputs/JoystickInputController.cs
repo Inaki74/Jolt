@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class JoystickInputController : IInputController
 {
-    public void ManageDash(Vector2 initialDashPoint, Vector2 finalDashPoint)
+    public void ManageDash(ref bool dashBegin, ref Vector3 initialDashPoint, ref Vector3 finalDashPoint)
     {
         throw new System.NotImplementedException();
     }
@@ -14,7 +14,7 @@ public class JoystickInputController : IInputController
         throw new System.NotImplementedException();
     }
 
-    public void ManageMovement(Vector2 movementVector)
+    public void ManageMovement(ref Vector2 movementVector)
     {
         throw new System.NotImplementedException();
     }

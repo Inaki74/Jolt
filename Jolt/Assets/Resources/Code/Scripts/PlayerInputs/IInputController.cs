@@ -4,9 +4,9 @@ using UnityEngine;
 
 public interface IInputController
 {
-    void ManageMovement(Vector2 movementVector);
+    void ManageMovement(ref Vector2 movementVector);
 
     void ManageJump(bool jumpingBool);
 
-    void ManageDash(Vector2 initialDashPoint, Vector2 finalDashPoint);
+    void ManageDash(ref bool dashBegin, ref Vector3 initialDashPoint, ref Vector3 finalDashPoint);
 }
