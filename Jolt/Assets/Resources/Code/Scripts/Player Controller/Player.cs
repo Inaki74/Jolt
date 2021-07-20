@@ -5,16 +5,20 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     #region Components
+
+    [SerializeField]
+    private PlayerData playerData;
+    private PlayerCollisions playerCollisions;
+    private PlayerArrowRendering playerArrowRendering;
     public PlayerStateMachine StateMachine { get; private set; }
     public PlayerInputManager InputManager { get; private set; }
+    public CircleHelperFunctions circleDrawer;
+
     public Rigidbody2D Rb { get; private set; }
     public SpriteRenderer Sr { get; private set; }
-    public LineRenderer ArrowLr { get; private set; }
     public CircleCollider2D Cc{ get; private set; }
+    
     [SerializeField] private Camera mainCamera;
-
-    [SerializeField] private PlayerData playerData;
-    private PlayerCollisions playerCollisions;
 
     public GameObject deathParticles;
     #endregion
@@ -23,43 +27,27 @@ public class Player : MonoBehaviour
     public Vector2 checkpoint;
 
     public Vector2 CurrentVelocity { get; private set; }
-    public CircleHelperFunctions circleDrawer;
+    
     public Transform groundCheckOne;
     public Transform groundCheckTwo;
-
-    private Vector2 _auxVector;
 
     private Vector3 DashStart;
     private Vector3 DashFinish;
 
-    private Vector3 cachedTransform;
+    private Vector2 _auxVector2;
+    private Vector3 _auxVector3;
 
-    [SerializeField] public bool IsDead { private get; set; }
+    [SerializeField] public bool IsDead { private get; set; } = false;
 
     
     #endregion
 
     #region Unity Callback Functions
-    private void Awake()
-    {
-        StateMachine = new PlayerStateMachine(this, playerData);
-        playerCollisions = new PlayerCollisions(this);
-    }
 
     private void Start()
     {
-        Application.targetFrameRate = 60; // This shouldnt be here, its for testing purposes.
-
-        Rb = GetComponent<Rigidbody2D>();
-        Sr = GetComponent<SpriteRenderer>();
-        InputManager = GetComponent<PlayerInputManager>();
-        Cc = GetComponent<CircleCollider2D>();
-
-        IsDead = false;
-        ArrowLr = GetComponent<LineRenderer>();
-        ArrowLr.enabled = false;
-        ArrowLr.startWidth = 0.3f; ArrowLr.endWidth = 0.001f;
-
+        //Application.targetFrameRate = 60; // This shouldnt be here, its for testing purposes.
+        GetComponents();
         StateMachine.Initialize();
     }
 
@@ -99,6 +87,18 @@ public class Player : MonoBehaviour
         playerCollisions.CollisionExit(collision, StateMachine.CurrentState);
     }
 
+    private void GetComponents()
+    {
+        Rb = GetComponent<Rigidbody2D>();
+        Sr = GetComponent<SpriteRenderer>();
+        InputManager = GetComponent<PlayerInputManager>();
+        Cc = GetComponent<CircleCollider2D>();
+
+        StateMachine = new PlayerStateMachine(this, playerData);
+        playerCollisions = new PlayerCollisions(this);
+        playerArrowRendering = new PlayerArrowRendering(GetComponent<LineRenderer>());
+    }
+
     private void OnDrawGizmos()
     {
         //Vector2 center = new Vector2(1f, 0);
@@ -118,43 +118,40 @@ public class Player : MonoBehaviour
     #region Set Functions
     public void SetMovementX(float velocity)
     {
-        _auxVector.Set(velocity, CurrentVelocity.y);
-        Rb.velocity = _auxVector;
-        CurrentVelocity = _auxVector;
+        _auxVector2.Set(velocity, CurrentVelocity.y);
+        Rb.velocity = _auxVector2;
+        CurrentVelocity = _auxVector2;
     }
 
     public void SetMovementY(float velocity)
     {
-        _auxVector.Set(CurrentVelocity.x, velocity);
-        Rb.velocity = _auxVector;
-        CurrentVelocity = _auxVector;
+        _auxVector2.Set(CurrentVelocity.x, velocity);
+        Rb.velocity = _auxVector2;
+        CurrentVelocity = _auxVector2;
     }
 
     public void SetMovementXByForce(Vector2 direction, float speed)
     {
-        _auxVector.Set(direction.x * speed, 0);
-        Rb.AddForce(_auxVector, ForceMode2D.Force);
+        _auxVector2.Set(direction.x * speed, 0);
+        Rb.AddForce(_auxVector2, ForceMode2D.Force);
     }
 
     public void SetDashMovement(float velocity)
     {
-        _auxVector = DashFinish - cachedTransform;
-        DashFinish = _auxVector;
-        _auxVector.Set(DashFinish.normalized.x, DashFinish.normalized.y);
-        Rb.velocity = _auxVector * velocity;
+        _auxVector2 = DashFinish - _auxVector3;
+        DashFinish = _auxVector2;
+        _auxVector2.Set(DashFinish.normalized.x, DashFinish.normalized.y);
+        Rb.velocity = _auxVector2 * velocity;
         Rb.velocity = Vector2.ClampMagnitude(Rb.velocity, velocity);
-        CurrentVelocity = _auxVector * velocity;
+        CurrentVelocity = _auxVector2 * velocity;
     }
 
     public void SetArrowRendering()
     {
-        ArrowLr.enabled = true;
-
         Vector2 aux1 = DashStart;
         Vector2 aux2 = DashFinish;
-
-        ArrowLr.SetPosition(0, aux1);
-        ArrowLr.SetPosition(1, aux2);
+        
+        playerArrowRendering.RenderArrow(aux1, aux2);
     }
 
     public void SetDashVectors(Vector3 mouseStartPos, Vector3 mouseFinalPos)
@@ -174,20 +171,20 @@ public class Player : MonoBehaviour
         //arrowStart.Set(aux1.x + arrowTranslationVector.x, aux1.y + arrowTranslationVector.y, 0);
         //arrowFinish.Set(aux2.x + arrowTranslationVector.x, aux2.y + arrowTranslationVector.y, 0);
 
-        cachedTransform = transform.position;
+        _auxVector3 = transform.position;
     }
 
     public void SetVelocityToGivenVector(Vector2 v, float speed)
     {
-        _auxVector.Set(v.x * speed, v.y * speed);
-        Rb.velocity = _auxVector;
-        CurrentVelocity = _auxVector;
+        _auxVector2.Set(v.x * speed, v.y * speed);
+        Rb.velocity = _auxVector2;
+        CurrentVelocity = _auxVector2;
     }
 
     public void SetForceToGivenVector(Vector2 v, float speed)
     {
-        _auxVector.Set(v.x * speed, v.y * speed);
-        Rb.AddForce(_auxVector, ForceMode2D.Impulse);
+        _auxVector2.Set(v.x * speed, v.y * speed);
+        Rb.AddForce(_auxVector2, ForceMode2D.Impulse);
     }
 
     public void SetPosition(Vector2 pos)
@@ -195,11 +192,20 @@ public class Player : MonoBehaviour
         transform.position = pos;
     }
 
-    public void SetGravityScale(float gravity) { Rb.gravityScale = gravity; }
+    public void SetGravityScale(float gravity)
+    {
+        Rb.gravityScale = gravity;
+    }
 
-    public void SetActivePhysicsCollider(bool set) { Cc.enabled = set; }
+    public void SetActivePhysicsCollider(bool set)
+    {
+        Cc.enabled = set;
+    }
 
-    public void SetActiveSpriteRenderer(bool set) { Sr.enabled = set; }
+    public void SetActiveSpriteRenderer(bool set)
+    {
+        Sr.enabled = set;
+    }
     #endregion
 
     #region Check Functions
@@ -243,16 +249,16 @@ public class Player : MonoBehaviour
         return playerCollisions.FirstRail;
     }
 
-    public Vector2 GetCurrentVelocity() { return Rb.velocity; }
+    public Vector2 GetCurrentVelocity()
+    {
+        return Rb.velocity;
+    }
     #endregion
 
     #region Other Functions
     public void DeactivateArrowRendering()
     {
-        ArrowLr.SetPosition(0, Vector2.zero);
-        ArrowLr.SetPosition(1, Vector2.zero);
-
-        ArrowLr.enabled = false;
+        playerArrowRendering.DerenderArrow();
     }
 
     public void DeactivateCircleRendering()
@@ -263,8 +269,8 @@ public class Player : MonoBehaviour
     public void MoveTowardsVector(Vector2 v, float velocity)
     {
         //Debug.Log("Transform: (" + transform.position.x + " , " + transform.position.y + ") , Point: (" + v.x + " , " + v.y + ")");
-        _auxVector.Set(v.x, v.y);
-        transform.position = Vector2.MoveTowards(transform.position, _auxVector, velocity * Time.deltaTime);
+        _auxVector2.Set(v.x, v.y);
+        transform.position = Vector2.MoveTowards(transform.position, _auxVector2, velocity * Time.deltaTime);
     }
 
     public void ResetPosition()
