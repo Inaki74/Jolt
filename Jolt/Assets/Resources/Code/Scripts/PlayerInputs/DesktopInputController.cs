@@ -6,17 +6,26 @@ public class DesktopInputController : IInputController
 {
     public void ManageDash(ref bool dashBegin, ref Vector3 initialDashPoint, ref Vector3 finalDashPoint)
     {
-        if (Input.GetMouseButtonDown(0))
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+
+        Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
+
+        Debug.Log(inputVector);
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             dashBegin = true;
-            initialDashPoint = Input.mousePosition;
+            initialDashPoint = Vector3.zero;
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetKeyUp(KeyCode.Space))
         {
             dashBegin = false;
-            finalDashPoint = Input.mousePosition;
+            initialDashPoint = inputVector;
         }
+
+        //MouseDash(ref dashBegin, ref initialDashPoint, ref finalDashPoint);
     }
 
     public void ManageJump(bool jumpingBool)
@@ -30,6 +39,21 @@ public class DesktopInputController : IInputController
 
 
         movementVector.Set(horizontalInput, movementVector.y);
+    }
+
+    private void MouseDash(ref bool dashBegin, ref Vector3 initialDashPoint, ref Vector3 finalDashPoint)
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            dashBegin = true;
+            initialDashPoint = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            dashBegin = false;
+            finalDashPoint = Input.mousePosition;
+        }
     }
 
     private void AssureFixedMovementSpeed(ref float horizontalInput)
