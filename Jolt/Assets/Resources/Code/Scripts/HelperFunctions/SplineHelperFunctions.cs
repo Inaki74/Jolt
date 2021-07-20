@@ -2,34 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SplineHelperFunctions
+namespace Jolt
 {
-    public static Vector3 SplineCurve(int n, int i, float t, Transform[] ControlPoints)
+    public class SplineHelperFunctions
     {
-        if (i > n)
+        public static Vector3 SplineCurve(int n, int i, float t, Transform[] ControlPoints)
         {
-            return Vector3.zero;
+            if (i > n)
+            {
+                return Vector3.zero;
+            }
+            else
+            {
+                return Comb(n, i) * ControlPoints[i].position * Mathf.Pow(1 - t, n - i) * Mathf.Pow(t, i) + SplineCurve(n, i + 1, t, ControlPoints);
+            }
         }
-        else
-        {
-            return Comb(n, i) * ControlPoints[i].position * Mathf.Pow(1 - t, n - i) * Mathf.Pow(t, i) + SplineCurve(n, i + 1, t, ControlPoints);
-        }
-    }
 
-    public static int Comb(int n, int i)
-    {
-        return Factorial(n) / (Factorial(n - i) * Factorial(i));
-    }
-
-    public static int Factorial(int n)
-    {
-        if (n <= 0)
+        public static int Comb(int n, int i)
         {
-            return 1;
+            return Factorial(n) / (Factorial(n - i) * Factorial(i));
         }
-        else
+
+        public static int Factorial(int n)
         {
-            return n * Factorial(n - 1);
+            if (n <= 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return n * Factorial(n - 1);
+            }
         }
     }
 }
+
+

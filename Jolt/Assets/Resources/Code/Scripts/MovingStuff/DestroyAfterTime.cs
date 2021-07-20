@@ -2,18 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestroyAfterTime : MonoBehaviour
+namespace Jolt
 {
-    // Start is called before the first frame update
-    void Start()
+    public class DestroyAfterTime : MonoBehaviour
     {
-        StartCoroutine("CoDestroy");
-    }
+        // Start is called before the first frame update
+        void Start()
+        {
+            StartCoroutine("CoDestroy");
+        }
 
-    private IEnumerator CoDestroy()
-    {
-        yield return new WaitForSeconds(1.0f);
+        private IEnumerator CoDestroy()
+        {
+            yield return new WaitForSeconds(1.0f);
 
-        Destroy(gameObject);
+            Destroy(gameObject);
+        }
     }
 }
+
+
