@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputManager : MonoBehaviour
 {
-    private IInputController inputController;
+    private IInputController _inputController;
 
     private Vector2 _movementVector;
     public Vector2 MovementVector
@@ -67,76 +67,36 @@ public class PlayerInputManager : MonoBehaviour
     {
         if(SystemInfo.deviceType == DeviceType.Console)
         {
-            inputController = new JoystickInputController();
+            _inputController = new JoystickInputController();
         }
 
         if (SystemInfo.deviceType == DeviceType.Desktop)
         {
-            inputController = new DesktopInputController();
+            _inputController = new DesktopInputController();
         }
 
         if (SystemInfo.deviceType == DeviceType.Handheld)
         {
-            inputController = new MobileInputController();
+            _inputController = new MobileInputController();
         }
 
-        currentDashCD = -1;
-        runOnce = false;
-        found = false;
+        //currentDashCD = -1;
+        //runOnce = false;
+        //found = false;
     }
 
     private void Update()
     {
-        inputController.ManageMovement(ref _movementVector);
+        _inputController.ManageMovement(ref _movementVector);
 
-        inputController.ManageDash(ref _dashBegin, ref _initialDashPoint, ref _finalDashPoint);
-
-        //MOBILE
-        //if (currentDashCD > 0)
-        //{
-        //    currentDashCD -= Time.deltaTime;
-        //}
-
-        //OSX and Windows
-        //if (DashBegin && currentDashCD < 0)
-        //{
-        //    FinalDashPoint = Mouse.current.position.ReadValue();
-        //}
-
-        //currentDashCD -= Time.deltaTime;
-
+        _inputController.ManageDash(ref _dashBegin, ref _initialDashPoint, ref _finalDashPoint);
     }
 
-    public void OnMovementInput(InputAction.CallbackContext context)
-    {
-        Debug.Log(context.ReadValue<Vector2>());
-        if(Mathf.Abs(context.ReadValue<Vector2>().x) > 0.2f)
-        {
-            MovementVector = context.ReadValue<Vector2>();
-            moving = true;
-        }
-        else
-        {
-            MovementVector = Vector2.zero;
-            moving = false;
-        }
-    }
 
-    public void OnBeginDashInputMouse(InputAction.CallbackContext context)
-    {
-        if (context.started && currentDashCD < 0)
-        {
-            DashBegin = true;
-            InitialDashPoint = Mouse.current.position.ReadValue();
-        }
 
-        if (context.canceled)
-        {
-            DashBegin = false;
-            currentDashCD = dashCD;
-        }
-    }
-
+    /// <summary>
+    /// NEW SYSTEM
+    /// </summary>
     //Context -> value, phase(when it was started, performed and cancelled), 
     private bool runOnce;
     private bool found;
@@ -145,17 +105,6 @@ public class PlayerInputManager : MonoBehaviour
 
     public void OnBeginDashInput(InputAction.CallbackContext context)
     {
-        //if (context.started)
-        //{
-        //    Debug.Log("Started: " + context.started);
-        //}
-        //if (context.performed) {
-        //    Debug.Log("Performed: " + context.performed);
-        //}
-        //if (context.canceled) {
-        //    Debug.Log("Ended: " + context.canceled);
-        //}
-
         Debug.Log("pene");
 
         if (moving)
@@ -327,12 +276,3 @@ public class PlayerInputManager : MonoBehaviour
         return null;
     }
 }
-
-
-
-
-
-
-
-
-

@@ -6,7 +6,27 @@ public class JoystickInputController : IInputController
 {
     public void ManageDash(ref bool dashBegin, ref Vector3 initialDashPoint, ref Vector3 finalDashPoint)
     {
-        throw new System.NotImplementedException();
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical");
+
+        Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
+
+        if (Input.GetButtonDown("joystick button 2"))
+        {
+            dashBegin = true;
+            initialDashPoint = Vector3.zero;
+        }
+
+        if (Input.GetButton("joystick button 2"))
+        {
+            finalDashPoint = inputVector;
+        }
+
+        if (Input.GetButtonUp("joystick button 2"))
+        {
+            dashBegin = false;
+
+        }
     }
 
     public void ManageJump(bool jumpingBool)
@@ -16,6 +36,8 @@ public class JoystickInputController : IInputController
 
     public void ManageMovement(ref Vector2 movementVector)
     {
-        throw new System.NotImplementedException();
+        float horizontalInput = Input.GetAxis("Horizontal");
+
+        movementVector.Set(horizontalInput, movementVector.y);
     }
 }

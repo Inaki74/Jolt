@@ -163,25 +163,6 @@ public class Player : MonoBehaviour
         DashStart = transform.position;
         DashFinish = transform.position + direction;
 
-        Debug.Log(transform.position);
-        Debug.Log(direction);
-        Debug.Log(DashFinish);
-
-        //TODO: To later move the camera towards the mouse point, we may need to capture Camera.main at the moment of touch
-        //TODO: Make the arrow length constant
-        //Debug.Log(mouseStartPos);
-        //Vector2 aux1 = mouseStartPos;
-        //Vector2 aux2 = mouseFinalPos;
-
-        //Vector2 dashTranslationVector = new Vector2(transform.position.x - aux1.x, transform.position.y - aux1.y);
-        ////Vector2 arrowTranslationVector = new Vector2(transform.position.normalized.x - aux1.normalized.x, transform.position.normalized.y - aux1.normalized.y);
-
-        //DashStart.Set(aux1.x + dashTranslationVector.x, aux1.y + dashTranslationVector.y, 0);
-        //DashFinish.Set(aux2.x + dashTranslationVector.x, aux2.y + dashTranslationVector.y, 0);
-
-        //arrowStart.Set(aux1.x + arrowTranslationVector.x, aux1.y + arrowTranslationVector.y, 0);
-        //arrowFinish.Set(aux2.x + arrowTranslationVector.x, aux2.y + arrowTranslationVector.y, 0);
-
         _auxVector3 = transform.position;
     }
 
