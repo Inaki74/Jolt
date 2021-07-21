@@ -19,21 +19,20 @@ namespace Jolt
             public PlayerStateMachine StateMachine { get; private set; }
             public PlayerInputManager InputManager { get; private set; }
             
-
             public Rigidbody2D Rb { get; private set; }
             public SpriteRenderer Sr { get; private set; }
             public CircleCollider2D Cc { get; private set; }
-
-            [SerializeField]
-            private Camera _mainCamera;
 
             [SerializeField]
             private GameObject _deathParticles;
             #endregion
 
             #region Auxiliary Variables
-            [SerializeField]
+            //[SerializeField]
             //private Vector2 _checkpoint;
+
+            [SerializeField]
+            private Camera _mainCamera;
 
             public Vector2 CurrentVelocity { get; private set; }
 
@@ -167,9 +166,9 @@ namespace Jolt
                 _playerArrowRendering.RenderArrow(aux1, aux2 + direction * 2);
             }
 
-            public void SetDashVectors(Vector3 mouseStartPos, Vector3 mouseFinalPos)
+            public void SetDashVectors(Vector3 startPos, Vector3 finalPos)
             {
-                Vector3 direction = (mouseFinalPos - mouseStartPos).normalized;
+                Vector3 direction = (finalPos - startPos).normalized;
 
                 _dashStart = transform.position;
                 _dashFinish = transform.position + direction;
@@ -177,22 +176,22 @@ namespace Jolt
                 _auxVector3 = transform.position;
             }
 
-            public void SetVelocityToGivenVector(Vector2 v, float speed)
+            public void SetVelocityToGivenVector(Vector2 vector, float speed)
             {
-                _auxVector2.Set(v.x * speed, v.y * speed);
+                _auxVector2.Set(vector.x * speed, vector.y * speed);
                 Rb.velocity = _auxVector2;
                 CurrentVelocity = _auxVector2;
             }
 
-            public void SetForceToGivenVector(Vector2 v, float speed)
+            public void SetForceToGivenVector(Vector2 vector, float speed)
             {
-                _auxVector2.Set(v.x * speed, v.y * speed);
+                _auxVector2.Set(vector.x * speed, vector.y * speed);
                 Rb.AddForce(_auxVector2, ForceMode2D.Impulse);
             }
 
-            public void SetPosition(Vector2 pos)
+            public void SetPosition(Vector2 position)
             {
-                transform.position = pos;
+                transform.position = position;
             }
 
             public void SetGravityScale(float gravity)
@@ -264,10 +263,10 @@ namespace Jolt
                 _playerArrowRendering.DerenderArrow();
             }
 
-            public void MoveTowardsVector(Vector2 v, float velocity)
+            public void MoveTowardsVector(Vector2 vector, float velocity)
             {
                 //Debug.Log("Transform: (" + transform.position.x + " , " + transform.position.y + ") , Point: (" + v.x + " , " + v.y + ")");
-                _auxVector2.Set(v.x, v.y);
+                _auxVector2.Set(vector.x, vector.y);
                 transform.position = Vector2.MoveTowards(transform.position, _auxVector2, velocity * Time.deltaTime);
             }
 

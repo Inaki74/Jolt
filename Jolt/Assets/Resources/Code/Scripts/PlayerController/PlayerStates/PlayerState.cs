@@ -8,7 +8,7 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class PlayerState
+            public abstract class PlayerState
             {
                 protected PlayerStateMachine _stateMachine;
                 protected Player _player;

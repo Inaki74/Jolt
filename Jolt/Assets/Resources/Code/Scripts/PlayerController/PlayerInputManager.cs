@@ -75,9 +75,6 @@ namespace Jolt
                 }
             }
 
-            private float dashCD = 0.2f;
-            private float currentDashCD;
-
             private void Start()
             {
                 DecideControlScheme();
@@ -128,7 +125,8 @@ namespace Jolt
                 _inputController.ManageDash(ref _dashBegin, ref _initialDashPoint, ref _finalDashPoint);
             }
 
-
+            private float dashCD = 0.2f;
+            private float currentDashCD;
 
             /// <summary>
             /// NEW SYSTEM
