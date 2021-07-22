@@ -32,11 +32,6 @@ namespace Jolt
                     _stateMachine.PreDashState.ResetAmountOfDashes();
                 }
 
-                public override void Exit()
-                {
-                    base.Exit();
-                }
-
                 public override void LogicUpdate()
                 {
                     base.LogicUpdate();
@@ -55,11 +50,6 @@ namespace Jolt
                         _stateMachine.ChangeState(_stateMachine.PreDashState);
                     }
                     //Else remain in whichever substate
-                }
-
-                public override void PhysicsUpdate()
-                {
-                    base.PhysicsUpdate();
                 }
             }
         }

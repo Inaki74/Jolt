@@ -15,11 +15,6 @@ namespace Jolt
                 {
                 }
 
-                public override void DoChecks()
-                {
-                    base.DoChecks();
-                }
-
                 public override void Enter()
                 {
                     base.Enter();
@@ -31,16 +26,6 @@ namespace Jolt
                 {
                     base.Exit();
                     _player.SetGravityScale(1f);
-                }
-
-                public override void LogicUpdate()
-                {
-                    base.LogicUpdate();
-                }
-
-                public override void PhysicsUpdate()
-                {
-                    base.PhysicsUpdate();
                 }
             }
         }

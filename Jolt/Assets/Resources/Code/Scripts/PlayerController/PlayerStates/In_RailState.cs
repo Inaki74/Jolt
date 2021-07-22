@@ -10,24 +10,19 @@ namespace Jolt
         {
             public class In_RailState : ConductorState
             {
-                private RailController currentRail;
+                private RailController _currentRail;
 
-                private Vector2 nextPath;
+                private Vector2 _nextPath;
 
                 private float t;
 
-                private float speed;
+                private float _speed;
 
-                private bool exiting;
-                private bool reachedPath;
+                private bool _exiting;
+                private bool _reachedPath;
 
                 public In_RailState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
                 {
-                }
-
-                public override void DoChecks()
-                {
-                    base.DoChecks();
                 }
 
                 public override void Enter()
@@ -35,12 +30,12 @@ namespace Jolt
                     base.Enter();
 
                     _playerData.allPaths.Clear();
-                    exiting = false;
-                    nextPath = _player.transform.position;
-                    currentRail = _player.GetRailInfo();
+                    _exiting = false;
+                    _nextPath = _player.transform.position;
+                    _currentRail = _player.GetRailInfo();
 
                     t = 0f;
-                    speed = currentRail.railSpeed;
+                    _speed = _currentRail.railSpeed;
                 }
 
                 public override void Exit()
@@ -49,34 +44,34 @@ namespace Jolt
 
                     Vector2[] aux = _playerData.allPaths.ToArray();
 
-                    //Debug.Log("PreLast: (" + aux[aux.Length - 2].x + " , " + aux[aux.Length - 2].y + ") , Last: (" + nextPath.x + " , " + nextPath.y + ")");
-                    _stateMachine.ExitRailState.ExitVector = nextPath - aux[aux.Length - 2];
-                    _stateMachine.ExitRailState.ExitSpeed = speed;
+                    //Debug.Log("PreLast: (" + aux[aux.Length - 2].x + " , " + aux[aux.Length - 2].y + ") , Last: (" + _nextPath.x + " , " + _nextPath.y + ")");
+                    _stateMachine.ExitRailState.ExitVector = _nextPath - aux[aux.Length - 2];
+                    _stateMachine.ExitRailState.ExitSpeed = _speed;
                 }
 
                 public override void LogicUpdate()
                 {
                     base.LogicUpdate();
 
-                    reachedPath = _player.CheckHasReachedPoint(nextPath);
+                    _reachedPath = _player.CheckHasReachedPoint(_nextPath);
 
-                    if (t < 1 && reachedPath)
+                    if (t < 1 && _reachedPath)
                     {
-                        t += Time.deltaTime * speed / 10;
+                        t += Time.deltaTime * _speed / 10;
 
-                        nextPath = SplineHelperFunctions.SplineCurve(currentRail.ControlPoints.Length - 1, 0, t, currentRail.ControlPoints);
+                        _nextPath = SplineHelperFunctions.SplineCurve(_currentRail.ControlPoints.Length - 1, 0, t, _currentRail.ControlPoints);
                         if (t > 0.8)
-                            _playerData.allPaths.Add(nextPath);
+                            _playerData.allPaths.Add(_nextPath);
                     }
                     else if (t >= 1)
                     {
                         t = 0;
-                        exiting = true;
+                        _exiting = true;
                     }
 
-                    _player.MoveTowardsVector(nextPath, speed);
+                    _player.MoveTowardsVector(_nextPath, _speed);
 
-                    if (exiting)
+                    if (_exiting)
                     {
                         _stateMachine.ChangeState(_stateMachine.ExitRailState);
                     }
@@ -86,23 +81,23 @@ namespace Jolt
                 {
                     base.PhysicsUpdate();
 
-                    //Follows speed according to points
+                    //Follows _speed according to points
                     //if (t < 1)
                     //{
-                    //    t += Time.fixedDeltaTime * speed;
+                    //    t += Time.fixedDeltaTime * _speed;
 
-                    //    Vector3 aux = SplineHelperFunctions.SplineCurve(currentRail.ControlPoints.Length - 1, 0, t, currentRail.ControlPoints);
+                    //    Vector3 aux = SplineHelperFunctions.SplineCurve(_currentRail.ControlPoints.Length - 1, 0, t, _currentRail.ControlPoints);
 
-                    //    nextPath.Set(aux.x, aux.y);
+                    //    _nextPath.Set(aux.x, aux.y);
 
-                    //    player.SetPosition(nextPath);
-                    //    player.CheckHasReachedPoint(nextPath);
+                    //    player.SetPosition(_nextPath);
+                    //    player.CheckHasReachedPoint(_nextPath);
                     //}
                     //else
                     //{
                     //    t = 0f;
 
-                    //    exiting = true;
+                    //    _exiting = true;
                     //}
                 }
 

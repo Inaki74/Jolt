@@ -17,21 +17,6 @@ namespace Jolt
                 {
                 }
 
-                public override void DoChecks()
-                {
-                    base.DoChecks();
-                }
-
-                public override void Enter()
-                {
-                    base.Enter();
-                }
-
-                public override void Exit()
-                {
-                    base.Exit();
-                }
-
                 public override void LogicUpdate()
                 {
                     base.LogicUpdate();
@@ -42,7 +27,7 @@ namespace Jolt
                     if (_currentTime - _enterTime > _timeToChange)
                     {
                         // Movement -> move
-                        if (_moveInput.x != 0)
+                        if (_isMoving)
                         {
                             _stateMachine.ChangeState(_stateMachine.MoveState);
                         }

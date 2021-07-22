@@ -22,17 +22,8 @@ namespace Jolt
                 public override void DoChecks()
                 {
                     base.DoChecks();
+
                     _isMoving = _moveInput.x != 0;
-                }
-
-                public override void Enter()
-                {
-                    base.Enter();
-                }
-
-                public override void Exit()
-                {
-                    base.Exit();
                 }
 
                 public override void LogicUpdate()
@@ -57,17 +48,24 @@ namespace Jolt
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
+
                     if (_isMoving)
                     {
                         if (_stateMachine.LastState == "ExitRailState")
+                        {
                             _player.SetMovementXByForce(Vector2.right, _playerData.movementSpeed * _moveInput.x);
+                        }
                         else
+                        {
                             _player.SetMovementX(_playerData.movementSpeed * _moveInput.x);
+                        }
                     }
                     else
                     {
                         if (_stateMachine.LastState != "ExitRailState")
+                        {
                             _player.SetMovementX(0f);
+                        }
                     }
                 }
 

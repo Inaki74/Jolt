@@ -16,36 +16,32 @@ namespace Jolt
                 private bool _isTouchingNode;
                 private bool _isTouchingRail;
 
-                private bool playOnce;
+                private bool _playOnce;
 
                 public DashingState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
                 {
-                }
-
-                public override void DoChecks()
-                {
-                    base.DoChecks();
                 }
 
                 public override void Enter()
                 {
                     base.Enter();
 
-                    playOnce = true;
+                    _playOnce = true;
                     _player.SetGravityScale(0f);
                 }
 
                 public override void Exit()
                 {
                     base.Exit();
+
                     _player.SetGravityScale(1f);
-                    _player.SetMovementX(0f); _player.SetMovementY(0f);
+                    _player.SetMovementX(0f);
+                    _player.SetMovementY(0f);
                 }
 
                 public override void LogicUpdate()
                 {
                     base.LogicUpdate();
-
 
                     _isGrounded = _player.CheckIsGrounded();
                     _moveInput = _player.InputManager.MovementVector;
@@ -86,13 +82,12 @@ namespace Jolt
                     base.PhysicsUpdate();
                     _currentTime = Time.time;
 
-                    if (playOnce)
+                    if (_playOnce)
                     {
                         _player.SetDashMovement(_playerData.dashSpeed);
 
-                        playOnce = false;
+                        _playOnce = false;
                     }
-
                 }
 
                 public override string ToString()

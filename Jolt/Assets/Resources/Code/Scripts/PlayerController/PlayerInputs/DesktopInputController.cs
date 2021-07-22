@@ -36,33 +36,32 @@ namespace Jolt
 
                 public void ManageMovement(ref Vector2 movementVector)
                 {
-                    float horizontalInput = Input.GetAxisRaw("Horizontal");
+                    float horizontalInput = Input.GetAxisRaw(InputStringNames.KEYBOARD_HORIZONTAL_NAME);
 
                     movementVector.Set(horizontalInput, movementVector.y);
                 }
 
                 private void KeyboardDash(ref bool dashBegin, ref Vector3 initialDashPoint, ref Vector3 finalDashPoint)
                 {
-                    float horizontalInput = Input.GetAxisRaw("Horizontal");
-                    float verticalInput = Input.GetAxisRaw("Vertical");
+                    float horizontalInput = Input.GetAxisRaw(InputStringNames.KEYBOARD_HORIZONTAL_NAME);
+                    float verticalInput = Input.GetAxisRaw(InputStringNames.KEYBOARD_VERTICAL_NAME);
 
                     Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
 
-                    if (Input.GetKeyDown(KeyCode.Space))
+                    if (Input.GetButtonDown(InputStringNames.KEYBOARD_DASH_NAME))
                     {
                         dashBegin = true;
                         initialDashPoint = Vector3.zero;
                     }
 
-                    if (Input.GetKey(KeyCode.Space))
+                    if (Input.GetButton(InputStringNames.KEYBOARD_DASH_NAME))
                     {
                         finalDashPoint = inputVector;
                     }
 
-                    if (Input.GetKeyUp(KeyCode.Space))
+                    if (Input.GetButtonUp(InputStringNames.KEYBOARD_DASH_NAME))
                     {
                         dashBegin = false;
-
                     }
                 }
 

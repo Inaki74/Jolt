@@ -10,24 +10,8 @@ namespace Jolt
         {
             public class MoveState : GroundedState
             {
-
                 public MoveState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
                 {
-                }
-
-                public override void DoChecks()
-                {
-                    base.DoChecks();
-                }
-
-                public override void Enter()
-                {
-                    base.Enter();
-                }
-
-                public override void Exit()
-                {
-                    base.Exit();
                 }
 
                 public override void LogicUpdate()
@@ -35,11 +19,10 @@ namespace Jolt
                     base.LogicUpdate();
 
                     // No movement -> idle state
-                    if (_moveInput.x == 0)
+                    if (!_isMoving)
                     {
                         _stateMachine.ChangeState(_stateMachine.IdleState);
                     }
-
                 }
 
                 public override void PhysicsUpdate()
@@ -47,7 +30,9 @@ namespace Jolt
                     base.PhysicsUpdate();
 
                     if (_isMoving)
+                    {
                         _player.SetMovementX(_playerData.movementSpeed * _moveInput.x);
+                    }
                 }
 
                 public override string ToString()

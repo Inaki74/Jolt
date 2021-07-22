@@ -14,11 +14,6 @@ namespace Jolt
                 {
                 }
 
-                public override void DoChecks()
-                {
-                    base.DoChecks();
-                }
-
                 public override void Enter()
                 {
                     base.Enter();
@@ -26,26 +21,15 @@ namespace Jolt
                     _player.SetMovementX(0f);
                 }
 
-                public override void Exit()
-                {
-                    base.Exit();
-                }
-
                 public override void LogicUpdate()
                 {
                     base.LogicUpdate();
-
 
                     // Theres movement -> MoveState
                     if (_moveInput.x != 0)
                     {
                         _stateMachine.ChangeState(_stateMachine.MoveState);
                     }
-                }
-
-                public override void PhysicsUpdate()
-                {
-                    base.PhysicsUpdate();
                 }
 
                 public override string ToString()

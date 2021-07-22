@@ -16,16 +16,6 @@ namespace Jolt
                 {
                 }
 
-                public override void DoChecks()
-                {
-                    base.DoChecks();
-                }
-
-                public override void Enter()
-                {
-                    base.Enter();
-                }
-
                 public override void Exit()
                 {
                     //base.Exit();

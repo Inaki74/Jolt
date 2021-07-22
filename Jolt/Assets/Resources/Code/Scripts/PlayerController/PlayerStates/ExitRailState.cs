@@ -22,22 +22,12 @@ namespace Jolt
                 {
                 }
 
-                public override void DoChecks()
-                {
-                    base.DoChecks();
-                }
-
                 public override void Enter()
                 {
                     base.Enter();
 
                     ExitVector.Normalize();
                     _player.SetForceToGivenVector(ExitVector, ExitSpeed);
-                }
-
-                public override void Exit()
-                {
-                    base.Exit();
                 }
 
                 public override void LogicUpdate()
@@ -70,15 +60,18 @@ namespace Jolt
                     if (ExitVector.x > 0)
                     {
                         if (_player.GetCurrentVelocity().x < _playerData.movementSpeed || _moveInput.x < 0)
+                        {
                             _player.SetMovementXByForce(_moveInput, _playerData.movementSpeed + ExitSpeed);
+                        }
                     }
                     //Exit left
                     else
                     {
                         if (_player.GetCurrentVelocity().x > -_playerData.movementSpeed || _moveInput.x > 0)
+                        {
                             _player.SetMovementXByForce(_moveInput, _playerData.movementSpeed + ExitSpeed);
+                        }
                     }
-
                 }
 
                 public override string ToString()

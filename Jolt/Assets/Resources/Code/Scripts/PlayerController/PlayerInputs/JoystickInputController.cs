@@ -12,26 +12,23 @@ namespace Jolt
             {
                 public void ManageDash(ref bool dashBegin, ref Vector3 initialDashPoint, ref Vector3 finalDashPoint)
                 {
-                    float horizontalInput = Input.GetAxis("HorizontalJoy");
-                    float verticalInput = Input.GetAxis("VerticalJoy");
-
-                    Debug.Log("Horizontal: " + horizontalInput);
-                    Debug.Log("Vertical: " + verticalInput);
+                    float horizontalInput = Input.GetAxis(InputStringNames.JOYSTICK_HORIZONTAL_NAME);
+                    float verticalInput = Input.GetAxis(InputStringNames.JOYSTICK_VERTICAL_NAME);
 
                     Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
 
-                    if (Input.GetButtonDown("DashJoy"))
+                    if (Input.GetButtonDown(InputStringNames.JOYSTICK_DASH_NAME))
                     {
                         dashBegin = true;
                         initialDashPoint = Vector3.zero;
                     }
 
-                    if (Input.GetButton("DashJoy"))
+                    if (Input.GetButton(InputStringNames.JOYSTICK_DASH_NAME))
                     {
                         finalDashPoint = inputVector;
                     }
 
-                    if (Input.GetButtonUp("DashJoy"))
+                    if (Input.GetButtonUp(InputStringNames.JOYSTICK_DASH_NAME))
                     {
                         dashBegin = false;
                     }
@@ -44,7 +41,7 @@ namespace Jolt
 
                 public void ManageMovement(ref Vector2 movementVector)
                 {
-                    float horizontalInput = Input.GetAxisRaw("HorizontalJoy");
+                    float horizontalInput = Input.GetAxisRaw(InputStringNames.JOYSTICK_HORIZONTAL_NAME);
 
                     movementVector.Set(horizontalInput, movementVector.y);
                 }

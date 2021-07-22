@@ -56,11 +56,6 @@ namespace Jolt
                     }
                 }
 
-                public override void PhysicsUpdate()
-                {
-                    base.PhysicsUpdate();
-                }
-
                 public override string ToString()
                 {
                     return "DeadState";

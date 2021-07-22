@@ -19,11 +19,6 @@ namespace Jolt
                     ResetAmountOfDashes();
                 }
 
-                public override void DoChecks()
-                {
-                    base.DoChecks();
-                }
-
                 public override void Enter()
                 {
                     base.Enter();
@@ -58,11 +53,6 @@ namespace Jolt
                         // transition to dashing
                         _stateMachine.ChangeState(_stateMachine.DashingState);
                     }
-                }
-
-                public override void PhysicsUpdate()
-                {
-                    base.PhysicsUpdate();
                 }
 
                 public override string ToString()

@@ -6,7 +6,6 @@ namespace Jolt
 {
     namespace PlayerController
     {
-        using System;
         using PlayerInput;
 
         public enum ControlSchemeAux
