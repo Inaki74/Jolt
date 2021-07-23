@@ -30,7 +30,8 @@ namespace Jolt
                     base.Enter();
 
                     _player.SetGravityScale(0f);
-                    _player.SetMovementX(0f); _player.SetMovementY(0f);
+                    _player.SetMovementX(0f);
+                    _player.SetMovementY(0f);
                     _player.SetActivePhysicsCollider(false);
                     _player.InstantiateDeathParticles();
                 }
