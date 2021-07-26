@@ -6,6 +6,13 @@ namespace Jolt
 {
     namespace PlayerController
     {
+        [RequireComponent(typeof(Rigidbody2D))]
+        [RequireComponent(typeof(SpriteRenderer))]
+        [RequireComponent(typeof(CircleCollider2D))]
+        [RequireComponent(typeof(PlayerInputManager))]
+        [RequireComponent(typeof(PlayerCollisions))]
+        [RequireComponent(typeof(LineRenderer))]
+
         public class Player : MonoBehaviour
         {
             #region Components
@@ -72,40 +79,15 @@ namespace Jolt
                 StateMachine.CurrentState.PhysicsUpdate();
             }
 
-            private void OnTriggerEnter2D(Collider2D collision)
-            {
-                _playerCollisions.TriggerEnter(collision, StateMachine.CurrentState);
-            }
-
-            private void OnTriggerStay2D(Collider2D collision)
-            {
-                _playerCollisions.TriggerStay(collision, StateMachine.CurrentState);
-            }
-
-            private void OnTriggerExit2D(Collider2D collision)
-            {
-                _playerCollisions.TriggerExit(collision, StateMachine.CurrentState);
-            }
-
-            private void OnCollisionEnter2D(Collision2D collision)
-            {
-                _playerCollisions.CollisionEnter(collision, StateMachine.CurrentState);
-            }
-
-            private void OnCollisionExit2D(Collision2D collision)
-            {
-                _playerCollisions.CollisionExit(collision, StateMachine.CurrentState);
-            }
-
             private void GetComponents()
             {
                 Rb = GetComponent<Rigidbody2D>();
                 Sr = GetComponent<SpriteRenderer>();
-                InputManager = GetComponent<PlayerInputManager>();
                 Cc = GetComponent<CircleCollider2D>();
+                InputManager = GetComponent<PlayerInputManager>();
+                _playerCollisions = GetComponent<PlayerCollisions>();
 
                 StateMachine = new PlayerStateMachine(this, _playerData);
-                _playerCollisions = new PlayerCollisions(this);
                 _playerArrowRendering = new PlayerArrowRendering(GetComponent<LineRenderer>());
             }
 
