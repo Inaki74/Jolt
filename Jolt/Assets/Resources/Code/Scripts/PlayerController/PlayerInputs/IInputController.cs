@@ -10,11 +10,13 @@ namespace Jolt
         {
             public interface IInputController
             {
-                void ManageMovement(ref Vector2 movementVector);
-
-                void ManageJump(bool jumpingBool);
-
-                void ManageDash(ref bool dashBegin, ref Vector3 initialDashPoint, ref Vector3 finalDashPoint);
+                float Horizontal { get; }
+                float Vertical { get; }
+                bool DashDown { get; }
+                bool DashHold { get; }
+                bool DashUp { get; }
+                bool Pointer { get; }
+                Vector2 PointerVector { get; }
             }
         }
     }
