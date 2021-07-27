@@ -10,6 +10,8 @@ namespace Jolt
         {
             public class DashingState : AliveState
             {
+                protected override Color AssociatedColor => Color.cyan;
+
                 private bool _isGrounded;
                 private Vector2 _moveInput;
                 private float _currentTime;
@@ -18,7 +20,7 @@ namespace Jolt
 
                 private bool _playOnce;
 
-                public DashingState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public DashingState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

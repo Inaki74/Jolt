@@ -10,6 +10,8 @@ namespace Jolt
         {
             public class ExitRailState : AliveState
             {
+                protected override Color AssociatedColor => Color.magenta;
+
                 public Vector2 ExitVector { private get; set; }
 
                 public float ExitSpeed { private get; set; }
@@ -18,7 +20,7 @@ namespace Jolt
                 private bool _isGrounded;
                 private bool _isStartingDash;
 
-                public ExitRailState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public ExitRailState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

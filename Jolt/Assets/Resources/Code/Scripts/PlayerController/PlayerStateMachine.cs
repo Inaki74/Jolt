@@ -28,17 +28,17 @@ namespace Jolt
 
             public PlayerStateMachine(Player player, PlayerData playerData)
             {
-                MoveState = new MoveState(this, player, playerData, Color.white);
-                IdleState = new IdleState(this, player, playerData, Color.yellow);
-                AirborneState = new AirborneState(this, player, playerData, Color.red);
-                RecoilState = new RecoilState(this, player, playerData, Color.magenta);
-                PreDashState = new PreDashState(this, player, playerData, Color.gray);
-                DashingState = new DashingState(this, player, playerData, Color.cyan);
-                InNodeState = new In_NodeState(this, player, playerData, Color.clear);
-                ExitNodeState = new ExitNodeState(this, player, playerData, Color.magenta);
-                InRailState = new In_RailState(this, player, playerData, Color.cyan);
-                ExitRailState = new ExitRailState(this, player, playerData, Color.magenta);
-                DeadState = new DeadState(this, player, playerData, Color.clear);
+                MoveState = new MoveState(this, player, playerData);
+                IdleState = new IdleState(this, player, playerData);
+                AirborneState = new AirborneState(this, player, playerData);
+                RecoilState = new RecoilState(this, player, playerData);
+                PreDashState = new PreDashState(this, player, playerData);
+                DashingState = new DashingState(this, player, playerData);
+                InNodeState = new In_NodeState(this, player, playerData);
+                ExitNodeState = new ExitNodeState(this, player, playerData);
+                InRailState = new In_RailState(this, player, playerData);
+                ExitRailState = new ExitRailState(this, player, playerData);
+                DeadState = new DeadState(this, player, playerData);
             }
 
             public void Initialize()

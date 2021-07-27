@@ -8,11 +8,11 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class AliveState : PlayerState
+            public abstract class AliveState : PlayerState
             {
                 private bool _isAlive;
 
-                public AliveState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public AliveState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

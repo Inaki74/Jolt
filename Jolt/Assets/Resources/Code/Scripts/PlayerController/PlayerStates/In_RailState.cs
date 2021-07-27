@@ -10,6 +10,8 @@ namespace Jolt
         {
             public class In_RailState : ConductorState
             {
+                protected override Color AssociatedColor => Color.cyan;
+
                 private RailController _currentRail;
 
                 private Vector2 _nextPath;
@@ -21,7 +23,7 @@ namespace Jolt
                 private bool _exiting;
                 private bool _reachedPath;
 
-                public In_RailState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public In_RailState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

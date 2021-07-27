@@ -10,7 +10,9 @@ namespace Jolt
         {
             public class IdleState : GroundedState
             {
-                public IdleState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                protected override Color AssociatedColor => Color.yellow;
+
+                public IdleState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

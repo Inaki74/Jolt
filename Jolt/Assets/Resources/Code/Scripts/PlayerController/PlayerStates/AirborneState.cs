@@ -10,12 +10,14 @@ namespace Jolt
         {
             public class AirborneState : AliveState
             {
+                protected override Color AssociatedColor => Color.red;
+
                 private Vector2 _moveInput;
                 private bool _isGrounded;
                 private bool _isStartingDash;
                 private bool _isMoving;
 
-                public AirborneState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public AirborneState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

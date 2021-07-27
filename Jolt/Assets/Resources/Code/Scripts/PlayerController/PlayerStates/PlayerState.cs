@@ -13,23 +13,22 @@ namespace Jolt
                 protected PlayerStateMachine _stateMachine;
                 protected Player _player;
                 protected PlayerData _playerData;
-                protected Color _associatedColor; // string animBool
+                protected virtual Color AssociatedColor => Color.black;
 
                 protected float _enterTime;
 
-                public PlayerState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor)
+                public PlayerState(PlayerStateMachine stateMachine, Player player, PlayerData playerData)
                 {
                     this._stateMachine = stateMachine;
                     this._player = player;
                     this._playerData = playerData;
-                    this._associatedColor = associatedColor;
                 }
 
                 public virtual void Enter()
                 {
                     DoChecks();
 
-                    _player.Sr.color = _associatedColor;
+                    _player.Sr.color = AssociatedColor;
                     _enterTime = Time.time;
                 }
 

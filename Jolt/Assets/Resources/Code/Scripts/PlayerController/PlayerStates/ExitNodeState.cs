@@ -10,12 +10,13 @@ namespace Jolt
         {
             public class ExitNodeState : ConductorState
             {
+                protected override Color AssociatedColor => Color.magenta;
                 // Known bug: If two nodes are too close to each other, doesnt work appropiately
 
                 private bool _isDashStarted;
                 private float _currentTime;
 
-                public ExitNodeState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public ExitNodeState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

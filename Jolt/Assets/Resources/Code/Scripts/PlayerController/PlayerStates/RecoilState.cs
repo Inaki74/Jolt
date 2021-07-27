@@ -10,10 +10,12 @@ namespace Jolt
         {
             public class RecoilState : GroundedState
             {
+                protected override Color AssociatedColor => Color.magenta;
+
                 private float _timeToChange = 0.2f;
                 private float _currentTime;
 
-                public RecoilState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public RecoilState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

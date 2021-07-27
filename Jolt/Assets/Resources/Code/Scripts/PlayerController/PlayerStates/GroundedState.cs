@@ -8,14 +8,14 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class GroundedState : AliveState
+            public abstract class GroundedState : AliveState
             {
                 protected Vector2 _moveInput;
                 protected bool _isGrounded;
                 protected bool _isStartingDash;
                 protected bool _isMoving;
 
-                public GroundedState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public GroundedState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

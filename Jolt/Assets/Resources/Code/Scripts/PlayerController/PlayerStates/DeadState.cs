@@ -10,13 +10,15 @@ namespace Jolt
         {
             public class DeadState : PlayerState
             {
+                protected override Color AssociatedColor => Color.clear;
+
                 private float _currentTime;
 
                 // Instantiate particles
                 // Move player to last checkpoint (but here we will have only one checkpoint, so skip)
                 // Reset objects (but here they are immutable so skip)
 
-                public DeadState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public DeadState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

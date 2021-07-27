@@ -10,9 +10,10 @@ namespace Jolt
         {
             public class In_NodeState : ConductorState
             {
+                protected override Color AssociatedColor => Color.clear;
                 private bool _isStartingDash;
 
-                public In_NodeState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public In_NodeState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

@@ -10,7 +10,9 @@ namespace Jolt
         {
             public class MoveState : GroundedState
             {
-                public MoveState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                protected override Color AssociatedColor => Color.white;
+
+                public MoveState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

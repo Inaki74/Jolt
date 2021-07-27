@@ -10,11 +10,13 @@ namespace Jolt
         {
             public class PreDashState : AliveState
             {
+                protected override Color AssociatedColor => Color.gray;
+
                 private bool _isDashStarted;
                 private float _currentTime;
                 private int _amountOfDashes;
 
-                public PreDashState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public PreDashState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                     ResetAmountOfDashes();
                 }
