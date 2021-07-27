@@ -32,6 +32,8 @@ namespace Jolt
             [Header("Dead State")]
             public float deadTimer = 5f;
             public Vector2 lastCheckpoint;
+
+            public float Test { get; set; }
         }
     }
 }

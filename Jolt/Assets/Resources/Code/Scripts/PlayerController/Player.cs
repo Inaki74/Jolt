@@ -23,7 +23,7 @@ namespace Jolt
             private PlayerCollisions _playerCollisions;
             private PlayerArrowRendering _playerArrowRendering;
 
-            public PlayerStateMachine StateMachine { get; private set; }
+            public IPlayerStateMachine StateMachine { get; private set; }
             public IPlayerInputManager InputManager { get; private set; }
 
             public Rigidbody2D Rb { get; private set; }

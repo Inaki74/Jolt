@@ -4,7 +4,7 @@ namespace Jolt.PlayerController
 {
     public interface IPlayer
     {
-        PlayerStateMachine StateMachine { get; }
+        IPlayerStateMachine StateMachine { get; }
         IPlayerInputManager InputManager { get; }
         Rigidbody2D Rb { get; }
         SpriteRenderer Sr { get; }
