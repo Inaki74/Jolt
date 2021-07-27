@@ -16,7 +16,7 @@ namespace Jolt
                 private bool _isDashStarted;
                 private float _currentTime;
 
-                public ExitNodeState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public ExitNodeState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -39,9 +39,14 @@ namespace Jolt
                     Time.timeScale = 1f;
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
-                    base.LogicUpdate();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     _currentTime = Time.time;
                     _isDashStarted = _player.InputManager.DashBegin && (_currentTime - _enterTime < _playerData.preDashTimeOut);
@@ -54,7 +59,10 @@ namespace Jolt
                     {
                         // transition to dashing
                         _stateMachine.ChangeState(_stateMachine.DashingState);
+                        return false;
                     }
+
+                    return true;
                 }
 
                 public override void PhysicsUpdate()

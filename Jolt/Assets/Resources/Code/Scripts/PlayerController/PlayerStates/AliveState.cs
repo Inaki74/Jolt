@@ -12,7 +12,7 @@ namespace Jolt
             {
                 private bool _isAlive;
 
-                public AliveState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public AliveState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -23,16 +23,19 @@ namespace Jolt
                     _isAlive = true;
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
                     base.LogicUpdate();
 
-                    _isAlive = !_player.CheckIfDead();
+                    _isAlive = !_player.IsDead;
 
                     if (!_isAlive)
                     {
                         _stateMachine.ChangeState(_stateMachine.DeadState);
+                        return false;
                     }
+
+                    return true;
                 }
             }
         }

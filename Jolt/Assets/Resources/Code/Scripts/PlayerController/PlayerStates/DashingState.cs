@@ -20,7 +20,7 @@ namespace Jolt
 
                 private bool _playOnce;
 
-                public DashingState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public DashingState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -37,13 +37,18 @@ namespace Jolt
                     base.Exit();
 
                     _player.SetGravityScale(1f);
-                    _player.SetMovementX(0f);
-                    _player.SetMovementY(0f);
+                    _player.SetRigidbodyVelocityX(0f);
+                    _player.SetRigidbodyVelocityY(0f);
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
-                    base.LogicUpdate();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     _isGrounded = _player.CheckIsGrounded();
                     _moveInput = _player.InputManager.MovementVector;
@@ -53,10 +58,12 @@ namespace Jolt
                     if (_isTouchingNode)
                     {
                         _stateMachine.ChangeState(_stateMachine.InNodeState);
+                        return false;
                     }
                     else if (_isTouchingRail)
                     {
                         _stateMachine.ChangeState(_stateMachine.InRailState);
+                        return false;
                     }
 
                     if (_currentTime - _enterTime > _playerData.dashTimeOut)
@@ -66,17 +73,22 @@ namespace Jolt
                             if (_moveInput.x != 0)
                             {
                                 _stateMachine.ChangeState(_stateMachine.MoveState);
+                                return false;
                             }
                             else
                             {
                                 _stateMachine.ChangeState(_stateMachine.IdleState);
+                                return false;
                             }
                         }
                         else
                         {
                             _stateMachine.ChangeState(_stateMachine.AirborneState);
+                            return false;
                         }
                     }
+
+                    return true;
                 }
 
                 public override void PhysicsUpdate()

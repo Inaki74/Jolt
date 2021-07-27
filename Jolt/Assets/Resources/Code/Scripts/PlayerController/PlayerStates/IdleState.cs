@@ -12,7 +12,7 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.yellow;
 
-                public IdleState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public IdleState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -20,18 +20,26 @@ namespace Jolt
                 {
                     base.Enter();
 
-                    _player.SetMovementX(0f);
+                    _player.SetRigidbodyVelocityX(0f);
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
-                    base.LogicUpdate();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     // Theres movement -> MoveState
                     if (_moveInput.x != 0)
                     {
                         _stateMachine.ChangeState(_stateMachine.MoveState);
+                        return false;
                     }
+
+                    return true;
                 }
 
                 public override string ToString()

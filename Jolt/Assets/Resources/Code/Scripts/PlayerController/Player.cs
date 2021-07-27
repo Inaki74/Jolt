@@ -13,7 +13,7 @@ namespace Jolt
         [RequireComponent(typeof(PlayerCollisions))]
         [RequireComponent(typeof(LineRenderer))]
 
-        public class Player : MonoBehaviour
+        public class Player : MonoBehaviour, IPlayer
         {
             #region Components
 
@@ -24,8 +24,8 @@ namespace Jolt
             private PlayerArrowRendering _playerArrowRendering;
 
             public PlayerStateMachine StateMachine { get; private set; }
-            public PlayerInputManager InputManager { get; private set; }
-            
+            public IPlayerInputManager InputManager { get; private set; }
+
             public Rigidbody2D Rb { get; private set; }
             public SpriteRenderer Sr { get; private set; }
             public CircleCollider2D Cc { get; private set; }
@@ -41,13 +41,13 @@ namespace Jolt
             [SerializeField]
             private Camera _mainCamera;
 
-            public Vector2 CurrentVelocity { get; private set; }
-
             [SerializeField]
             private Transform _groundCheckOne;
 
             [SerializeField]
             private Transform _groundCheckTwo;
+
+            private Vector2 _currentVelocity;
 
             private Vector3 _dashStart;
             private Vector3 _dashFinish;
@@ -55,7 +55,7 @@ namespace Jolt
             private Vector2 _auxVector2;
             private Vector3 _auxVector3;
 
-            public bool IsDead { private get; set; } = false;
+            public bool IsDead { get; set; } = false;
 
             #endregion
 
@@ -70,7 +70,7 @@ namespace Jolt
 
             private void Update()
             {
-                CurrentVelocity = Rb.velocity;
+                _currentVelocity = Rb.velocity;
                 StateMachine.CurrentState.LogicUpdate();
             }
 
@@ -108,24 +108,43 @@ namespace Jolt
             #endregion
 
             #region Set Functions
-            public void SetMovementX(float velocity)
+            public void MoveTowardsVector(Vector2 vector, float velocity)
             {
-                _auxVector2.Set(velocity, CurrentVelocity.y);
-                Rb.velocity = _auxVector2;
-                CurrentVelocity = _auxVector2;
+                //Debug.Log("Transform: (" + transform.position.x + " , " + transform.position.y + ") , Point: (" + v.x + " , " + v.y + ")");
+                _auxVector2.Set(vector.x, vector.y);
+                transform.position = Vector2.MoveTowards(transform.position, _auxVector2, velocity * Time.deltaTime);
             }
 
-            public void SetMovementY(float velocity)
+            public void SetRigidbodyVelocityX(float velocity)
             {
-                _auxVector2.Set(CurrentVelocity.x, velocity);
+                _auxVector2.Set(velocity, _currentVelocity.y);
                 Rb.velocity = _auxVector2;
-                CurrentVelocity = _auxVector2;
+                _currentVelocity = _auxVector2;
+            }
+
+            public void SetRigidbodyVelocityY(float velocity)
+            {
+                _auxVector2.Set(_currentVelocity.x, velocity);
+                Rb.velocity = _auxVector2;
+                _currentVelocity = _auxVector2;
             }
 
             public void SetMovementXByForce(Vector2 direction, float speed)
             {
                 _auxVector2.Set(direction.x * speed, 0);
                 Rb.AddForce(_auxVector2, ForceMode2D.Force);
+            }
+
+            public void SetMovementYByForce(Vector2 direction, float speed)
+            {
+                _auxVector2.Set(0f, direction.x * speed);
+                Rb.AddForce(_auxVector2, ForceMode2D.Force);
+            }
+
+            public void SetMovementByImpulse(Vector2 direction, float speed)
+            {
+                _auxVector2.Set(direction.x * speed, direction.y * speed);
+                Rb.AddForce(_auxVector2, ForceMode2D.Impulse);
             }
 
             public void SetDashMovement(float velocity)
@@ -135,17 +154,7 @@ namespace Jolt
                 _auxVector2.Set(_dashFinish.normalized.x, _dashFinish.normalized.y);
                 Rb.velocity = _auxVector2 * velocity;
                 Rb.velocity = Vector2.ClampMagnitude(Rb.velocity, velocity);
-                CurrentVelocity = _auxVector2 * velocity;
-            }
-
-            public void SetArrowRendering()
-            {
-                Vector2 aux1 = _dashStart;
-                Vector2 aux2 = _dashFinish;
-
-                Vector2 direction = aux2 - aux1;
-
-                _playerArrowRendering.RenderArrow(aux1, aux2 + direction * 2);
+                _currentVelocity = _auxVector2 * velocity;
             }
 
             public void SetDashVectors(Vector3 startPos, Vector3 finalPos)
@@ -158,17 +167,14 @@ namespace Jolt
                 _auxVector3 = transform.position;
             }
 
-            public void SetVelocityToGivenVector(Vector2 vector, float speed)
+            public void SetArrowRendering()
             {
-                _auxVector2.Set(vector.x * speed, vector.y * speed);
-                Rb.velocity = _auxVector2;
-                CurrentVelocity = _auxVector2;
-            }
+                Vector2 aux1 = _dashStart;
+                Vector2 aux2 = _dashFinish;
 
-            public void SetForceToGivenVector(Vector2 vector, float speed)
-            {
-                _auxVector2.Set(vector.x * speed, vector.y * speed);
-                Rb.AddForce(_auxVector2, ForceMode2D.Impulse);
+                Vector2 direction = aux2 - aux1;
+
+                _playerArrowRendering.RenderArrow(aux1, aux2 + direction * 2);
             }
 
             public void SetPosition(Vector2 position)
@@ -215,11 +221,6 @@ namespace Jolt
                 return (Vector2)transform.position == point;
             }
 
-            public bool CheckIfDead()
-            {
-                return IsDead;
-            }
-
             #endregion
 
             #region Get Functions
@@ -243,13 +244,6 @@ namespace Jolt
             public void DeactivateArrowRendering()
             {
                 _playerArrowRendering.DerenderArrow();
-            }
-
-            public void MoveTowardsVector(Vector2 vector, float velocity)
-            {
-                //Debug.Log("Transform: (" + transform.position.x + " , " + transform.position.y + ") , Point: (" + v.x + " , " + v.y + ")");
-                _auxVector2.Set(vector.x, vector.y);
-                transform.position = Vector2.MoveTowards(transform.position, _auxVector2, velocity * Time.deltaTime);
             }
 
             public void ResetPosition()

@@ -10,14 +10,14 @@ namespace Jolt
         {
             public abstract class PlayerState
             {
-                protected PlayerStateMachine _stateMachine;
-                protected Player _player;
+                protected IPlayerStateMachine _stateMachine;
+                protected IPlayer _player;
                 protected PlayerData _playerData;
                 protected virtual Color AssociatedColor => Color.black;
 
                 protected float _enterTime;
 
-                public PlayerState(PlayerStateMachine stateMachine, Player player, PlayerData playerData)
+                public PlayerState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData)
                 {
                     this._stateMachine = stateMachine;
                     this._player = player;
@@ -37,8 +37,9 @@ namespace Jolt
 
                 }
 
-                public virtual void LogicUpdate()
+                public virtual bool LogicUpdate()
                 {
+                    return true;
                 }
 
                 public virtual void PhysicsUpdate()

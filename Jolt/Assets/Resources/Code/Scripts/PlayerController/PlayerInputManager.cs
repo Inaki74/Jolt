@@ -15,7 +15,7 @@ namespace Jolt
             KEYBOARDANDMOUSE
         }
 
-        public class PlayerInputManager : MonoBehaviour
+        public class PlayerInputManager : MonoBehaviour, IPlayerInputManager
         {
             [SerializeField]
             private ControlSchemeAux _controlScheme;

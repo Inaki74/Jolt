@@ -17,7 +17,7 @@ namespace Jolt
                 private bool _isStartingDash;
                 private bool _isMoving;
 
-                public AirborneState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public AirborneState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -28,9 +28,14 @@ namespace Jolt
                     _isMoving = _moveInput.x != 0;
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
-                    base.LogicUpdate();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     _moveInput = _player.InputManager.MovementVector;
                     _isGrounded = _player.CheckIsGrounded();
@@ -40,11 +45,15 @@ namespace Jolt
                     if (_isGrounded)
                     {
                         _stateMachine.ChangeState(_stateMachine.RecoilState);
+                        return false;
                     }
                     else if (_isStartingDash && _stateMachine.PreDashState.CanDash())
                     {
                         _stateMachine.ChangeState(_stateMachine.PreDashState);
+                        return false;
                     }
+
+                    return true;
                 }
 
                 public override void PhysicsUpdate()
@@ -59,14 +68,14 @@ namespace Jolt
                         }
                         else
                         {
-                            _player.SetMovementX(_playerData.movementSpeed * _moveInput.x);
+                            _player.SetRigidbodyVelocityX(_playerData.movementSpeed * _moveInput.x);
                         }
                     }
                     else
                     {
                         if (_stateMachine.LastState != "ExitRailState")
                         {
-                            _player.SetMovementX(0f);
+                            _player.SetRigidbodyVelocityX(0f);
                         }
                     }
                 }

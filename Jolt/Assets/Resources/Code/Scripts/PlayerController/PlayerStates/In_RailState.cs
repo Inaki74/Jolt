@@ -23,7 +23,7 @@ namespace Jolt
                 private bool _exiting;
                 private bool _reachedPath;
 
-                public In_RailState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public In_RailState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -33,7 +33,7 @@ namespace Jolt
 
                     _playerData.allPaths.Clear();
                     _exiting = false;
-                    _nextPath = _player.transform.position;
+                    //_nextPath = _player.transform.position; // TODO: Breaks rail mechanic.
                     _currentRail = _player.GetRailInfo();
 
                     t = 0f;
@@ -51,9 +51,14 @@ namespace Jolt
                     _stateMachine.ExitRailState.ExitSpeed = _speed;
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
-                    base.LogicUpdate();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     _reachedPath = _player.CheckHasReachedPoint(_nextPath);
 
@@ -76,7 +81,10 @@ namespace Jolt
                     if (_exiting)
                     {
                         _stateMachine.ChangeState(_stateMachine.ExitRailState);
+                        return false;
                     }
+
+                    return true;
                 }
 
                 public override void PhysicsUpdate()

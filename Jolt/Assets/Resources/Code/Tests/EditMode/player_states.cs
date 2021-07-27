@@ -48,33 +48,97 @@ namespace Jolt
 
             public class move_state
             {
+                private IPlayer _playerMock;
+                private IPlayerStateMachine _statemachineMock;
+                private IPlayerInputManager _playerInputManagerMock;
+                private PlayerData _playerDataMock;
+                private MoveState _testMoveState;
+
+                [SetUp]
+                public void Setup()
+                {
+                    _playerMock = Substitute.For<IPlayer>();
+                    _playerDataMock = Substitute.For<PlayerData>();
+                    _statemachineMock = Substitute.For<IPlayerStateMachine>();
+                    _playerInputManagerMock = Substitute.For<IPlayerInputManager>();
+                    _testMoveState = new MoveState(_statemachineMock, _playerMock, _playerDataMock);
+                }
+
                 [Test]
                 public void alive_state_goes_to_dead_state_if_player_dies()
                 {
-                    IPlayer player = Substitute.For<IPlayer>();
-                    PlayerData playerData = Substitute.For<PlayerData>();
-                    PlayerStateMachine stateMachine = Substitute.For<PlayerStateMachine>(player, playerData);
-                    MoveState movingState = new MoveState(stateMachine, player, playerData);
+                    _playerMock.IsDead.Returns(true);
+                    _statemachineMock.DeadState.Returns(new DeadState(_statemachineMock, _playerMock, _playerDataMock));
 
+                    _testMoveState.LogicUpdate();
 
+                    _statemachineMock.Received().ChangeState(_statemachineMock.DeadState);
                 }
 
                 [Test]
                 public void not_being_grounded_leads_to_airborne_state()
                 {
+                    _playerMock.IsDead.Returns(false);
+                    _playerMock.CheckIsGrounded().Returns(false);
+                    _playerMock.InputManager.Returns(_playerInputManagerMock);
+                    _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
+                    _playerInputManagerMock.DashBegin.Returns(false);
+                    _statemachineMock.AirborneState.Returns(new AirborneState(_statemachineMock, _playerMock, _playerDataMock));
 
+                    _testMoveState.LogicUpdate();
+
+                    _statemachineMock.Received().ChangeState(_statemachineMock.AirborneState);
                 }
 
                 [Test]
-                public void dashing_input_leads_to_pre_dash_state()
+                public void being_grounded_does_not_lead_to_airborne_state()
                 {
+                    _playerMock.IsDead.Returns(false);
+                    _playerMock.CheckIsGrounded().Returns(true);
+                    _playerMock.InputManager.Returns(_playerInputManagerMock);
+                    _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
+                    _playerInputManagerMock.DashBegin.Returns(false);
+                    _statemachineMock.AirborneState.Returns(new AirborneState(_statemachineMock, _playerMock, _playerDataMock));
 
+                    _testMoveState.LogicUpdate();
+
+                    _statemachineMock.DidNotReceive().ChangeState(_statemachineMock.AirborneState);
+                }
+
+                [Test]
+                public void dashing_input_while_grounded_leads_to_pre_dash_state()
+                {
+                    _playerMock.IsDead.Returns(false);
+                    _playerMock.CheckIsGrounded().Returns(true);
+                    _playerMock.InputManager.Returns(_playerInputManagerMock);
+                    _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
+                    _playerInputManagerMock.DashBegin.Returns(true);
+                    _statemachineMock.PreDashState.Returns(new PreDashState(_statemachineMock, _playerMock, _playerDataMock));
+
+                    _testMoveState.LogicUpdate();
+
+                    _statemachineMock.Received().ChangeState(_statemachineMock.PreDashState);
+                }
+
+                [Test]
+                public void dashing_input_while_not_grounded_leads_to_pre_dash_state()
+                {
+                    _playerMock.IsDead.Returns(false);
+                    _playerMock.CheckIsGrounded().Returns(false);
+                    _playerMock.InputManager.Returns(_playerInputManagerMock);
+                    _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
+                    _playerInputManagerMock.DashBegin.Returns(true);
+                    _statemachineMock.PreDashState.Returns(new PreDashState(_statemachineMock, _playerMock, _playerDataMock));
+
+                    _testMoveState.LogicUpdate();
+
+                    _statemachineMock.Received().ChangeState(_statemachineMock.PreDashState);
                 }
 
                 [Test]
                 public void jumping_input_leads_to_jumping_state()
                 {
-
+                    //TODO
                 }
 
                 [Test]
@@ -89,7 +153,16 @@ namespace Jolt
                 [Test]
                 public void alive_state_goes_to_dead_state_if_player_dies()
                 {
+                    IPlayer player = Substitute.For<IPlayer>();
+                    player.IsDead.Returns(true);
+                    PlayerData playerData = Substitute.For<PlayerData>();
+                    IPlayerStateMachine stateMachine = Substitute.For<IPlayerStateMachine>();
+                    stateMachine.DeadState.Returns(new DeadState(stateMachine, player, playerData));
+                    IdleState idleState = new IdleState(stateMachine, player, playerData);
 
+                    idleState.LogicUpdate();
+
+                    stateMachine.Received().ChangeState(stateMachine.DeadState);
                 }
 
                 [Test]
@@ -122,7 +195,16 @@ namespace Jolt
                 [Test]
                 public void alive_state_goes_to_dead_state_if_player_dies()
                 {
+                    IPlayer player = Substitute.For<IPlayer>();
+                    player.IsDead.Returns(true);
+                    PlayerData playerData = Substitute.For<PlayerData>();
+                    IPlayerStateMachine stateMachine = Substitute.For<IPlayerStateMachine>();
+                    stateMachine.DeadState.Returns(new DeadState(stateMachine, player, playerData));
+                    RecoilState recoilState = new RecoilState(stateMachine, player, playerData);
 
+                    recoilState.LogicUpdate();
+
+                    stateMachine.Received().ChangeState(stateMachine.DeadState);
                 }
 
                 [Test]
@@ -155,7 +237,16 @@ namespace Jolt
                 [Test]
                 public void alive_state_goes_to_dead_state_if_player_dies()
                 {
+                    IPlayer player = Substitute.For<IPlayer>();
+                    player.IsDead.Returns(true);
+                    PlayerData playerData = Substitute.For<PlayerData>();
+                    IPlayerStateMachine stateMachine = Substitute.For<IPlayerStateMachine>();
+                    stateMachine.DeadState.Returns(new DeadState(stateMachine, player, playerData));
+                    AirborneState airborneState = new AirborneState(stateMachine, player, playerData);
 
+                    airborneState.LogicUpdate();
+
+                    stateMachine.Received().ChangeState(stateMachine.DeadState);
                 }
 
                 [Test]
@@ -170,7 +261,16 @@ namespace Jolt
                 [Test]
                 public void alive_state_goes_to_dead_state_if_player_dies()
                 {
+                    IPlayer player = Substitute.For<IPlayer>();
+                    player.IsDead.Returns(true);
+                    PlayerData playerData = Substitute.For<PlayerData>();
+                    IPlayerStateMachine stateMachine = Substitute.For<IPlayerStateMachine>();
+                    stateMachine.DeadState.Returns(new DeadState(stateMachine, player, playerData));
+                    DashingState dashingState = new DashingState(stateMachine, player, playerData);
 
+                    dashingState.LogicUpdate();
+
+                    stateMachine.Received().ChangeState(stateMachine.DeadState);
                 }
 
                 [Test]
@@ -185,7 +285,16 @@ namespace Jolt
                 [Test]
                 public void alive_state_goes_to_dead_state_if_player_dies()
                 {
+                    IPlayer player = Substitute.For<IPlayer>();
+                    player.IsDead.Returns(true);
+                    PlayerData playerData = Substitute.For<PlayerData>();
+                    IPlayerStateMachine stateMachine = Substitute.For<IPlayerStateMachine>();
+                    stateMachine.DeadState.Returns(new DeadState(stateMachine, player, playerData));
+                    PreDashState preDashState = new PreDashState(stateMachine, player, playerData);
 
+                    preDashState.LogicUpdate();
+
+                    stateMachine.Received().ChangeState(stateMachine.DeadState);
                 }
 
                 [Test]

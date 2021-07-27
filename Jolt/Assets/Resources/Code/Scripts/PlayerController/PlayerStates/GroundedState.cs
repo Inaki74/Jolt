@@ -15,7 +15,7 @@ namespace Jolt
                 protected bool _isStartingDash;
                 protected bool _isMoving;
 
-                public GroundedState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public GroundedState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -32,24 +32,32 @@ namespace Jolt
                     _stateMachine.PreDashState.ResetAmountOfDashes();
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
-                    base.LogicUpdate();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     _moveInput = _player.InputManager.MovementVector;
                     _isGrounded = _player.CheckIsGrounded();
                     _isStartingDash = _player.InputManager.DashBegin;
 
-                    //Isnt on ground -> airborne state
-                    if (!_isGrounded)
-                    {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
-                    }
                     if (_isStartingDash)
                     {
                         _stateMachine.ChangeState(_stateMachine.PreDashState);
+                        return false;
                     }
-                    //Else remain in whichever substate
+
+                    if (!_isGrounded)
+                    {
+                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        return false;
+                    }
+
+                    return true;
                 }
             }
         }

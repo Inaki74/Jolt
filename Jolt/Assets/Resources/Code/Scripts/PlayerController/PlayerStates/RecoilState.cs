@@ -15,13 +15,18 @@ namespace Jolt
                 private float _timeToChange = 0.2f;
                 private float _currentTime;
 
-                public RecoilState(PlayerStateMachine stateMachine, Player player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public RecoilState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
-                    base.LogicUpdate();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     _currentTime = Time.time;
 
@@ -32,13 +37,17 @@ namespace Jolt
                         if (_isMoving)
                         {
                             _stateMachine.ChangeState(_stateMachine.MoveState);
+                            return false;
                         }
                         // No Movement -> idle
                         else
                         {
                             _stateMachine.ChangeState(_stateMachine.IdleState);
+                            return false;
                         }
                     }
+
+                    return true;
                 }
 
                 public override void PhysicsUpdate()
@@ -46,11 +55,11 @@ namespace Jolt
                     base.PhysicsUpdate();
                     if (_isMoving)
                     {
-                        _player.SetMovementX(_playerData.movementSpeed * _moveInput.x);
+                        _player.SetRigidbodyVelocityX(_playerData.movementSpeed * _moveInput.x);
                     }
                     else
                     {
-                        _player.SetMovementX(0f);
+                        _player.SetRigidbodyVelocityX(0f);
                     }
                 }
 

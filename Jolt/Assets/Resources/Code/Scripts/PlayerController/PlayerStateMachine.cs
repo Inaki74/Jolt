@@ -8,7 +8,7 @@ namespace Jolt
     {
         using PlayerStates;
 
-        public class PlayerStateMachine
+        public class PlayerStateMachine : IPlayerStateMachine
         {
             public PlayerState CurrentState { get; private set; }
 
@@ -26,7 +26,7 @@ namespace Jolt
             public ExitRailState ExitRailState { get; private set; }
             public DeadState DeadState { get; private set; }
 
-            public PlayerStateMachine(Player player, PlayerData playerData)
+            public PlayerStateMachine(IPlayer player, PlayerData playerData)
             {
                 MoveState = new MoveState(this, player, playerData);
                 IdleState = new IdleState(this, player, playerData);
