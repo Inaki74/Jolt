@@ -26,8 +26,6 @@ namespace Jolt
 
                 public virtual void Enter()
                 {
-                    DoChecks();
-
                     _player.Sr.color = AssociatedColor;
                     _enterTime = Time.time;
                 }
@@ -44,12 +42,6 @@ namespace Jolt
 
                 public virtual void PhysicsUpdate()
                 {
-                    DoChecks();
-                }
-
-                public virtual void DoChecks()
-                {
-
                 }
             }
         }

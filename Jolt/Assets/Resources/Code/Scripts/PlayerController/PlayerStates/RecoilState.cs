@@ -12,7 +12,6 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.magenta;
 
-                private float _timeToChange = 0.2f;
                 private float _currentTime;
 
                 public RecoilState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
@@ -29,17 +28,16 @@ namespace Jolt
                     }
 
                     _currentTime = Time.time;
+                    bool recoiledEnoughTime = _currentTime - _enterTime > _playerData.RecoilTimer;
 
                     // After enough time elapses, change to the appropiate state
-                    if (_currentTime - _enterTime > _timeToChange)
+                    if (recoiledEnoughTime)
                     {
-                        // Movement -> move
                         if (_isMoving)
                         {
                             _stateMachine.ChangeState(_stateMachine.MoveState);
                             return false;
                         }
-                        // No Movement -> idle
                         else
                         {
                             _stateMachine.ChangeState(_stateMachine.IdleState);
@@ -53,14 +51,7 @@ namespace Jolt
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
-                    if (_isMoving)
-                    {
-                        _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
-                    }
-                    else
-                    {
-                        _player.SetRigidbodyVelocityX(0f);
-                    }
+                    _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
 
                 public override string ToString()

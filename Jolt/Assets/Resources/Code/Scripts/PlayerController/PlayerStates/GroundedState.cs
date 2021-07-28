@@ -19,12 +19,6 @@ namespace Jolt
                 {
                 }
 
-                public override void DoChecks()
-                {
-                    base.DoChecks();
-                    _isMoving = _moveInput.x != 0;
-                }
-
                 public override void Enter()
                 {
                     base.Enter();
@@ -44,6 +38,7 @@ namespace Jolt
                     _moveInput = _player.InputManager.MovementVector;
                     _isGrounded = _player.CheckIsGrounded();
                     _isStartingDash = _player.InputManager.DashBegin;
+                    _isMoving = _moveInput.x != 0;
 
                     if (_isStartingDash)
                     {

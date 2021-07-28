@@ -87,6 +87,7 @@ namespace Jolt
                 InputManager = GetComponent<PlayerInputManager>();
                 _playerCollisions = GetComponent<PlayerCollisions>();
 
+                _playerData = Resources.Load(ResourcesStrings.RESOURCES_PATH_TO_PLAYERCONTROLLER + "PlayerDataOne") as PlayerData;
                 StateMachine = new PlayerStateMachine(this, _playerData);
                 _playerArrowRendering = new PlayerArrowRendering(GetComponent<LineRenderer>());
             }

@@ -22,11 +22,6 @@ namespace Jolt
                 {
                 }
 
-                public override void DoChecks()
-                {
-                    base.DoChecks();
-                }
-
                 public override void Enter()
                 {
                     base.Enter();
@@ -42,6 +37,7 @@ namespace Jolt
                 {
                     base.Exit();
 
+                    _player.IsDead = false;
                     _player.ResetPosition();
                     _player.SetActivePhysicsCollider(true);
                     _player.SetGravityScale(1f);
@@ -57,8 +53,9 @@ namespace Jolt
                     }
 
                     _currentTime = Time.time;
+                    bool hasRespawned = _currentTime - _enterTime > _playerData.DeadTimer;
 
-                    if (_currentTime - _enterTime > _playerData.DeadTimer)
+                    if (hasRespawned)
                     {
                         _stateMachine.ChangeState(_stateMachine.IdleState);
                         return false;

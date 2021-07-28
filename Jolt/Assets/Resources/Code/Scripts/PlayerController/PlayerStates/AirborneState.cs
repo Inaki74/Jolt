@@ -21,13 +21,6 @@ namespace Jolt
                 {
                 }
 
-                public override void DoChecks()
-                {
-                    base.DoChecks();
-
-                    _isMoving = _moveInput.x != 0;
-                }
-
                 public override bool LogicUpdate()
                 {
                     bool continueExecution = base.LogicUpdate();
@@ -37,19 +30,21 @@ namespace Jolt
                         return false;
                     }
 
+                    _isMoving = _moveInput.x != 0;
                     _moveInput = _player.InputManager.MovementVector;
                     _isGrounded = _player.CheckIsGrounded();
                     _isStartingDash = _player.InputManager.DashBegin;
+                    bool canDash = _stateMachine.PreDashState.CanDash();
 
                     // If it hits ground -> recoil
+                    if (_isStartingDash && canDash)
+                    {
+                        _stateMachine.ChangeState(_stateMachine.PreDashState);
+                        return false;
+                    }
                     if (_isGrounded)
                     {
                         _stateMachine.ChangeState(_stateMachine.RecoilState);
-                        return false;
-                    }
-                    else if (_isStartingDash && _stateMachine.PreDashState.CanDash())
-                    {
-                        _stateMachine.ChangeState(_stateMachine.PreDashState);
                         return false;
                     }
 

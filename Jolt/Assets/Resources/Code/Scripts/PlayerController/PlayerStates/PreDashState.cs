@@ -8,7 +8,7 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class PreDashState : AliveState
+            public class PreDashState : AliveState, ICanDash
             {
                 protected override Color AssociatedColor => Color.gray;
 

@@ -105,7 +105,7 @@ namespace Jolt
             {
                 if (collision.gameObject.tag == "Rubber")
                 {
-                    _player.IsDead = false;
+                    //_player.IsDead = false;
                 }
             }
 

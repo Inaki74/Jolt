@@ -17,5 +17,6 @@ namespace Jolt.PlayerController
         List<Vector2> AllPaths { get; }
         float DeadTimer { get; }
         Vector2 LastCheckpoint { get; }
+        float RecoilTimer { get;  }
     }
 }
