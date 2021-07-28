@@ -14,11 +14,6 @@ namespace Jolt
 
         public class player_states
         {
-            [SetUp]
-            public void Setup()
-            {
-            }
-
             public class dead_state
             {
                 [Test]
@@ -150,6 +145,22 @@ namespace Jolt
 
             public class idle_state
             {
+                private IPlayer _playerMock;
+                private IPlayerStateMachine _statemachineMock;
+                private IPlayerInputManager _playerInputManagerMock;
+                private PlayerData _playerDataMock;
+                private IdleState _testIdleState;
+
+                [SetUp]
+                public void Setup()
+                {
+                    _playerMock = Substitute.For<IPlayer>();
+                    _playerDataMock = Substitute.For<PlayerData>();
+                    _statemachineMock = Substitute.For<IPlayerStateMachine>();
+                    _playerInputManagerMock = Substitute.For<IPlayerInputManager>();
+                    _testIdleState = new IdleState(_statemachineMock, _playerMock, _playerDataMock);
+                }
+
                 [Test]
                 public void alive_state_goes_to_dead_state_if_player_dies()
                 {
@@ -168,13 +179,61 @@ namespace Jolt
                 [Test]
                 public void not_being_grounded_leads_to_airborne_state()
                 {
+                    _playerMock.IsDead.Returns(false);
+                    _playerMock.CheckIsGrounded().Returns(false);
+                    _playerMock.InputManager.Returns(_playerInputManagerMock);
+                    _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
+                    _playerInputManagerMock.DashBegin.Returns(false);
+                    _statemachineMock.AirborneState.Returns(new AirborneState(_statemachineMock, _playerMock, _playerDataMock));
 
+                    _testIdleState.LogicUpdate();
+
+                    _statemachineMock.Received().ChangeState(_statemachineMock.AirborneState);
                 }
 
                 [Test]
-                public void dashing_input_leads_to_pre_dash_state()
+                public void being_grounded_does_not_lead_to_airborne_state()
                 {
+                    _playerMock.IsDead.Returns(false);
+                    _playerMock.CheckIsGrounded().Returns(true);
+                    _playerMock.InputManager.Returns(_playerInputManagerMock);
+                    _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
+                    _playerInputManagerMock.DashBegin.Returns(false);
+                    _statemachineMock.AirborneState.Returns(new AirborneState(_statemachineMock, _playerMock, _playerDataMock));
 
+                    _testIdleState.LogicUpdate();
+
+                    _statemachineMock.DidNotReceive().ChangeState(_statemachineMock.AirborneState);
+                }
+
+                [Test]
+                public void dashing_input_while_grounded_leads_to_pre_dash_state()
+                {
+                    _playerMock.IsDead.Returns(false);
+                    _playerMock.CheckIsGrounded().Returns(true);
+                    _playerMock.InputManager.Returns(_playerInputManagerMock);
+                    _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
+                    _playerInputManagerMock.DashBegin.Returns(true);
+                    _statemachineMock.PreDashState.Returns(new PreDashState(_statemachineMock, _playerMock, _playerDataMock));
+
+                    _testIdleState.LogicUpdate();
+
+                    _statemachineMock.Received().ChangeState(_statemachineMock.PreDashState);
+                }
+
+                [Test]
+                public void dashing_input_while_not_grounded_leads_to_pre_dash_state()
+                {
+                    _playerMock.IsDead.Returns(false);
+                    _playerMock.CheckIsGrounded().Returns(false);
+                    _playerMock.InputManager.Returns(_playerInputManagerMock);
+                    _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
+                    _playerInputManagerMock.DashBegin.Returns(true);
+                    _statemachineMock.PreDashState.Returns(new PreDashState(_statemachineMock, _playerMock, _playerDataMock));
+
+                    _testIdleState.LogicUpdate();
+
+                    _statemachineMock.Received().ChangeState(_statemachineMock.PreDashState);
                 }
 
                 [Test]
@@ -192,6 +251,22 @@ namespace Jolt
 
             public class recoil_state
             {
+                private IPlayer _playerMock;
+                private IPlayerStateMachine _statemachineMock;
+                private IPlayerInputManager _playerInputManagerMock;
+                private PlayerData _playerDataMock;
+                private RecoilState _testRecoilState;
+
+                [SetUp]
+                public void Setup()
+                {
+                    _playerMock = Substitute.For<IPlayer>();
+                    _playerDataMock = Substitute.For<PlayerData>();
+                    _statemachineMock = Substitute.For<IPlayerStateMachine>();
+                    _playerInputManagerMock = Substitute.For<IPlayerInputManager>();
+                    _testRecoilState = new RecoilState(_statemachineMock, _playerMock, _playerDataMock);
+                }
+
                 [Test]
                 public void alive_state_goes_to_dead_state_if_player_dies()
                 {
@@ -210,13 +285,61 @@ namespace Jolt
                 [Test]
                 public void not_being_grounded_leads_to_airborne_state()
                 {
+                    _playerMock.IsDead.Returns(false);
+                    _playerMock.CheckIsGrounded().Returns(false);
+                    _playerMock.InputManager.Returns(_playerInputManagerMock);
+                    _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
+                    _playerInputManagerMock.DashBegin.Returns(false);
+                    _statemachineMock.AirborneState.Returns(new AirborneState(_statemachineMock, _playerMock, _playerDataMock));
 
+                    _testRecoilState.LogicUpdate();
+
+                    _statemachineMock.Received().ChangeState(_statemachineMock.AirborneState);
                 }
 
                 [Test]
-                public void dashing_input_leads_to_pre_dash_state()
+                public void being_grounded_does_not_lead_to_airborne_state()
                 {
+                    _playerMock.IsDead.Returns(false);
+                    _playerMock.CheckIsGrounded().Returns(true);
+                    _playerMock.InputManager.Returns(_playerInputManagerMock);
+                    _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
+                    _playerInputManagerMock.DashBegin.Returns(false);
+                    _statemachineMock.AirborneState.Returns(new AirborneState(_statemachineMock, _playerMock, _playerDataMock));
 
+                    _testRecoilState.LogicUpdate();
+
+                    _statemachineMock.DidNotReceive().ChangeState(_statemachineMock.AirborneState);
+                }
+
+                [Test]
+                public void dashing_input_while_grounded_leads_to_pre_dash_state()
+                {
+                    _playerMock.IsDead.Returns(false);
+                    _playerMock.CheckIsGrounded().Returns(true);
+                    _playerMock.InputManager.Returns(_playerInputManagerMock);
+                    _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
+                    _playerInputManagerMock.DashBegin.Returns(true);
+                    _statemachineMock.PreDashState.Returns(new PreDashState(_statemachineMock, _playerMock, _playerDataMock));
+
+                    _testRecoilState.LogicUpdate();
+
+                    _statemachineMock.Received().ChangeState(_statemachineMock.PreDashState);
+                }
+
+                [Test]
+                public void dashing_input_while_not_grounded_leads_to_pre_dash_state()
+                {
+                    _playerMock.IsDead.Returns(false);
+                    _playerMock.CheckIsGrounded().Returns(false);
+                    _playerMock.InputManager.Returns(_playerInputManagerMock);
+                    _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
+                    _playerInputManagerMock.DashBegin.Returns(true);
+                    _statemachineMock.PreDashState.Returns(new PreDashState(_statemachineMock, _playerMock, _playerDataMock));
+
+                    _testRecoilState.LogicUpdate();
+
+                    _statemachineMock.Received().ChangeState(_statemachineMock.PreDashState);
                 }
 
                 [Test]
