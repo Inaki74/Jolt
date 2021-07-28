@@ -20,7 +20,7 @@ namespace Jolt
                 private bool _isGrounded;
                 private bool _isStartingDash;
 
-                public ExitRailState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public ExitRailState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -71,17 +71,17 @@ namespace Jolt
                     //Exit right
                     if (ExitVector.x > 0)
                     {
-                        if (_player.GetCurrentVelocity().x < _playerData.movementSpeed || _moveInput.x < 0)
+                        if (_player.GetCurrentVelocity().x < _playerData.MovementSpeed || _moveInput.x < 0)
                         {
-                            _player.SetMovementXByForce(_moveInput, _playerData.movementSpeed + ExitSpeed);
+                            _player.SetMovementXByForce(_moveInput, _playerData.MovementSpeed + ExitSpeed);
                         }
                     }
                     //Exit left
                     else
                     {
-                        if (_player.GetCurrentVelocity().x > -_playerData.movementSpeed || _moveInput.x > 0)
+                        if (_player.GetCurrentVelocity().x > -_playerData.MovementSpeed || _moveInput.x > 0)
                         {
-                            _player.SetMovementXByForce(_moveInput, _playerData.movementSpeed + ExitSpeed);
+                            _player.SetMovementXByForce(_moveInput, _playerData.MovementSpeed + ExitSpeed);
                         }
                     }
                 }

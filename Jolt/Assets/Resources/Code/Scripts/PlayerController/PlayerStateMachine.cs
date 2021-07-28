@@ -26,7 +26,7 @@ namespace Jolt
             public ExitRailState ExitRailState { get; private set; }
             public DeadState DeadState { get; private set; }
 
-            public PlayerStateMachine(IPlayer player, PlayerData playerData)
+            public PlayerStateMachine(IPlayer player, IPlayerData playerData)
             {
                 MoveState = new MoveState(this, player, playerData);
                 IdleState = new IdleState(this, player, playerData);

@@ -12,12 +12,12 @@ namespace Jolt
             {
                 protected IPlayerStateMachine _stateMachine;
                 protected IPlayer _player;
-                protected PlayerData _playerData;
+                protected IPlayerData _playerData;
                 protected virtual Color AssociatedColor => Color.black;
 
                 protected float _enterTime;
 
-                public PlayerState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData)
+                public PlayerState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData)
                 {
                     this._stateMachine = stateMachine;
                     this._player = player;

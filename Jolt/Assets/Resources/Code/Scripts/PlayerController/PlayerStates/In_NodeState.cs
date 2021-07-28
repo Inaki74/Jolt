@@ -13,7 +13,7 @@ namespace Jolt
                 protected override Color AssociatedColor => Color.clear;
                 private bool _isStartingDash;
 
-                public In_NodeState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public In_NodeState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

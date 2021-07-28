@@ -18,7 +18,7 @@ namespace Jolt
             #region Components
 
             [SerializeField]
-            private PlayerData _playerData;
+            private IPlayerData _playerData;
 
             private PlayerCollisions _playerCollisions;
             private PlayerArrowRendering _playerArrowRendering;
@@ -201,8 +201,8 @@ namespace Jolt
             #region Check Functions
             public bool CheckIsGrounded()
             {
-                return Physics2D.OverlapCircle(_groundCheckOne.position, _playerData.checkGroundRadius, _playerData.whatIsGround)
-                    || Physics2D.OverlapCircle(_groundCheckTwo.position, _playerData.checkGroundRadius, _playerData.whatIsGround);
+                return Physics2D.OverlapCircle(_groundCheckOne.position, _playerData.CheckGroundRadius, _playerData.WhatIsGround)
+                    || Physics2D.OverlapCircle(_groundCheckTwo.position, _playerData.CheckGroundRadius, _playerData.WhatIsGround);
             }
 
             public bool CheckIsTouchingNode()

@@ -12,7 +12,7 @@ namespace Jolt
             {
                 private bool _isAlive;
 
-                public AliveState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public AliveState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

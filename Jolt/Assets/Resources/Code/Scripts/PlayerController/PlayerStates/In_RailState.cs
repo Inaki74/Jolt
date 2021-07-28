@@ -23,7 +23,7 @@ namespace Jolt
                 private bool _exiting;
                 private bool _reachedPath;
 
-                public In_RailState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public In_RailState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -31,7 +31,7 @@ namespace Jolt
                 {
                     base.Enter();
 
-                    _playerData.allPaths.Clear();
+                    _playerData.AllPaths.Clear();
                     _exiting = false;
                     //_nextPath = _player.transform.position; // TODO: Breaks rail mechanic.
                     _currentRail = _player.GetRailInfo();
@@ -44,7 +44,7 @@ namespace Jolt
                 {
                     base.Exit();
 
-                    Vector2[] aux = _playerData.allPaths.ToArray();
+                    Vector2[] aux = _playerData.AllPaths.ToArray();
 
                     //Debug.Log("PreLast: (" + aux[aux.Length - 2].x + " , " + aux[aux.Length - 2].y + ") , Last: (" + _nextPath.x + " , " + _nextPath.y + ")");
                     _stateMachine.ExitRailState.ExitVector = _nextPath - aux[aux.Length - 2];
@@ -68,7 +68,7 @@ namespace Jolt
 
                         _nextPath = SplineHelperFunctions.SplineCurve(_currentRail.ControlPoints.Length - 1, 0, t, _currentRail.ControlPoints);
                         if (t > 0.8)
-                            _playerData.allPaths.Add(_nextPath);
+                            _playerData.AllPaths.Add(_nextPath);
                     }
                     else if (t >= 1)
                     {

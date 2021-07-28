@@ -12,7 +12,7 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.white;
 
-                public MoveState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public MoveState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -41,7 +41,7 @@ namespace Jolt
 
                     if (_isMoving)
                     {
-                        _player.SetRigidbodyVelocityX(_playerData.movementSpeed * _moveInput.x);
+                        _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                     }
                 }
 

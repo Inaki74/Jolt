@@ -20,7 +20,7 @@ namespace Jolt
 
                 private bool _playOnce;
 
-                public DashingState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public DashingState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -66,7 +66,7 @@ namespace Jolt
                         return false;
                     }
 
-                    if (_currentTime - _enterTime > _playerData.dashTimeOut)
+                    if (_currentTime - _enterTime > _playerData.DashTimeOut)
                     {
                         if (_isGrounded)
                         {
@@ -98,7 +98,7 @@ namespace Jolt
 
                     if (_playOnce)
                     {
-                        _player.SetDashMovement(_playerData.dashSpeed);
+                        _player.SetDashMovement(_playerData.DashSpeed);
 
                         _playOnce = false;
                     }

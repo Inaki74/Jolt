@@ -15,7 +15,7 @@ namespace Jolt
                 private float _timeToChange = 0.2f;
                 private float _currentTime;
 
-                public RecoilState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public RecoilState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -55,7 +55,7 @@ namespace Jolt
                     base.PhysicsUpdate();
                     if (_isMoving)
                     {
-                        _player.SetRigidbodyVelocityX(_playerData.movementSpeed * _moveInput.x);
+                        _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                     }
                     else
                     {

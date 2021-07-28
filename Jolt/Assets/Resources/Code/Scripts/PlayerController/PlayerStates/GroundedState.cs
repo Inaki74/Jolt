@@ -15,7 +15,7 @@ namespace Jolt
                 protected bool _isStartingDash;
                 protected bool _isMoving;
 
-                public GroundedState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public GroundedState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

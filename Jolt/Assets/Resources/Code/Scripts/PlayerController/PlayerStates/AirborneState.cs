@@ -17,7 +17,7 @@ namespace Jolt
                 private bool _isStartingDash;
                 private bool _isMoving;
 
-                public AirborneState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public AirborneState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -64,11 +64,11 @@ namespace Jolt
                     {
                         if (_stateMachine.LastState == "ExitRailState")
                         {
-                            _player.SetMovementXByForce(Vector2.right, _playerData.movementSpeed * _moveInput.x);
+                            _player.SetMovementXByForce(Vector2.right, _playerData.MovementSpeed * _moveInput.x);
                         }
                         else
                         {
-                            _player.SetRigidbodyVelocityX(_playerData.movementSpeed * _moveInput.x);
+                            _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                         }
                     }
                     else

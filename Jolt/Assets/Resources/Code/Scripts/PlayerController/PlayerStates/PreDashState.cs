@@ -16,7 +16,7 @@ namespace Jolt
                 private float _currentTime;
                 private int _amountOfDashes;
 
-                public PreDashState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public PreDashState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                     ResetAmountOfDashes();
                 }
@@ -26,7 +26,7 @@ namespace Jolt
                     base.Enter();
 
                     _isDashStarted = true;
-                    Time.timeScale = _playerData.timeSlow;
+                    Time.timeScale = _playerData.TimeSlow;
                     DecreaseAmountOfDashes();
                     //Time.fixedDeltaTime = 0.1f * 0.02f; Works but doubles the CPU usage. Use RigidBodies with interpolate instead
                 }
@@ -49,7 +49,7 @@ namespace Jolt
                     }
 
                     _currentTime = Time.time;
-                    _isDashStarted = _player.InputManager.DashBegin && (_currentTime - _enterTime < _playerData.preDashTimeOut);
+                    _isDashStarted = _player.InputManager.DashBegin && (_currentTime - _enterTime < _playerData.PreDashTimeOut);
 
                     _player.SetDashVectors(_player.InputManager.InitialDashPoint, _player.InputManager.FinalDashPoint);
                     _player.SetArrowRendering();
@@ -77,7 +77,7 @@ namespace Jolt
 
                 public void ResetAmountOfDashes()
                 {
-                    _amountOfDashes = _playerData.amountOfDashes;
+                    _amountOfDashes = _playerData.AmountOfDashes;
                 }
 
                 public void DecreaseAmountOfDashes()

@@ -12,7 +12,7 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.yellow;
 
-                public IdleState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public IdleState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

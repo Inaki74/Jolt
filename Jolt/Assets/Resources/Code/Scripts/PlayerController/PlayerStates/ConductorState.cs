@@ -11,7 +11,7 @@ namespace Jolt
             public abstract class ConductorState : AliveState
             {
 
-                public ConductorState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public ConductorState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

@@ -18,7 +18,7 @@ namespace Jolt
                 // Move player to last checkpoint (but here we will have only one checkpoint, so skip)
                 // Reset objects (but here they are immutable so skip)
 
-                public DeadState(IPlayerStateMachine stateMachine, IPlayer player, PlayerData playerData) : base(stateMachine, player, playerData)
+                public DeadState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -58,7 +58,7 @@ namespace Jolt
 
                     _currentTime = Time.time;
 
-                    if (_currentTime - _enterTime > _playerData.deadTimer)
+                    if (_currentTime - _enterTime > _playerData.DeadTimer)
                     {
                         _stateMachine.ChangeState(_stateMachine.IdleState);
                         return false;
