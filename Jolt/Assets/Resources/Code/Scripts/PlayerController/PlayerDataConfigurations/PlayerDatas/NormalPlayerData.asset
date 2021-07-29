@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81b04d02e0e9448ca9feb2993a0c640a, type: 3}
+  m_Name: PlayerDataTwo
+  m_EditorClassIdentifier: 
+  _playerPhysicsData: {fileID: 0}
+  _movementSpeed: 6
+  _timeSlow: 0.1
+  _preDashTimeOut: 0
+  _amountOfDashes: 0
+  _circleRadius: 0
+  _dashTimeOut: 0
+  _dashSpeed: 0
+  _checkGroundRadius: 0.05
+  _whatIsGround:
+    serializedVersion: 2
+    m_Bits: 0
+  _allPaths: []
+  _deadTimer: 5
+  _lastCheckpoint: {x: 0, y: 0}
+  _recoilTimer: 0.2
+  _jumpForce: 0
+  _floatGravity: 0

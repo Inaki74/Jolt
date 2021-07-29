@@ -320,7 +320,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 4
   m_Material: {fileID: 6200000, guid: 7af58456ae1154c7cb1b0a3a5df1cfb9, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a2db6cdfcb1f481599acaa018fadb85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _controlScheme: 2
+  _controlScheme: 1
 --- !u!114 &1809678127443225644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,7 +351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45584dda5272d44c4927103ef8d67b82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerData: {fileID: 11400000, guid: ba3399ccbae124a6994c43ce4aefb04d, type: 2}
+  _playerData: {fileID: 11400000, guid: e086ac55da7e9493f9014190dc5d4641, type: 2}
   _deathParticles: {fileID: 5644277276428357573, guid: 8f177f596a4184daca7c6a284581968f,
     type: 3}
   _mainCamera: {fileID: 3921102809378517177}

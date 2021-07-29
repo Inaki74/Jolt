@@ -9,6 +9,9 @@ namespace Jolt
         [CreateAssetMenu(fileName = "newPlayerData", menuName = "Data/Player Data/Base Data")]
         public class PlayerData : ScriptableObject, IPlayerData
         {
+            [Header("Rigidbody Variables")]
+            [SerializeField] private PlayerPhysicsData _playerPhysicsData;
+
             [Header("Move State Variables")]
             [SerializeField] private float _movementSpeed = 6.0f;
 
@@ -40,6 +43,11 @@ namespace Jolt
             [Header("Jumping State")]
             [SerializeField] private float _jumpForce;
 
+            [Header("Floating State")]
+            [SerializeField] private float _floatGravity;
+
+            public IPlayerPhysicsData PlayerPhysicsData { get { return _playerPhysicsData;  } }
+
             public float MovementSpeed { get { return _movementSpeed; } }
 
             public float TimeSlow { get { return _timeSlow; } }
@@ -67,6 +75,8 @@ namespace Jolt
             public float RecoilTimer { get { return _recoilTimer; } }
 
             public float JumpForce { get { return _jumpForce; } }
+
+            public float FloatGravity { get { return _floatGravity; } }
         }
     }
 }

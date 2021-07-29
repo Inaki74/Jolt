@@ -12,7 +12,7 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.green;
 
-                private bool _playOnce;
+                private bool _forceApplied;
                 private bool _jumpPressed;
                 private bool _isGrounded;
 
@@ -24,7 +24,7 @@ namespace Jolt
                 {
                     base.Enter();
 
-                    _playOnce = true;
+                    _forceApplied = false;
                 }
 
                 public override bool LogicUpdate()
@@ -39,25 +39,22 @@ namespace Jolt
                     _jumpPressed = _player.InputManager.JumpPressed;
                     _isGrounded = _player.CheckIsGrounded();
 
-                    if (_isGrounded)
+                    if (_forceApplied)
                     {
-                        _stateMachine.ChangeState(_stateMachine.IdleState);
-                        return false;
-                    }
-                    else
-                    {
+                        if (_isGrounded)
+                        {
+                            _stateMachine.ChangeState(_stateMachine.IdleState);
+                            return false;
+                        }
+
                         if (_jumpPressed)
                         {
 
                         }
-                        else
-                        {
-                            _stateMachine.ChangeState(_stateMachine.AirborneState);
-                            return false;
-                        }
-                    }
 
-                    
+                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        return false;
+                    }
 
                     return true;
                 }
@@ -66,10 +63,10 @@ namespace Jolt
                 {
                     base.PhysicsUpdate();
 
-                    if (_playOnce)
+                    if (!_forceApplied)
                     {
                         _player.SetMovementByImpulse(Vector2.up, _playerData.JumpForce);
-                        _playOnce = false;
+                        _forceApplied = true;
                     }
                 }
 

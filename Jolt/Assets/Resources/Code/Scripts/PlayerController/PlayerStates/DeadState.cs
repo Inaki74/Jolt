@@ -40,7 +40,7 @@ namespace Jolt
                     _player.IsDead = false;
                     _player.ResetPosition();
                     _player.SetActivePhysicsCollider(true);
-                    _player.SetGravityScale(1f);
+                    _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                 }
 
                 public override bool LogicUpdate()

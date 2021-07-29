@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,9 +17,8 @@ namespace Jolt
         public class Player : MonoBehaviour, IPlayer
         {
             #region Components
-
             [SerializeField]
-            private IPlayerData _playerData;
+            private PlayerData _playerData;
 
             private PlayerCollisions _playerCollisions;
             private PlayerArrowRendering _playerArrowRendering;
@@ -63,8 +63,8 @@ namespace Jolt
 
             private void Start()
             {
-                //Application.targetFrameRate = 60; // This shouldnt be here, its for testing purposes.
                 GetComponents();
+                SetRigidbody();
                 StateMachine.Initialize();
             }
 
@@ -87,9 +87,14 @@ namespace Jolt
                 InputManager = GetComponent<PlayerInputManager>();
                 _playerCollisions = GetComponent<PlayerCollisions>();
 
-                _playerData = Resources.Load(ResourcesStrings.RESOURCES_PATH_TO_PLAYERCONTROLLER + "PlayerDataOne") as PlayerData;
                 StateMachine = new PlayerStateMachine(this, _playerData);
                 _playerArrowRendering = new PlayerArrowRendering(GetComponent<LineRenderer>());
+            }
+
+            private void SetRigidbody()
+            {
+                Rb.gravityScale = _playerData.PlayerPhysicsData.StandardGravity;
+                Rb.drag = _playerData.PlayerPhysicsData.StandardLinearDrag;
             }
 
             private void OnDrawGizmos()

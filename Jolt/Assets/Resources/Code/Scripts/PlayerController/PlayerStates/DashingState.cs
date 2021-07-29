@@ -36,7 +36,7 @@ namespace Jolt
                 {
                     base.Exit();
 
-                    _player.SetGravityScale(1f);
+                    _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                     _player.SetRigidbodyVelocityX(0f);
                     _player.SetRigidbodyVelocityY(0f);
                 }
