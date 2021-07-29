@@ -9,7 +9,8 @@ namespace Jolt
     {
         using PlayerStates;
 
-        public class PlayerCollisions
+        [RequireComponent(typeof(Player))]
+        public class PlayerCollisions : MonoBehaviour
         {
             public bool IsTouchingNode { get; private set; }
             public bool IsTouchingRail { get; private set; }
@@ -18,12 +19,37 @@ namespace Jolt
 
             private Player _player;
 
-            public PlayerCollisions(Player player)
+            private void Awake()
             {
-                this._player = player;
+                _player = GetComponent<Player>();
             }
 
-            public void TriggerEnter(Collider2D collision, PlayerState state)
+            private void OnTriggerEnter2D(Collider2D collision)
+            {
+                TriggerEnter(collision, _player.StateMachine.CurrentState);
+            }
+
+            private void OnTriggerStay2D(Collider2D collision)
+            {
+                TriggerStay(collision, _player.StateMachine.CurrentState);
+            }
+
+            private void OnTriggerExit2D(Collider2D collision)
+            {
+                TriggerExit(collision, _player.StateMachine.CurrentState);
+            }
+
+            private void OnCollisionEnter2D(Collision2D collision)
+            {
+                CollisionEnter(collision, _player.StateMachine.CurrentState);
+            }
+
+            private void OnCollisionExit2D(Collision2D collision)
+            {
+                CollisionExit(collision, _player.StateMachine.CurrentState);
+            }
+
+            private void TriggerEnter(Collider2D collision, PlayerState state)
             {
                 TriggerEnterNode(collision, state);
 
@@ -35,7 +61,7 @@ namespace Jolt
                 }
             }
 
-            public void TriggerStay(Collider2D collision, PlayerState state)
+            private void TriggerStay(Collider2D collision, PlayerState state)
             {
                 if (collision.tag == "Node")
                 {
@@ -48,7 +74,7 @@ namespace Jolt
                 }
             }
 
-            public void TriggerExit(Collider2D collision, PlayerState state)
+            private void TriggerExit(Collider2D collision, PlayerState state)
             {
                 if (collision.tag == "Node" && state.ToString() == "DashingState")
                 {
@@ -67,7 +93,7 @@ namespace Jolt
                 }
             }
 
-            public void CollisionEnter(Collision2D collision, PlayerState state)
+            private void CollisionEnter(Collision2D collision, PlayerState state)
             {
                 if (collision.gameObject.tag == "Rubber")
                 {
@@ -75,11 +101,11 @@ namespace Jolt
                 }
             }
 
-            public void CollisionExit(Collision2D collision, PlayerState state)
+            private void CollisionExit(Collision2D collision, PlayerState state)
             {
                 if (collision.gameObject.tag == "Rubber")
                 {
-                    _player.IsDead = false;
+                    //_player.IsDead = false;
                 }
             }
 

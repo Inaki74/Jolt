@@ -10,41 +10,19 @@ namespace Jolt
         {
             public class JoystickInputController : IInputController
             {
-                public void ManageDash(ref bool dashBegin, ref Vector3 initialDashPoint, ref Vector3 finalDashPoint)
-                {
-                    float horizontalInput = Input.GetAxis(InputStringNames.JOYSTICK_HORIZONTAL_NAME);
-                    float verticalInput = Input.GetAxis(InputStringNames.JOYSTICK_VERTICAL_NAME);
+                public float Horizontal => Input.GetAxisRaw(InputStringNames.JOYSTICK_HORIZONTAL_NAME);
 
-                    Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
+                public float Vertical => Input.GetAxisRaw(InputStringNames.JOYSTICK_VERTICAL_NAME);
 
-                    if (Input.GetButtonDown(InputStringNames.JOYSTICK_DASH_NAME))
-                    {
-                        dashBegin = true;
-                        initialDashPoint = Vector3.zero;
-                    }
+                public bool DashDown => Input.GetButtonDown(InputStringNames.JOYSTICK_DASH_NAME);
 
-                    if (Input.GetButton(InputStringNames.JOYSTICK_DASH_NAME))
-                    {
-                        finalDashPoint = inputVector;
-                    }
+                public bool DashHold => Input.GetButton(InputStringNames.JOYSTICK_DASH_NAME);
 
-                    if (Input.GetButtonUp(InputStringNames.JOYSTICK_DASH_NAME))
-                    {
-                        dashBegin = false;
-                    }
-                }
+                public bool DashUp => Input.GetButtonUp(InputStringNames.JOYSTICK_DASH_NAME);
 
-                public void ManageJump(bool jumpingBool)
-                {
-                    throw new System.NotImplementedException();
-                }
+                public bool Pointer => false;
 
-                public void ManageMovement(ref Vector2 movementVector)
-                {
-                    float horizontalInput = Input.GetAxisRaw(InputStringNames.JOYSTICK_HORIZONTAL_NAME);
-
-                    movementVector.Set(horizontalInput, movementVector.y);
-                }
+                public Vector2 PointerVector => Vector2.zero;
             }
         }
     }

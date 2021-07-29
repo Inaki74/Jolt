@@ -10,19 +10,16 @@ namespace Jolt
         {
             public class DeadState : PlayerState
             {
+                protected override Color AssociatedColor => Color.clear;
+
                 private float _currentTime;
 
                 // Instantiate particles
                 // Move player to last checkpoint (but here we will have only one checkpoint, so skip)
                 // Reset objects (but here they are immutable so skip)
 
-                public DeadState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public DeadState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
-                }
-
-                public override void DoChecks()
-                {
-                    base.DoChecks();
                 }
 
                 public override void Enter()
@@ -30,7 +27,8 @@ namespace Jolt
                     base.Enter();
 
                     _player.SetGravityScale(0f);
-                    _player.SetMovementX(0f); _player.SetMovementY(0f);
+                    _player.SetRigidbodyVelocityX(0f);
+                    _player.SetRigidbodyVelocityY(0f);
                     _player.SetActivePhysicsCollider(false);
                     _player.InstantiateDeathParticles();
                 }
@@ -39,21 +37,31 @@ namespace Jolt
                 {
                     base.Exit();
 
+                    _player.IsDead = false;
                     _player.ResetPosition();
                     _player.SetActivePhysicsCollider(true);
                     _player.SetGravityScale(1f);
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
-                    base.LogicUpdate();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     _currentTime = Time.time;
+                    bool hasRespawned = _currentTime - _enterTime > _playerData.DeadTimer;
 
-                    if (_currentTime - _enterTime > _playerData.deadTimer)
+                    if (hasRespawned)
                     {
                         _stateMachine.ChangeState(_stateMachine.IdleState);
+                        return false;
                     }
+
+                    return true;
                 }
 
                 public override string ToString()

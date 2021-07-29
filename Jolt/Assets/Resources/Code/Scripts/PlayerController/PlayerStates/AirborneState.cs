@@ -10,39 +10,45 @@ namespace Jolt
         {
             public class AirborneState : AliveState
             {
+                protected override Color AssociatedColor => Color.red;
+
                 private Vector2 _moveInput;
                 private bool _isGrounded;
                 private bool _isStartingDash;
                 private bool _isMoving;
 
-                public AirborneState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public AirborneState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
-                public override void DoChecks()
+                public override bool LogicUpdate()
                 {
-                    base.DoChecks();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     _isMoving = _moveInput.x != 0;
-                }
-
-                public override void LogicUpdate()
-                {
-                    base.LogicUpdate();
-
                     _moveInput = _player.InputManager.MovementVector;
                     _isGrounded = _player.CheckIsGrounded();
                     _isStartingDash = _player.InputManager.DashBegin;
+                    bool canDash = _stateMachine.PreDashState.CanDash();
 
                     // If it hits ground -> recoil
+                    if (_isStartingDash && canDash)
+                    {
+                        _stateMachine.ChangeState(_stateMachine.PreDashState);
+                        return false;
+                    }
                     if (_isGrounded)
                     {
                         _stateMachine.ChangeState(_stateMachine.RecoilState);
+                        return false;
                     }
-                    else if (_isStartingDash && _stateMachine.PreDashState.CanDash())
-                    {
-                        _stateMachine.ChangeState(_stateMachine.PreDashState);
-                    }
+
+                    return true;
                 }
 
                 public override void PhysicsUpdate()
@@ -53,18 +59,18 @@ namespace Jolt
                     {
                         if (_stateMachine.LastState == "ExitRailState")
                         {
-                            _player.SetMovementXByForce(Vector2.right, _playerData.movementSpeed * _moveInput.x);
+                            _player.SetMovementXByForce(Vector2.right, _playerData.MovementSpeed * _moveInput.x);
                         }
                         else
                         {
-                            _player.SetMovementX(_playerData.movementSpeed * _moveInput.x);
+                            _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                         }
                     }
                     else
                     {
                         if (_stateMachine.LastState != "ExitRailState")
                         {
-                            _player.SetMovementX(0f);
+                            _player.SetRigidbodyVelocityX(0f);
                         }
                     }
                 }

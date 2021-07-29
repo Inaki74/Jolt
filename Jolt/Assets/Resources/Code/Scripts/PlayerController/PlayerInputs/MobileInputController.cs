@@ -10,20 +10,19 @@ namespace Jolt
         {
             public class MobileInputController : IInputController
             {
-                public void ManageDash(ref bool dashBegin, ref Vector3 initialDashPoint, ref Vector3 finalDashPoint)
-                {
-                    throw new System.NotImplementedException();
-                }
+                public float Horizontal => throw new System.NotImplementedException();
 
-                public void ManageJump(bool jumpingBool)
-                {
-                    throw new System.NotImplementedException();
-                }
+                public float Vertical => throw new System.NotImplementedException();
 
-                public void ManageMovement(ref Vector2 movementVector)
-                {
-                    throw new System.NotImplementedException();
-                }
+                public bool DashDown => throw new System.NotImplementedException();
+
+                public bool DashHold => throw new System.NotImplementedException();
+
+                public bool DashUp => throw new System.NotImplementedException();
+
+                public bool Pointer => false;
+
+                public Vector2 PointerVector => Vector2.zero;
             }
         }
     }

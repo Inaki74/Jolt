@@ -10,9 +10,10 @@ namespace Jolt
         {
             public class In_NodeState : ConductorState
             {
+                protected override Color AssociatedColor => Color.clear;
                 private bool _isStartingDash;
 
-                public In_NodeState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public In_NodeState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -21,16 +22,24 @@ namespace Jolt
                     //base.Exit();
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
-                    base.LogicUpdate();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     _isStartingDash = _player.InputManager.DashBegin;
 
                     if (_isStartingDash)
                     {
                         _stateMachine.ChangeState(_stateMachine.ExitNodeState);
+                        return false;
                     }
+
+                    return true;
                 }
 
                 public override void PhysicsUpdate()

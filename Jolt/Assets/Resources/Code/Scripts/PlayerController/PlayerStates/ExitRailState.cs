@@ -10,6 +10,8 @@ namespace Jolt
         {
             public class ExitRailState : AliveState
             {
+                protected override Color AssociatedColor => Color.magenta;
+
                 public Vector2 ExitVector { private get; set; }
 
                 public float ExitSpeed { private get; set; }
@@ -18,7 +20,7 @@ namespace Jolt
                 private bool _isGrounded;
                 private bool _isStartingDash;
 
-                public ExitRailState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public ExitRailState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -27,12 +29,17 @@ namespace Jolt
                     base.Enter();
 
                     ExitVector.Normalize();
-                    _player.SetForceToGivenVector(ExitVector, ExitSpeed);
+                    _player.SetMovementByImpulse(ExitVector, ExitSpeed);
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
-                    base.LogicUpdate();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     _isGrounded = _player.CheckIsGrounded();
                     _moveInput = _player.InputManager.MovementVector;
@@ -41,15 +48,20 @@ namespace Jolt
                     if (_isGrounded)
                     {
                         _stateMachine.ChangeState(_stateMachine.RecoilState);
+                        return false;
                     }
                     else if (Mathf.Abs(_player.GetCurrentVelocity().x) < 0.2f)
                     {
                         _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        return false;
                     }
                     else if (_isStartingDash && _stateMachine.PreDashState.CanDash())
                     {
                         _stateMachine.ChangeState(_stateMachine.PreDashState);
+                        return false;
                     }
+
+                    return true;
                 }
 
                 public override void PhysicsUpdate()
@@ -59,17 +71,17 @@ namespace Jolt
                     //Exit right
                     if (ExitVector.x > 0)
                     {
-                        if (_player.GetCurrentVelocity().x < _playerData.movementSpeed || _moveInput.x < 0)
+                        if (_player.GetCurrentVelocity().x < _playerData.MovementSpeed || _moveInput.x < 0)
                         {
-                            _player.SetMovementXByForce(_moveInput, _playerData.movementSpeed + ExitSpeed);
+                            _player.SetMovementXByForce(_moveInput, _playerData.MovementSpeed + ExitSpeed);
                         }
                     }
                     //Exit left
                     else
                     {
-                        if (_player.GetCurrentVelocity().x > -_playerData.movementSpeed || _moveInput.x > 0)
+                        if (_player.GetCurrentVelocity().x > -_playerData.MovementSpeed || _moveInput.x > 0)
                         {
-                            _player.SetMovementXByForce(_moveInput, _playerData.movementSpeed + ExitSpeed);
+                            _player.SetMovementXByForce(_moveInput, _playerData.MovementSpeed + ExitSpeed);
                         }
                     }
                 }

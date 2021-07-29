@@ -8,10 +8,10 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class ConductorState : AliveState
+            public abstract class ConductorState : AliveState
             {
 
-                public ConductorState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public ConductorState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 

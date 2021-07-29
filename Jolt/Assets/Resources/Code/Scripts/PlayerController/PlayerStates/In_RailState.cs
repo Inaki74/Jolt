@@ -10,6 +10,8 @@ namespace Jolt
         {
             public class In_RailState : ConductorState
             {
+                protected override Color AssociatedColor => Color.cyan;
+
                 private RailController _currentRail;
 
                 private Vector2 _nextPath;
@@ -21,7 +23,7 @@ namespace Jolt
                 private bool _exiting;
                 private bool _reachedPath;
 
-                public In_RailState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public In_RailState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -29,9 +31,9 @@ namespace Jolt
                 {
                     base.Enter();
 
-                    _playerData.allPaths.Clear();
+                    _playerData.AllPaths.Clear();
                     _exiting = false;
-                    _nextPath = _player.transform.position;
+                    //_nextPath = _player.transform.position; // TODO: Breaks rail mechanic.
                     _currentRail = _player.GetRailInfo();
 
                     t = 0f;
@@ -42,16 +44,21 @@ namespace Jolt
                 {
                     base.Exit();
 
-                    Vector2[] aux = _playerData.allPaths.ToArray();
+                    Vector2[] aux = _playerData.AllPaths.ToArray();
 
                     //Debug.Log("PreLast: (" + aux[aux.Length - 2].x + " , " + aux[aux.Length - 2].y + ") , Last: (" + _nextPath.x + " , " + _nextPath.y + ")");
                     _stateMachine.ExitRailState.ExitVector = _nextPath - aux[aux.Length - 2];
                     _stateMachine.ExitRailState.ExitSpeed = _speed;
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
-                    base.LogicUpdate();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     _reachedPath = _player.CheckHasReachedPoint(_nextPath);
 
@@ -61,7 +68,7 @@ namespace Jolt
 
                         _nextPath = SplineHelperFunctions.SplineCurve(_currentRail.ControlPoints.Length - 1, 0, t, _currentRail.ControlPoints);
                         if (t > 0.8)
-                            _playerData.allPaths.Add(_nextPath);
+                            _playerData.AllPaths.Add(_nextPath);
                     }
                     else if (t >= 1)
                     {
@@ -74,7 +81,10 @@ namespace Jolt
                     if (_exiting)
                     {
                         _stateMachine.ChangeState(_stateMachine.ExitRailState);
+                        return false;
                     }
+
+                    return true;
                 }
 
                 public override void PhysicsUpdate()

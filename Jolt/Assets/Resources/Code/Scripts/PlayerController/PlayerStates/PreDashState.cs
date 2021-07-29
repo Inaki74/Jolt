@@ -8,13 +8,15 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class PreDashState : AliveState
+            public class PreDashState : AliveState, ICanDash
             {
+                protected override Color AssociatedColor => Color.gray;
+
                 private bool _isDashStarted;
                 private float _currentTime;
                 private int _amountOfDashes;
 
-                public PreDashState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public PreDashState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                     ResetAmountOfDashes();
                 }
@@ -24,7 +26,7 @@ namespace Jolt
                     base.Enter();
 
                     _isDashStarted = true;
-                    Time.timeScale = _playerData.timeSlow;
+                    Time.timeScale = _playerData.TimeSlow;
                     DecreaseAmountOfDashes();
                     //Time.fixedDeltaTime = 0.1f * 0.02f; Works but doubles the CPU usage. Use RigidBodies with interpolate instead
                 }
@@ -37,12 +39,17 @@ namespace Jolt
                     Time.timeScale = 1f;
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
-                    base.LogicUpdate();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     _currentTime = Time.time;
-                    _isDashStarted = _player.InputManager.DashBegin && (_currentTime - _enterTime < _playerData.preDashTimeOut);
+                    _isDashStarted = _player.InputManager.DashBegin && (_currentTime - _enterTime < _playerData.PreDashTimeOut);
 
                     _player.SetDashVectors(_player.InputManager.InitialDashPoint, _player.InputManager.FinalDashPoint);
                     _player.SetArrowRendering();
@@ -52,7 +59,10 @@ namespace Jolt
                     {
                         // transition to dashing
                         _stateMachine.ChangeState(_stateMachine.DashingState);
+                        return false;
                     }
+
+                    return true;
                 }
 
                 public override string ToString()
@@ -67,7 +77,7 @@ namespace Jolt
 
                 public void ResetAmountOfDashes()
                 {
-                    _amountOfDashes = _playerData.amountOfDashes;
+                    _amountOfDashes = _playerData.AmountOfDashes;
                 }
 
                 public void DecreaseAmountOfDashes()

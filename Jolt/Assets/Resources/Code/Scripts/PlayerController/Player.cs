@@ -6,19 +6,26 @@ namespace Jolt
 {
     namespace PlayerController
     {
-        public class Player : MonoBehaviour
+        [RequireComponent(typeof(Rigidbody2D))]
+        [RequireComponent(typeof(SpriteRenderer))]
+        [RequireComponent(typeof(CircleCollider2D))]
+        [RequireComponent(typeof(PlayerInputManager))]
+        [RequireComponent(typeof(PlayerCollisions))]
+        [RequireComponent(typeof(LineRenderer))]
+
+        public class Player : MonoBehaviour, IPlayer
         {
             #region Components
 
             [SerializeField]
-            private PlayerData _playerData;
+            private IPlayerData _playerData;
 
             private PlayerCollisions _playerCollisions;
             private PlayerArrowRendering _playerArrowRendering;
 
-            public PlayerStateMachine StateMachine { get; private set; }
-            public PlayerInputManager InputManager { get; private set; }
-            
+            public IPlayerStateMachine StateMachine { get; private set; }
+            public IPlayerInputManager InputManager { get; private set; }
+
             public Rigidbody2D Rb { get; private set; }
             public SpriteRenderer Sr { get; private set; }
             public CircleCollider2D Cc { get; private set; }
@@ -34,13 +41,13 @@ namespace Jolt
             [SerializeField]
             private Camera _mainCamera;
 
-            public Vector2 CurrentVelocity { get; private set; }
-
             [SerializeField]
             private Transform _groundCheckOne;
 
             [SerializeField]
             private Transform _groundCheckTwo;
+
+            private Vector2 _currentVelocity;
 
             private Vector3 _dashStart;
             private Vector3 _dashFinish;
@@ -48,7 +55,7 @@ namespace Jolt
             private Vector2 _auxVector2;
             private Vector3 _auxVector3;
 
-            public bool IsDead { private get; set; } = false;
+            public bool IsDead { get; set; } = false;
 
             #endregion
 
@@ -63,7 +70,7 @@ namespace Jolt
 
             private void Update()
             {
-                CurrentVelocity = Rb.velocity;
+                _currentVelocity = Rb.velocity;
                 StateMachine.CurrentState.LogicUpdate();
             }
 
@@ -72,40 +79,16 @@ namespace Jolt
                 StateMachine.CurrentState.PhysicsUpdate();
             }
 
-            private void OnTriggerEnter2D(Collider2D collision)
-            {
-                _playerCollisions.TriggerEnter(collision, StateMachine.CurrentState);
-            }
-
-            private void OnTriggerStay2D(Collider2D collision)
-            {
-                _playerCollisions.TriggerStay(collision, StateMachine.CurrentState);
-            }
-
-            private void OnTriggerExit2D(Collider2D collision)
-            {
-                _playerCollisions.TriggerExit(collision, StateMachine.CurrentState);
-            }
-
-            private void OnCollisionEnter2D(Collision2D collision)
-            {
-                _playerCollisions.CollisionEnter(collision, StateMachine.CurrentState);
-            }
-
-            private void OnCollisionExit2D(Collision2D collision)
-            {
-                _playerCollisions.CollisionExit(collision, StateMachine.CurrentState);
-            }
-
             private void GetComponents()
             {
                 Rb = GetComponent<Rigidbody2D>();
                 Sr = GetComponent<SpriteRenderer>();
-                InputManager = GetComponent<PlayerInputManager>();
                 Cc = GetComponent<CircleCollider2D>();
+                InputManager = GetComponent<PlayerInputManager>();
+                _playerCollisions = GetComponent<PlayerCollisions>();
 
+                _playerData = Resources.Load(ResourcesStrings.RESOURCES_PATH_TO_PLAYERCONTROLLER + "PlayerDataOne") as PlayerData;
                 StateMachine = new PlayerStateMachine(this, _playerData);
-                _playerCollisions = new PlayerCollisions(this);
                 _playerArrowRendering = new PlayerArrowRendering(GetComponent<LineRenderer>());
             }
 
@@ -126,24 +109,43 @@ namespace Jolt
             #endregion
 
             #region Set Functions
-            public void SetMovementX(float velocity)
+            public void MoveTowardsVector(Vector2 vector, float velocity)
             {
-                _auxVector2.Set(velocity, CurrentVelocity.y);
-                Rb.velocity = _auxVector2;
-                CurrentVelocity = _auxVector2;
+                //Debug.Log("Transform: (" + transform.position.x + " , " + transform.position.y + ") , Point: (" + v.x + " , " + v.y + ")");
+                _auxVector2.Set(vector.x, vector.y);
+                transform.position = Vector2.MoveTowards(transform.position, _auxVector2, velocity * Time.deltaTime);
             }
 
-            public void SetMovementY(float velocity)
+            public void SetRigidbodyVelocityX(float velocity)
             {
-                _auxVector2.Set(CurrentVelocity.x, velocity);
+                _auxVector2.Set(velocity, _currentVelocity.y);
                 Rb.velocity = _auxVector2;
-                CurrentVelocity = _auxVector2;
+                _currentVelocity = _auxVector2;
+            }
+
+            public void SetRigidbodyVelocityY(float velocity)
+            {
+                _auxVector2.Set(_currentVelocity.x, velocity);
+                Rb.velocity = _auxVector2;
+                _currentVelocity = _auxVector2;
             }
 
             public void SetMovementXByForce(Vector2 direction, float speed)
             {
                 _auxVector2.Set(direction.x * speed, 0);
                 Rb.AddForce(_auxVector2, ForceMode2D.Force);
+            }
+
+            public void SetMovementYByForce(Vector2 direction, float speed)
+            {
+                _auxVector2.Set(0f, direction.x * speed);
+                Rb.AddForce(_auxVector2, ForceMode2D.Force);
+            }
+
+            public void SetMovementByImpulse(Vector2 direction, float speed)
+            {
+                _auxVector2.Set(direction.x * speed, direction.y * speed);
+                Rb.AddForce(_auxVector2, ForceMode2D.Impulse);
             }
 
             public void SetDashMovement(float velocity)
@@ -153,17 +155,7 @@ namespace Jolt
                 _auxVector2.Set(_dashFinish.normalized.x, _dashFinish.normalized.y);
                 Rb.velocity = _auxVector2 * velocity;
                 Rb.velocity = Vector2.ClampMagnitude(Rb.velocity, velocity);
-                CurrentVelocity = _auxVector2 * velocity;
-            }
-
-            public void SetArrowRendering()
-            {
-                Vector2 aux1 = _dashStart;
-                Vector2 aux2 = _dashFinish;
-
-                Vector2 direction = aux2 - aux1;
-
-                _playerArrowRendering.RenderArrow(aux1, aux2 + direction * 2);
+                _currentVelocity = _auxVector2 * velocity;
             }
 
             public void SetDashVectors(Vector3 startPos, Vector3 finalPos)
@@ -176,17 +168,14 @@ namespace Jolt
                 _auxVector3 = transform.position;
             }
 
-            public void SetVelocityToGivenVector(Vector2 vector, float speed)
+            public void SetArrowRendering()
             {
-                _auxVector2.Set(vector.x * speed, vector.y * speed);
-                Rb.velocity = _auxVector2;
-                CurrentVelocity = _auxVector2;
-            }
+                Vector2 aux1 = _dashStart;
+                Vector2 aux2 = _dashFinish;
 
-            public void SetForceToGivenVector(Vector2 vector, float speed)
-            {
-                _auxVector2.Set(vector.x * speed, vector.y * speed);
-                Rb.AddForce(_auxVector2, ForceMode2D.Impulse);
+                Vector2 direction = aux2 - aux1;
+
+                _playerArrowRendering.RenderArrow(aux1, aux2 + direction * 2);
             }
 
             public void SetPosition(Vector2 position)
@@ -213,8 +202,8 @@ namespace Jolt
             #region Check Functions
             public bool CheckIsGrounded()
             {
-                return Physics2D.OverlapCircle(_groundCheckOne.position, _playerData.checkGroundRadius, _playerData.whatIsGround)
-                    || Physics2D.OverlapCircle(_groundCheckTwo.position, _playerData.checkGroundRadius, _playerData.whatIsGround);
+                return Physics2D.OverlapCircle(_groundCheckOne.position, _playerData.CheckGroundRadius, _playerData.WhatIsGround)
+                    || Physics2D.OverlapCircle(_groundCheckTwo.position, _playerData.CheckGroundRadius, _playerData.WhatIsGround);
             }
 
             public bool CheckIsTouchingNode()
@@ -231,11 +220,6 @@ namespace Jolt
             {
                 //Debug.Log("Transform: (" + transform.position.x + " , " + transform.position.y + ") , Point: (" + point.x + " , " + point.y + ")");
                 return (Vector2)transform.position == point;
-            }
-
-            public bool CheckIfDead()
-            {
-                return IsDead;
             }
 
             #endregion
@@ -261,13 +245,6 @@ namespace Jolt
             public void DeactivateArrowRendering()
             {
                 _playerArrowRendering.DerenderArrow();
-            }
-
-            public void MoveTowardsVector(Vector2 vector, float velocity)
-            {
-                //Debug.Log("Transform: (" + transform.position.x + " , " + transform.position.y + ") , Point: (" + v.x + " , " + v.y + ")");
-                _auxVector2.Set(vector.x, vector.y);
-                transform.position = Vector2.MoveTowards(transform.position, _auxVector2, velocity * Time.deltaTime);
             }
 
             public void ResetPosition()

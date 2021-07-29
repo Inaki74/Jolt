@@ -10,12 +10,13 @@ namespace Jolt
         {
             public class ExitNodeState : ConductorState
             {
+                protected override Color AssociatedColor => Color.magenta;
                 // Known bug: If two nodes are too close to each other, doesnt work appropiately
 
                 private bool _isDashStarted;
                 private float _currentTime;
 
-                public ExitNodeState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public ExitNodeState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -25,7 +26,7 @@ namespace Jolt
 
                     _enterTime = Time.time;
                     _isDashStarted = true;
-                    Time.timeScale = _playerData.timeSlow;
+                    Time.timeScale = _playerData.TimeSlow;
                     _stateMachine.PreDashState.DecreaseAmountOfDashes();
                     //Time.fixedDeltaTime = 0.1f * 0.02f; Works but doubles the CPU usage. Use RigidBodies with interpolate instead
                 }
@@ -38,12 +39,17 @@ namespace Jolt
                     Time.timeScale = 1f;
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
-                    base.LogicUpdate();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     _currentTime = Time.time;
-                    _isDashStarted = _player.InputManager.DashBegin && (_currentTime - _enterTime < _playerData.preDashTimeOut);
+                    _isDashStarted = _player.InputManager.DashBegin && (_currentTime - _enterTime < _playerData.PreDashTimeOut);
 
                     _player.SetDashVectors(_player.InputManager.InitialDashPoint, _player.InputManager.FinalDashPoint);
                     _player.SetArrowRendering();
@@ -53,7 +59,10 @@ namespace Jolt
                     {
                         // transition to dashing
                         _stateMachine.ChangeState(_stateMachine.DashingState);
+                        return false;
                     }
+
+                    return true;
                 }
 
                 public override void PhysicsUpdate()

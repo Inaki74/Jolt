@@ -10,46 +10,48 @@ namespace Jolt
         {
             public class RecoilState : GroundedState
             {
-                private float _timeToChange = 0.2f;
+                protected override Color AssociatedColor => Color.magenta;
+
                 private float _currentTime;
 
-                public RecoilState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor) : base(stateMachine, player, playerData, associatedColor)
+                public RecoilState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
-                public override void LogicUpdate()
+                public override bool LogicUpdate()
                 {
-                    base.LogicUpdate();
+                    bool continueExecution = base.LogicUpdate();
+
+                    if (!continueExecution)
+                    {
+                        return false;
+                    }
 
                     _currentTime = Time.time;
+                    bool recoiledEnoughTime = _currentTime - _enterTime > _playerData.RecoilTimer;
 
                     // After enough time elapses, change to the appropiate state
-                    if (_currentTime - _enterTime > _timeToChange)
+                    if (recoiledEnoughTime)
                     {
-                        // Movement -> move
                         if (_isMoving)
                         {
                             _stateMachine.ChangeState(_stateMachine.MoveState);
+                            return false;
                         }
-                        // No Movement -> idle
                         else
                         {
                             _stateMachine.ChangeState(_stateMachine.IdleState);
+                            return false;
                         }
                     }
+
+                    return true;
                 }
 
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
-                    if (_isMoving)
-                    {
-                        _player.SetMovementX(_playerData.movementSpeed * _moveInput.x);
-                    }
-                    else
-                    {
-                        _player.SetMovementX(0f);
-                    }
+                    _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
 
                 public override string ToString()

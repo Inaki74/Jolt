@@ -10,26 +10,23 @@ namespace Jolt
         {
             public abstract class PlayerState
             {
-                protected PlayerStateMachine _stateMachine;
-                protected Player _player;
-                protected PlayerData _playerData;
-                protected Color _associatedColor; // string animBool
+                protected IPlayerStateMachine _stateMachine;
+                protected IPlayer _player;
+                protected IPlayerData _playerData;
+                protected virtual Color AssociatedColor => Color.black;
 
                 protected float _enterTime;
 
-                public PlayerState(PlayerStateMachine stateMachine, Player player, PlayerData playerData, Color associatedColor)
+                public PlayerState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData)
                 {
                     this._stateMachine = stateMachine;
                     this._player = player;
                     this._playerData = playerData;
-                    this._associatedColor = associatedColor;
                 }
 
                 public virtual void Enter()
                 {
-                    DoChecks();
-
-                    _player.Sr.color = _associatedColor;
+                    _player.Sr.color = AssociatedColor;
                     _enterTime = Time.time;
                 }
 
@@ -38,18 +35,13 @@ namespace Jolt
 
                 }
 
-                public virtual void LogicUpdate()
+                public virtual bool LogicUpdate()
                 {
+                    return true;
                 }
 
                 public virtual void PhysicsUpdate()
                 {
-                    DoChecks();
-                }
-
-                public virtual void DoChecks()
-                {
-
                 }
             }
         }
