@@ -37,6 +37,9 @@ namespace Jolt
             [Header("Recoil State")]
             [SerializeField] private float _recoilTimer = 0.2f;
 
+            [Header("Jumping State")]
+            [SerializeField] private float _jumpForce;
+
             public float MovementSpeed { get { return _movementSpeed; } }
 
             public float TimeSlow { get { return _timeSlow; } }
@@ -62,6 +65,8 @@ namespace Jolt
             public Vector2 LastCheckpoint { get { return _lastCheckpoint; } }
 
             public float RecoilTimer { get { return _recoilTimer; } }
+
+            public float JumpForce { get { return _jumpForce; } }
         }
     }
 }

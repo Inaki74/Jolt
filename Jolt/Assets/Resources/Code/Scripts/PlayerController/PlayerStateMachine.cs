@@ -25,6 +25,7 @@ namespace Jolt
             public In_RailState InRailState { get; private set; }
             public ExitRailState ExitRailState { get; private set; }
             public DeadState DeadState { get; private set; }
+            public JumpState JumpState { get; private set; }
 
             public PlayerStateMachine(IPlayer player, IPlayerData playerData)
             {
@@ -39,6 +40,7 @@ namespace Jolt
                 InRailState = new In_RailState(this, player, playerData);
                 ExitRailState = new ExitRailState(this, player, playerData);
                 DeadState = new DeadState(this, player, playerData);
+                JumpState = new JumpState(this, player, playerData);
             }
 
             public void Initialize()

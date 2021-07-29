@@ -23,6 +23,10 @@ namespace Jolt
                 public bool Pointer => true;
 
                 public Vector2 PointerVector => Input.mousePosition;
+
+                public bool JumpDown => Input.GetButtonDown(InputStringNames.KEYBOARD_JUMP_NAME);
+
+                public bool JumpHold => Input.GetButton(InputStringNames.KEYBOARD_JUMP_NAME);
             }
         }
     }

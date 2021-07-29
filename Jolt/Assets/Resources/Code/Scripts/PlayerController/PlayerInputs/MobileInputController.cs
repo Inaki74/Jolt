@@ -23,6 +23,10 @@ namespace Jolt
                 public bool Pointer => false;
 
                 public Vector2 PointerVector => Vector2.zero;
+
+                public bool JumpDown => throw new System.NotImplementedException();
+
+                public bool JumpHold => throw new System.NotImplementedException();
             }
         }
     }

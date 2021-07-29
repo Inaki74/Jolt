@@ -138,7 +138,7 @@ namespace Jolt
 
             public void SetMovementYByForce(Vector2 direction, float speed)
             {
-                _auxVector2.Set(0f, direction.x * speed);
+                _auxVector2.Set(0f, direction.y * speed);
                 Rb.AddForce(_auxVector2, ForceMode2D.Force);
             }
 

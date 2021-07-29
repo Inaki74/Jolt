@@ -43,9 +43,11 @@ namespace Jolt
                     }
                 }
 
-                public void ManageJump(bool jumpingBool)
+                public void ManageJump(ref bool jumpingBool)
                 {
-                    throw new System.NotImplementedException();
+                    bool jumpInput = _inputController.JumpDown || _inputController.JumpHold;
+
+                    jumpingBool = jumpInput;
                 }
 
                 public void ManageMovement(ref Vector2 movementVector)
