@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,9 +17,8 @@ namespace Jolt
         public class Player : MonoBehaviour, IPlayer
         {
             #region Components
-
             [SerializeField]
-            private IPlayerData _playerData;
+            private PlayerData _playerData;
 
             private PlayerCollisions _playerCollisions;
             private PlayerArrowRendering _playerArrowRendering;
@@ -47,8 +47,6 @@ namespace Jolt
             [SerializeField]
             private Transform _groundCheckTwo;
 
-            private Vector2 _currentVelocity;
-
             private Vector3 _dashStart;
             private Vector3 _dashFinish;
 
@@ -63,14 +61,13 @@ namespace Jolt
 
             private void Start()
             {
-                //Application.targetFrameRate = 60; // This shouldnt be here, its for testing purposes.
                 GetComponents();
+                SetRigidbody();
                 StateMachine.Initialize();
             }
 
             private void Update()
             {
-                _currentVelocity = Rb.velocity;
                 StateMachine.CurrentState.LogicUpdate();
             }
 
@@ -87,9 +84,14 @@ namespace Jolt
                 InputManager = GetComponent<PlayerInputManager>();
                 _playerCollisions = GetComponent<PlayerCollisions>();
 
-                _playerData = Resources.Load(ResourcesStrings.RESOURCES_PATH_TO_PLAYERCONTROLLER + "PlayerDataOne") as PlayerData;
                 StateMachine = new PlayerStateMachine(this, _playerData);
                 _playerArrowRendering = new PlayerArrowRendering(GetComponent<LineRenderer>());
+            }
+
+            private void SetRigidbody()
+            {
+                Rb.gravityScale = _playerData.PlayerPhysicsData.StandardGravity;
+                Rb.drag = _playerData.PlayerPhysicsData.StandardLinearDrag;
             }
 
             private void OnDrawGizmos()
@@ -118,16 +120,14 @@ namespace Jolt
 
             public void SetRigidbodyVelocityX(float velocity)
             {
-                _auxVector2.Set(velocity, _currentVelocity.y);
+                _auxVector2.Set(velocity, Rb.velocity.y);
                 Rb.velocity = _auxVector2;
-                _currentVelocity = _auxVector2;
             }
 
             public void SetRigidbodyVelocityY(float velocity)
             {
-                _auxVector2.Set(_currentVelocity.x, velocity);
+                _auxVector2.Set(Rb.velocity.x, velocity);
                 Rb.velocity = _auxVector2;
-                _currentVelocity = _auxVector2;
             }
 
             public void SetMovementXByForce(Vector2 direction, float speed)
@@ -138,7 +138,7 @@ namespace Jolt
 
             public void SetMovementYByForce(Vector2 direction, float speed)
             {
-                _auxVector2.Set(0f, direction.x * speed);
+                _auxVector2.Set(0f, direction.y * speed);
                 Rb.AddForce(_auxVector2, ForceMode2D.Force);
             }
 
@@ -155,7 +155,6 @@ namespace Jolt
                 _auxVector2.Set(_dashFinish.normalized.x, _dashFinish.normalized.y);
                 Rb.velocity = _auxVector2 * velocity;
                 Rb.velocity = Vector2.ClampMagnitude(Rb.velocity, velocity);
-                _currentVelocity = _auxVector2 * velocity;
             }
 
             public void SetDashVectors(Vector3 startPos, Vector3 finalPos)
@@ -188,6 +187,11 @@ namespace Jolt
                 Rb.gravityScale = gravity;
             }
 
+            public void SetDrag(float drag)
+            {
+                Rb.drag = drag;
+            }
+
             public void SetActivePhysicsCollider(bool set)
             {
                 Cc.enabled = set;
@@ -204,6 +208,11 @@ namespace Jolt
             {
                 return Physics2D.OverlapCircle(_groundCheckOne.position, _playerData.CheckGroundRadius, _playerData.WhatIsGround)
                     || Physics2D.OverlapCircle(_groundCheckTwo.position, _playerData.CheckGroundRadius, _playerData.WhatIsGround);
+            }
+
+            public bool CheckIsFreeFalling()
+            {
+                return Rb.velocity.y < 0f;
             }
 
             public bool CheckIsTouchingNode()

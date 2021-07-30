@@ -19,33 +19,36 @@ namespace Jolt
 
                     Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
 
-                    if (_inputController.DashDown)
-                    {
-                        dashBegin = true;
-                        initialDashPoint = Vector3.zero;
-                    }
-
                     if (_inputController.DashHold)
                     {
-                        if (_inputController.Pointer)
-                        {
-                            finalDashPoint = _inputController.PointerVector;
-                        }
-                        else
-                        {
-                            finalDashPoint = inputVector;
-                        }
+                        dashBegin = false;
+                        //if (_inputController.Pointer)
+                        //{
+                        //    finalDashPoint = _inputController.PointerVector;
+                        //}
+                        //else
+                        //{
+                        //    finalDashPoint = inputVector;
+                        //}
                     }
 
                     if (_inputController.DashUp)
                     {
                         dashBegin = false;
                     }
+
+                    if (_inputController.DashDown)
+                    {
+                        dashBegin = true;
+                        finalDashPoint = inputVector;
+                    }
                 }
 
-                public void ManageJump(bool jumpingBool)
+                public void ManageJump(ref bool jumpingBool)
                 {
-                    throw new System.NotImplementedException();
+                    bool jumpInput = _inputController.JumpDown || _inputController.JumpHold;
+
+                    jumpingBool = jumpInput;
                 }
 
                 public void ManageMovement(ref Vector2 movementVector)

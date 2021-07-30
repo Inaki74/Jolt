@@ -15,6 +15,8 @@ namespace Jolt
                 bool DashDown { get; }
                 bool DashHold { get; }
                 bool DashUp { get; }
+                bool JumpDown { get; }
+                bool JumpHold { get; }
                 bool Pointer { get; }
                 Vector2 PointerVector { get; }
             }

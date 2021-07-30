@@ -14,6 +14,7 @@ namespace Jolt
                 protected bool _isGrounded;
                 protected bool _isStartingDash;
                 protected bool _isMoving;
+                protected bool _jumpPressed;
 
                 public GroundedState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -36,8 +37,9 @@ namespace Jolt
                     }
 
                     _moveInput = _player.InputManager.MovementVector;
-                    _isGrounded = _player.CheckIsGrounded();
+                    _jumpPressed = _player.InputManager.JumpPressed;
                     _isStartingDash = _player.InputManager.DashBegin;
+                    _isGrounded = _player.CheckIsGrounded();
                     _isMoving = _moveInput.x != 0;
 
                     if (_isStartingDash)
@@ -49,6 +51,12 @@ namespace Jolt
                     if (!_isGrounded)
                     {
                         _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        return false;
+                    }
+
+                    if (_jumpPressed)
+                    {
+                        _stateMachine.ChangeState(_stateMachine.JumpState);
                         return false;
                     }
 

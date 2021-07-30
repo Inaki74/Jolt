@@ -5,6 +5,7 @@ namespace Jolt.PlayerController
 {
     public interface IPlayerData
     {
+        IPlayerPhysicsData PlayerPhysicsData { get; }
         float MovementSpeed { get; }
         float TimeSlow { get; }
         float PreDashTimeOut { get; }
@@ -18,5 +19,8 @@ namespace Jolt.PlayerController
         float DeadTimer { get; }
         Vector2 LastCheckpoint { get; }
         float RecoilTimer { get;  }
+        float JumpForce { get; }
+        float JumpGravity { get; }
+        float JumpDrag { get; }
     }
 }

@@ -25,7 +25,7 @@ namespace Jolt
                 public override void Exit()
                 {
                     base.Exit();
-                    _player.SetGravityScale(1f);
+                    _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                 }
             }
         }

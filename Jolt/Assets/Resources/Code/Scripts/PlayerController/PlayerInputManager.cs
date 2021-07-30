@@ -23,56 +23,19 @@ namespace Jolt
             private PlayerInputController _playerInputController;
 
             private Vector2 _movementVector;
-            public Vector2 MovementVector
-            {
-                get
-                {
-                    return _movementVector;
-                }
-                set
-                {
-                    _movementVector = value;
-                }
-            }
+            public Vector2 MovementVector { get => _movementVector; set => _movementVector = value; }
 
             private bool _dashBegin;
-            public bool DashBegin
-            {
-                get
-                {
-                    return _dashBegin;
-                }
-                set
-                {
-                    _dashBegin = value;
-                }
-            }
+            public bool DashBegin { get => _dashBegin; set => _dashBegin = value; }
 
             private Vector3 _initialDashPoint;
-            public Vector3 InitialDashPoint
-            {
-                get
-                {
-                    return _initialDashPoint;
-                }
-                set
-                {
-                    _initialDashPoint = value;
-                }
-            }
+            public Vector3 InitialDashPoint { get => _initialDashPoint; set => _initialDashPoint = value; }
 
             private Vector3 _finalDashPoint;
-            public Vector3 FinalDashPoint
-            {
-                get
-                {
-                    return _finalDashPoint;
-                }
-                set
-                {
-                    _finalDashPoint = value;
-                }
-            }
+            public Vector3 FinalDashPoint { get => _finalDashPoint; set => _finalDashPoint = value; }
+
+            private bool _jumpPressed;
+            public bool JumpPressed { get => _jumpPressed; set => _jumpPressed = value; }
 
             private void Start()
             {
@@ -121,6 +84,8 @@ namespace Jolt
                 _playerInputController.ManageMovement(ref _movementVector);
 
                 _playerInputController.ManageDash(ref _dashBegin, ref _initialDashPoint, ref _finalDashPoint);
+
+                _playerInputController.ManageJump(ref _jumpPressed);
             }
         }
     }
