@@ -37,7 +37,7 @@ namespace Jolt
                         dashBegin = false;
                     }
 
-                    if (_inputController.DashDown)
+                    if (_inputController.DashDown && inputVector != Vector2.zero)
                     {
                         dashBegin = true;
                         finalDashPoint = inputVector;
@@ -54,8 +54,9 @@ namespace Jolt
                 public void ManageMovement(ref Vector2 movementVector)
                 {
                     float horizontalInput = _inputController.Horizontal;
+                    float verticalInput = _inputController.Vertical;
 
-                    movementVector.Set(horizontalInput, movementVector.y);
+                    movementVector.Set(horizontalInput, verticalInput);
                 }
 
                 public void SetInputController(IInputController inputController)

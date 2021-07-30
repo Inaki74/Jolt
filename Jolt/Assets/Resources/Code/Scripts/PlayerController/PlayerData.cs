@@ -40,6 +40,9 @@ namespace Jolt
             [Header("Recoil State")]
             [SerializeField] private float _recoilTimer = 0.2f;
 
+            [Header("Airborne State")]
+            [SerializeField] private float _freeFallGravity;
+
             [Header("Jumping State")]
             [SerializeField] private float _jumpForce;
             [SerializeField] private float _jumpGravity;
@@ -72,6 +75,8 @@ namespace Jolt
             public Vector2 LastCheckpoint { get { return _lastCheckpoint; } }
 
             public float RecoilTimer { get { return _recoilTimer; } }
+
+            public float FreeFallGravity { get { return _freeFallGravity;  } }
 
             public float JumpForce { get { return _jumpForce; } }
 

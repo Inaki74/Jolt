@@ -55,6 +55,15 @@ namespace Jolt
                 {
                     base.PhysicsUpdate();
 
+                    if(_moveInput.y < 0f)
+                    {
+                        _player.SetGravityScale(_playerData.FreeFallGravity);
+                    }
+                    else
+                    {
+                        _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
+                    }
+
                     if (_isMoving)
                     {
                         if (_stateMachine.LastState == "ExitRailState")

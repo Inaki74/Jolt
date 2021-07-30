@@ -19,6 +19,7 @@ namespace Jolt.PlayerController
         float DeadTimer { get; }
         Vector2 LastCheckpoint { get; }
         float RecoilTimer { get;  }
+        float FreeFallGravity { get; }
         float JumpForce { get; }
         float JumpGravity { get; }
         float JumpDrag { get; }
