@@ -47,6 +47,12 @@ namespace Jolt
             [SerializeField]
             private Transform _groundCheckTwo;
 
+            [SerializeField]
+            private Transform _wallCheckOne;
+
+            [SerializeField]
+            private Transform _wallCheckTwo;
+
             private Vector3 _dashStart;
             private Vector3 _dashFinish;
 
@@ -215,6 +221,12 @@ namespace Jolt
                 return Rb.velocity.y < 0f;
             }
 
+            public bool CheckIsTouchingWall()
+            {
+                return Physics2D.OverlapCircle(_wallCheckOne.position, _playerData.CheckWallRadius, _playerData.WhatIsGround)
+                    || Physics2D.OverlapCircle(_wallCheckTwo.position, _playerData.CheckWallRadius, _playerData.WhatIsGround);
+            }
+
             public bool CheckIsTouchingNode()
             {
                 return _playerCollisions.IsTouchingNode;
@@ -269,6 +281,8 @@ namespace Jolt
             {
                 Instantiate(_deathParticles, transform.position, Quaternion.identity);
             }
+
+            
             #endregion
         }
 

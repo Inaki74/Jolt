@@ -26,6 +26,7 @@ namespace Jolt
             [SerializeField] private float _dashSpeed;
 
             [Header("Checks Variables")]
+            [SerializeField] private float _checkWallRadius;
             [SerializeField] private float _checkGroundRadius = 0.05f;
             [SerializeField] private LayerMask _whatIsGround;
 
@@ -65,6 +66,8 @@ namespace Jolt
             public float DashSpeed { get { return _dashSpeed; } }
 
             public float CheckGroundRadius { get { return _checkGroundRadius; } }
+
+            public float CheckWallRadius { get { return _checkWallRadius; } }
 
             public LayerMask WhatIsGround { get { return _whatIsGround; } }
 

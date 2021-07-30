@@ -13,6 +13,7 @@ namespace Jolt.PlayerController
         float CircleRadius { get; }
         float DashTimeOut { get; }
         float DashSpeed { get; }
+        float CheckWallRadius { get; }
         float CheckGroundRadius { get; }
         LayerMask WhatIsGround { get; }
         List<Vector2> AllPaths { get; }
