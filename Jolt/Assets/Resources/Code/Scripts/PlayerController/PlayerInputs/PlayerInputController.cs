@@ -19,8 +19,6 @@ namespace Jolt
 
                     Vector2 inputVector = new Vector2(horizontalInput, verticalInput);
 
-                    
-
                     if (_inputController.DashHold)
                     {
                         dashBegin = false;

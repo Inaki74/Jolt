@@ -13,6 +13,7 @@ namespace Jolt.PlayerController
 
         bool CheckHasReachedPoint(Vector2 point);
         bool CheckIsGrounded();
+        bool CheckIsFreeFalling();
         bool CheckIsTouchingNode();
         bool CheckIsTouchingRail();
         void DeactivateArrowRendering();
@@ -28,6 +29,7 @@ namespace Jolt.PlayerController
         void SetDashMovement(float velocity);
         void SetDashVectors(Vector3 startPos, Vector3 finalPos);
         void SetGravityScale(float gravity);
+        void SetDrag(float drag);
         void SetMovementByImpulse(Vector2 direction, float speed);
         void SetMovementXByForce(Vector2 direction, float speed);
         void SetMovementYByForce(Vector2 direction, float speed);

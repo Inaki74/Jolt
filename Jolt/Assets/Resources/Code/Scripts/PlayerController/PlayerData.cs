@@ -42,9 +42,8 @@ namespace Jolt
 
             [Header("Jumping State")]
             [SerializeField] private float _jumpForce;
-
-            [Header("Floating State")]
-            [SerializeField] private float _floatGravity;
+            [SerializeField] private float _jumpGravity;
+            [SerializeField] private float _jumpDrag;
 
             public IPlayerPhysicsData PlayerPhysicsData { get { return _playerPhysicsData;  } }
 
@@ -76,7 +75,9 @@ namespace Jolt
 
             public float JumpForce { get { return _jumpForce; } }
 
-            public float FloatGravity { get { return _floatGravity; } }
+            public float JumpGravity { get { return _jumpGravity; } }
+
+            public float JumpDrag { get { return _jumpDrag; } }
         }
     }
 }
