@@ -10,23 +10,42 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 81b04d02e0e9448ca9feb2993a0c640a, type: 3}
-  m_Name: PlayerDataTwo
+  m_Name: NormalPlayerData
   m_EditorClassIdentifier: 
-  _playerPhysicsData: {fileID: 0}
-  _movementSpeed: 6
+  _playerPhysicsData: {fileID: 11400000, guid: c854d886294874f0ba9fd64350b26df7, type: 2}
+  _movementSpeed: 8
   _timeSlow: 0.1
-  _preDashTimeOut: 0
-  _amountOfDashes: 0
-  _circleRadius: 0
-  _dashTimeOut: 0
-  _dashSpeed: 0
+  _preDashTimeOut: 0.1
+  _amountOfDashes: 2
+  _circleRadius: 0.15
+  _dashTimeOut: 0.12
+  _dashSpeed: 30
   _checkGroundRadius: 0.05
   _whatIsGround:
     serializedVersion: 2
-    m_Bits: 0
-  _allPaths: []
-  _deadTimer: 5
+    m_Bits: 256
+  _allPaths:
+  - {x: 11.898841, y: 31.695412}
+  - {x: 11.81216, y: 31.605871}
+  - {x: 11.708725, y: 31.510637}
+  - {x: 11.662218, y: 31.471357}
+  - {x: 11.545727, y: 31.381227}
+  - {x: 11.430716, y: 31.302261}
+  - {x: 11.312968, y: 31.230135}
+  - {x: 11.1805105, y: 31.157976}
+  - {x: 11.114573, y: 31.125174}
+  - {x: 10.962333, y: 31.05639}
+  - {x: 10.577726, y: 30.918133}
+  - {x: 10.4109535, y: 30.870981}
+  - {x: 10.228694, y: 30.826704}
+  - {x: 10.053348, y: 30.7904}
+  - {x: 9.947974, y: 30.771255}
+  - {x: 9.852733, y: 30.755547}
+  - {x: 9.741552, y: 30.739002}
+  - {x: 9.639347, y: 30.725397}
+  - {x: 9.528975, y: 30.71233}
+  _deadTimer: 1
   _lastCheckpoint: {x: 0, y: 0}
   _recoilTimer: 0.2
-  _jumpForce: 0
+  _jumpForce: 15
   _floatGravity: 0

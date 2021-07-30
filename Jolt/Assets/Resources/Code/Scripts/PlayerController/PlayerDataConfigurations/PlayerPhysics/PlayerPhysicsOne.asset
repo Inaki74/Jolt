@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9997b13cb4c414b9d0152de0e1e8cd, type: 3}
   m_Name: PlayerPhysicsOne
   m_EditorClassIdentifier: 
-  _standardGravity: 3
-  _standardLinearDrag: 1.5
+  _standardGravity: 4
+  _standardLinearDrag: 1.2
