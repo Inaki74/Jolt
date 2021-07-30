@@ -16,6 +16,9 @@ namespace Jolt
                 private bool _isGrounded;
                 private bool _isStartingDash;
                 private bool _isMoving;
+                private bool _canDash;
+                private bool _isTouchingWallLeft;
+                private bool _isTouchingWallRight;
 
                 public AirborneState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -34,10 +37,12 @@ namespace Jolt
                     _moveInput = _player.InputManager.MovementVector;
                     _isGrounded = _player.CheckIsGrounded();
                     _isStartingDash = _player.InputManager.DashBegin;
-                    bool canDash = _stateMachine.PreDashState.CanDash();
+                    _canDash = _stateMachine.PreDashState.CanDash();
+                    _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
+                    _isTouchingWallRight = _player.CheckIsTouchingWallRight();
 
                     // If it hits ground -> recoil
-                    if (_isStartingDash && canDash)
+                    if (_isStartingDash && _canDash)
                     {
                         _stateMachine.ChangeState(_stateMachine.PreDashState);
                         return false;
@@ -45,6 +50,18 @@ namespace Jolt
                     if (_isGrounded)
                     {
                         _stateMachine.ChangeState(_stateMachine.RecoilState);
+                        return false;
+                    }
+
+                    if (_isTouchingWallLeft && _moveInput.x < 0f)
+                    {
+                        _stateMachine.ChangeState(_stateMachine.WallSlideState);
+                        return false;
+                    }
+
+                    if (_isTouchingWallRight && _moveInput.x > 0f)
+                    {
+                        _stateMachine.ChangeState(_stateMachine.WallSlideState);
                         return false;
                     }
 

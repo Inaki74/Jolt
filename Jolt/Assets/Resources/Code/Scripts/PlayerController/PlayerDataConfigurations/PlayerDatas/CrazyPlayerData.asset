@@ -20,6 +20,7 @@ MonoBehaviour:
   _circleRadius: 0.15
   _dashTimeOut: 0.12
   _dashSpeed: 30
+  _checkWallRadius: 0.05
   _checkGroundRadius: 0.05
   _whatIsGround:
     serializedVersion: 2
@@ -28,5 +29,10 @@ MonoBehaviour:
   _deadTimer: 1
   _lastCheckpoint: {x: 4, y: 0}
   _recoilTimer: 0.2
-  _jumpForce: 15
-  _floatGravity: 0
+  _freeFallGravity: 6
+  _jumpForce: 12
+  _jumpGravity: 2.5
+  _jumpDrag: 0
+  _wallSlideGravity: 0.5
+  _wallSlideDrag: 1
+  _wallJumpForceHorizontal: 0

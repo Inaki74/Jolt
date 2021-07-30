@@ -17,6 +17,8 @@ namespace Jolt
                 private bool _isGrounded;
                 private Vector2 _moveInput;
                 private bool _isStartingDash;
+                private bool _canDash;
+                private bool _reachedPeak;
 
                 public JumpState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -51,10 +53,10 @@ namespace Jolt
                     _moveInput = _player.InputManager.MovementVector;
                     _jumpPressed = _player.InputManager.JumpPressed;
                     _isStartingDash = _player.InputManager.DashBegin;
-                    bool canDash = _stateMachine.PreDashState.CanDash();
-                    bool reachedPeak = _player.CheckIsFreeFalling();
+                    _canDash = _stateMachine.PreDashState.CanDash();
+                    _reachedPeak = _player.CheckIsFreeFalling();
 
-                    if (_isStartingDash && canDash)
+                    if (_isStartingDash && _canDash)
                     {
                         _stateMachine.ChangeState(_stateMachine.PreDashState);
                         return false;
@@ -66,7 +68,7 @@ namespace Jolt
                         return false;
                     }
 
-                    if (!_jumpPressed || reachedPeak)
+                    if (!_jumpPressed || _reachedPeak)
                     {
                         _stateMachine.ChangeState(_stateMachine.AirborneState);
                         return false;

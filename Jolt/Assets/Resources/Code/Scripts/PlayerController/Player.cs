@@ -221,10 +221,14 @@ namespace Jolt
                 return Rb.velocity.y < 0f;
             }
 
-            public bool CheckIsTouchingWall()
+            public bool CheckIsTouchingWallLeft()
             {
-                return Physics2D.OverlapCircle(_wallCheckOne.position, _playerData.CheckWallRadius, _playerData.WhatIsGround)
-                    || Physics2D.OverlapCircle(_wallCheckTwo.position, _playerData.CheckWallRadius, _playerData.WhatIsGround);
+                return Physics2D.OverlapCircle(_wallCheckTwo.position, _playerData.CheckWallRadius, _playerData.WhatIsGround);
+            }
+
+            public bool CheckIsTouchingWallRight()
+            {
+                return Physics2D.OverlapCircle(_wallCheckOne.position, _playerData.CheckWallRadius, _playerData.WhatIsGround);
             }
 
             public bool CheckIsTouchingNode()

@@ -49,6 +49,14 @@ namespace Jolt
             [SerializeField] private float _jumpGravity;
             [SerializeField] private float _jumpDrag;
 
+            [Header("Wall Slide State")]
+            [SerializeField] private float _wallSlideGravity;
+            [SerializeField] private float _wallSlideDrag;
+            [SerializeField] private float _inverseMultiplierOfFallSpeed;
+
+            [Header("Wall Jump State")]
+            [SerializeField] private float _wallJumpForceHorizontal;
+
             public IPlayerPhysicsData PlayerPhysicsData { get { return _playerPhysicsData;  } }
 
             public float MovementSpeed { get { return _movementSpeed; } }
@@ -86,6 +94,14 @@ namespace Jolt
             public float JumpGravity { get { return _jumpGravity; } }
 
             public float JumpDrag { get { return _jumpDrag; } }
+
+            public float WallSlideGravity { get { return _wallSlideGravity; } }
+
+            public float WallSlideDrag { get { return _wallSlideDrag; } }
+
+            public float WallJumpForceHorizontal { get { return _wallJumpForceHorizontal; } }
+
+            public float InverseMultiplierOfFallSpeed { get { return _inverseMultiplierOfFallSpeed; } }
         }
     }
 }

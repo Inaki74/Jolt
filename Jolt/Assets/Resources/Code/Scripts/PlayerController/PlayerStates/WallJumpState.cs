@@ -12,6 +12,8 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.green;
 
+                public Vector2 WallSide { private get; set; }
+
                 public WallJumpState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
@@ -20,7 +22,14 @@ namespace Jolt
                 {
                     base.Enter();
 
-                    _player.SetRigidbodyVelocityX(0f);
+                    //_player.SetRigidbodyVelocityX(0f);
+                }
+
+                public override void Exit()
+                {
+                    base.Exit();
+
+                    WallSide = Vector2.zero;
                 }
 
                 public override bool LogicUpdate()
