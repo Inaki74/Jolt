@@ -34,9 +34,12 @@ MonoBehaviour:
   _jumpForce: 12
   _jumpGravity: 2.5
   _jumpDrag: 0
-  _coyoteTiming: 0.075
+  _jumpCoyoteTiming: 0
   _wallSlideGravity: 0.5
-  _wallSlideDrag: 0.5
-  _inverseMultiplierOfFallSpeed: -4
+  _wallSlideDrag: 1
+  _inverseMultiplierOfFallSpeed: -3
+  _wallJumpGravity: 0
+  _wallJumpDrag: 0
   _wallJumpForceHorizontal: 14
   _wallJumpForceVerticalRatioWithHorizontal: 1
+  _wallJumpCoyoteTiming: 0
