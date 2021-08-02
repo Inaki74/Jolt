@@ -43,7 +43,7 @@ namespace Jolt
 
                     _moveInput = _player.InputManager.MovementVector;
                     _jumpPressed = _player.InputManager.JumpPressed;
-                    bool timeout = _currentTime - _enterTime > _playerData.JumpCoyoteTiming;
+                    bool timeout = _currentTime - _enterTime > _playerData.CoyoteTiming;
 
                     if (_jumpPressed)
                     {

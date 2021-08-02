@@ -18,8 +18,6 @@ namespace Jolt
                 private bool _jumpInput;
                 private bool _isTouchingWallLeft;
                 private bool _isTouchingWallRight;
-                private bool _wasTouchingWallLeft;
-                private bool _wasTouchingWallRight;
                 private bool _canDash;
 
                 public WallSlideState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
@@ -81,16 +79,7 @@ namespace Jolt
                        (_isTouchingWallRight && !isMovingRight) ||
                        (!isTouchingWall))
                     {
-                        if (_wasTouchingWallLeft)
-                        {
-                            _stateMachine.WallJumpState.JumpDirection = Vector2.right;
-                        }
-                        if (_wasTouchingWallRight)
-                        {
-                            _stateMachine.WallJumpState.JumpDirection = Vector2.left;
-                        }
-
-                        _stateMachine.ChangeState(_stateMachine.CoyoteWallJumpState);
+                        _stateMachine.ChangeState(_stateMachine.AirborneState);
                         return false;
                     }
 
@@ -98,19 +87,16 @@ namespace Jolt
                     {
                         if (_isTouchingWallLeft)
                         {
-                            _stateMachine.WallJumpState.JumpDirection = Vector2.right;
+                            _stateMachine.WallJumpState.WallSide = Vector2.left;
                         }
                         if (_isTouchingWallRight)
                         {
-                            _stateMachine.WallJumpState.JumpDirection = Vector2.left;
+                            _stateMachine.WallJumpState.WallSide = Vector2.right;
                         }
 
                         _stateMachine.ChangeState(_stateMachine.WallJumpState);
                         return false;
                     }
-
-                    _wasTouchingWallLeft = _isTouchingWallLeft;
-                    _wasTouchingWallRight = _isTouchingWallRight;
 
                     return true;
                 }

@@ -12,12 +12,12 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.green;
 
-                private bool _jumpHeld;
+                private bool _jumpInput;
                 private bool _forceApplied;
+                private bool _isTouchingWall;
                 private float _currentTime;
-                private bool _reachedPeak;
 
-                public Vector2 JumpDirection { private get; set; }
+                public Vector2 WallSide { private get; set; }
 
                 public WallJumpState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -28,9 +28,6 @@ namespace Jolt
                     base.Enter();
 
                     _forceApplied = false;
-
-                    _player.SetGravityScale(_playerData.WallJumpGravity);
-                    _player.SetDrag(_playerData.WallJumpDrag);
                     //_player.SetRigidbodyVelocityX(0f);
                 }
 
@@ -38,9 +35,7 @@ namespace Jolt
                 {
                     base.Exit();
 
-                    JumpDirection = Vector2.zero;
-                    _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
-                    _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
+                    WallSide = Vector2.zero;
                 }
 
                 public override bool LogicUpdate()
@@ -55,17 +50,11 @@ namespace Jolt
                     _currentTime = Time.time;
 
                     //_isTouchingWall = _player.CheckIsTouchingWallLeft() || _player.CheckIsTouchingWallRight();
-                    bool timeout = _currentTime - _enterTime > 0.25f;
-                    _reachedPeak = _player.CheckIsFreeFalling();
-                    _jumpHeld = _player.InputManager.JumpHeld;
+                    bool a = _currentTime - _enterTime > 0.2f;
 
-                    if (_forceApplied)
+                    if (_forceApplied && a)
                     {
-                        if(!_jumpHeld || _reachedPeak || timeout)
-                        {
-                            _stateMachine.ChangeState(_stateMachine.AirborneState);
-                            return false;
-                        }
+                        _stateMachine.ChangeState(_stateMachine.AirborneState);
                     }
 
                     return true;
@@ -77,7 +66,6 @@ namespace Jolt
 
                     if (!_forceApplied)
                     {
-                        _player.SetRigidbodyVelocityY(0f);
                         WallJump();
                         _forceApplied = true;
                     }
@@ -95,7 +83,7 @@ namespace Jolt
                     float verticalForce = horizontalForce * _playerData.WallJumpForceVerticalRatioWithHorizontal;
 
                     Vector2 impulseDirection = new Vector2(horizontalForce, verticalForce);
-                    Vector2 side = new Vector2(JumpDirection.x, Mathf.Abs(JumpDirection.x));
+                    Vector2 side = new Vector2(-WallSide.x, 1);
                     impulseDirection = impulseDirection * side;
 
                     _player.SetMovementByImpulse(impulseDirection, speed);
