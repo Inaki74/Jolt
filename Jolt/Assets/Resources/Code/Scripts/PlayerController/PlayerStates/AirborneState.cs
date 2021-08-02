@@ -17,6 +17,7 @@ namespace Jolt
                 private bool _isStartingDash;
                 private bool _isMoving;
                 private bool _canDash;
+                private bool _jumpPressed;
                 private bool _isTouchingWallLeft;
                 private bool _isTouchingWallRight;
                 private float _freefallDeformedScaleX;
@@ -48,11 +49,15 @@ namespace Jolt
 
                     _isMoving = _moveInput.x != 0;
                     _moveInput = _player.InputManager.MovementVector;
+                    _jumpPressed = _player.InputManager.JumpPressed;
                     _isGrounded = _player.CheckIsGrounded();
                     _isStartingDash = _player.InputManager.DashBegin;
                     _canDash = _stateMachine.PreDashState.CanDash();
                     _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
                     _isTouchingWallRight = _player.CheckIsTouchingWallRight();
+                    bool isTouchingWall = _isTouchingWallLeft || _isTouchingWallRight;
+                    bool isMovingRight = _moveInput.x > 0f;
+                    bool isMovingLeft = _moveInput.x < 0f;
 
                     // If it hits ground -> recoil
                     if (_isStartingDash && _canDash)
@@ -66,15 +71,30 @@ namespace Jolt
                         return false;
                     }
 
-                    if (_isTouchingWallLeft && _moveInput.x < 0f)
+                    if (_isTouchingWallLeft && isMovingLeft)
                     {
                         _stateMachine.ChangeState(_stateMachine.WallSlideState);
                         return false;
                     }
 
-                    if (_isTouchingWallRight && _moveInput.x > 0f)
+                    if (_isTouchingWallRight && isMovingRight)
                     {
                         _stateMachine.ChangeState(_stateMachine.WallSlideState);
+                        return false;
+                    }
+
+                    if (_jumpPressed && isTouchingWall)
+                    {
+                        if (_isTouchingWallLeft)
+                        {
+                            _stateMachine.WallJumpState.JumpDirection = Vector2.right;
+                        }
+                        if (_isTouchingWallRight)
+                        {
+                            _stateMachine.WallJumpState.JumpDirection = Vector2.left;
+                        }
+
+                        _stateMachine.ChangeState(_stateMachine.WallJumpState);
                         return false;
                     }
 

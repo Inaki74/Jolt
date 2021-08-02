@@ -49,7 +49,7 @@ namespace Jolt
             [SerializeField] private float _jumpForce;
             [SerializeField] private float _jumpGravity;
             [SerializeField] private float _jumpDrag;
-            [SerializeField] private float _coyoteTiming;
+            [SerializeField] private float _jumpCoyoteTiming;
 
             [Header("Wall Slide State")]
             [SerializeField] private float _wallSlideGravity;
@@ -57,8 +57,11 @@ namespace Jolt
             [SerializeField] private float _inverseMultiplierOfFallSpeed;
 
             [Header("Wall Jump State")]
+            [SerializeField] private float _wallJumpGravity;
+            [SerializeField] private float _wallJumpDrag;
             [SerializeField] private float _wallJumpForceHorizontal;
             [SerializeField] private float _wallJumpForceVerticalRatioWithHorizontal;
+            [SerializeField] private float _wallJumpCoyoteTiming;
 
             public IPlayerPhysicsData PlayerPhysicsData { get { return _playerPhysicsData;  } }
 
@@ -100,7 +103,7 @@ namespace Jolt
 
             public float JumpDrag { get { return _jumpDrag; } }
 
-            public float CoyoteTiming { get { return _coyoteTiming; } }
+            public float JumpCoyoteTiming { get { return _jumpCoyoteTiming; } }
 
             public float WallSlideGravity { get { return _wallSlideGravity; } }
 
@@ -108,9 +111,15 @@ namespace Jolt
 
             public float InverseMultiplierOfFallSpeed { get { return _inverseMultiplierOfFallSpeed; } }
 
+            public float WallJumpGravity { get { return _wallJumpGravity; } }
+
+            public float WallJumpDrag { get { return _wallJumpDrag; } }
+
             public float WallJumpForceHorizontal { get { return _wallJumpForceHorizontal; } }
 
             public float WallJumpForceVerticalRatioWithHorizontal { get { return _wallJumpForceVerticalRatioWithHorizontal;  } }
+
+            public float WallJumpCoyoteTiming { get { return _wallJumpCoyoteTiming; } }
         }
     }
 }
