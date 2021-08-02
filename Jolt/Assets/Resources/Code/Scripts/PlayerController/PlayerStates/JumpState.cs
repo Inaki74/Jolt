@@ -13,7 +13,7 @@ namespace Jolt
                 protected override Color AssociatedColor => Color.green;
 
                 private bool _forceApplied;
-                private bool _jumpPressed;
+                private bool _jumpHeld;
                 private bool _isGrounded;
                 private Vector2 _moveInput;
                 private bool _isStartingDash;
@@ -51,7 +51,7 @@ namespace Jolt
                     }
 
                     _moveInput = _player.InputManager.MovementVector;
-                    _jumpPressed = _player.InputManager.JumpPressed;
+                    _jumpHeld = _player.InputManager.JumpHeld;
                     _isStartingDash = _player.InputManager.DashBegin;
                     _canDash = _stateMachine.PreDashState.CanDash();
                     _reachedPeak = _player.CheckIsFreeFalling();
@@ -70,7 +70,7 @@ namespace Jolt
                             return false;
                         }
 
-                        if (!_jumpPressed || _reachedPeak)
+                        if (!_jumpHeld || _reachedPeak)
                         {
                             _stateMachine.ChangeState(_stateMachine.AirborneState);
                             return false;

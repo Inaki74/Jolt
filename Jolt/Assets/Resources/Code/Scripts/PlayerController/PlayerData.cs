@@ -43,6 +43,7 @@ namespace Jolt
 
             [Header("Airborne State")]
             [SerializeField] private float _freeFallGravity;
+            [SerializeField] private float _maxDeformedScale;
 
             [Header("Jumping State")]
             [SerializeField] private float _jumpForce;
@@ -90,6 +91,8 @@ namespace Jolt
             public float RecoilTimer { get { return _recoilTimer; } }
 
             public float FreeFallGravity { get { return _freeFallGravity;  } }
+
+            public float MaxDeformedScale { get { return _maxDeformedScale; } }
 
             public float JumpForce { get { return _jumpForce; } }
 

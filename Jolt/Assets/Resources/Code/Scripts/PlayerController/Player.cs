@@ -198,6 +198,11 @@ namespace Jolt
                 Rb.drag = drag;
             }
 
+            public void SetScale(Vector2 scale)
+            {
+                transform.localScale = scale;
+            }
+
             public void SetActivePhysicsCollider(bool set)
             {
                 Cc.enabled = set;
@@ -287,6 +292,8 @@ namespace Jolt
             }
 
             
+
+
             #endregion
         }
 

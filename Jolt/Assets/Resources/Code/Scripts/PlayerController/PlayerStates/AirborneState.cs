@@ -19,9 +19,22 @@ namespace Jolt
                 private bool _canDash;
                 private bool _isTouchingWallLeft;
                 private bool _isTouchingWallRight;
+                private float _freefallDeformedScaleX;
 
                 public AirborneState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
+                }
+
+                public override void Enter()
+                {
+                    base.Enter();
+                    _freefallDeformedScaleX = 1f;
+                }
+
+                public override void Exit()
+                {
+                    base.Exit();
+                    _player.SetScale(Vector2.one);
                 }
 
                 public override bool LogicUpdate()
@@ -74,10 +87,20 @@ namespace Jolt
 
                     if(_moveInput.y < 0f)
                     {
+                        if(_freefallDeformedScaleX > _playerData.MaxDeformedScale)
+                        {
+                            _freefallDeformedScaleX -= 0.01f;
+                        }
+                        
+                        Vector2 newScale = new Vector2(_freefallDeformedScaleX, 1f);
+                        _player.SetScale(newScale);
+
                         _player.SetGravityScale(_playerData.FreeFallGravity);
                     }
                     else
                     {
+                        _freefallDeformedScaleX = 1f;
+                        _player.SetScale(Vector2.one);
                         _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                     }
 

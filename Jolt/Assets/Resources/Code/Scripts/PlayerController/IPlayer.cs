@@ -38,5 +38,6 @@ namespace Jolt.PlayerController
         void SetPosition(Vector2 position);
         void SetRigidbodyVelocityX(float velocity);
         void SetRigidbodyVelocityY(float velocity);
+        void SetScale(Vector2 scale);
     }
 }

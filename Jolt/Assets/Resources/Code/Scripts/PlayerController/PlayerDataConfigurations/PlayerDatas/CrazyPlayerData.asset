@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: CrazyPlayerData
   m_EditorClassIdentifier: 
   _playerPhysicsData: {fileID: 11400000, guid: c854d886294874f0ba9fd64350b26df7, type: 2}
-  _movementSpeed: 10
+  _movementSpeed: 8
   _timeSlow: 0.1
-  _preDashTimeOut: 0.001
+  _preDashTimeOut: 0
   _amountOfDashes: 2
   _circleRadius: 0.15
   _dashTimeOut: 0.12
   _dashSpeed: 30
   _checkWallRadius: 0.05
-  _checkGroundRadius: 0.05
+  _checkGroundRadius: 0.04
   _whatIsGround:
     serializedVersion: 2
     m_Bits: 256
@@ -30,10 +30,13 @@ MonoBehaviour:
   _lastCheckpoint: {x: 4, y: 0}
   _recoilTimer: 0.2
   _freeFallGravity: 6
+  _maxDeformedScale: 0.6
   _jumpForce: 12
   _jumpGravity: 2.5
   _jumpDrag: 0
+  _coyoteTiming: 0.075
   _wallSlideGravity: 0.5
-  _wallSlideDrag: 0
+  _wallSlideDrag: 0.5
   _inverseMultiplierOfFallSpeed: -4
-  _wallJumpForceHorizontal: 0
+  _wallJumpForceHorizontal: 14
+  _wallJumpForceVerticalRatioWithHorizontal: 1
