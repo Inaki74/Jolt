@@ -47,7 +47,7 @@ namespace Jolt
 
                     if (_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.RecoilState);
+                        _stateMachine.ChangeState(_stateMachine.IdleState);
                         return false;
                     }
                     else if (Mathf.Abs(_player.GetCurrentVelocity().x) < 0.2f)

@@ -48,15 +48,15 @@ namespace Jolt
                         return false;
                     }
 
-                    if (!_isGrounded)
-                    {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
-                        return false;
-                    }
-
                     if (_jumpPressed)
                     {
                         _stateMachine.ChangeState(_stateMachine.JumpState);
+                        return false;
+                    }
+
+                    if (!_isGrounded)
+                    {
+                        _stateMachine.ChangeState(_stateMachine.AirborneState);
                         return false;
                     }
 

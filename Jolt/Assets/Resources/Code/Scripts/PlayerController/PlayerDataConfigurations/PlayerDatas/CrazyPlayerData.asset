@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CrazyPlayerData
   m_EditorClassIdentifier: 
   _playerPhysicsData: {fileID: 11400000, guid: c854d886294874f0ba9fd64350b26df7, type: 2}
-  _movementSpeed: 8
+  _movementSpeed: 10
   _timeSlow: 0.1
   _preDashTimeOut: 0.001
   _amountOfDashes: 2
@@ -34,5 +34,6 @@ MonoBehaviour:
   _jumpGravity: 2.5
   _jumpDrag: 0
   _wallSlideGravity: 0.5
-  _wallSlideDrag: 1
+  _wallSlideDrag: 0
+  _inverseMultiplierOfFallSpeed: -4
   _wallJumpForceHorizontal: 0

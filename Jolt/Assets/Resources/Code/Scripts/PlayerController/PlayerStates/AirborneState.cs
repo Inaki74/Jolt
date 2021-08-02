@@ -49,7 +49,7 @@ namespace Jolt
                     }
                     if (_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.RecoilState);
+                        _stateMachine.ChangeState(_stateMachine.IdleState);
                         return false;
                     }
 

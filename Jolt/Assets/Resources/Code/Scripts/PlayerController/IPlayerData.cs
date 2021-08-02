@@ -27,6 +27,7 @@ namespace Jolt.PlayerController
         float WallSlideGravity { get; }
         float WallSlideDrag { get; }
         float WallJumpForceHorizontal { get; }
+        float WallJumpForceVerticalRatioWithHorizontal { get; }
         float InverseMultiplierOfFallSpeed { get; }
     }
 }

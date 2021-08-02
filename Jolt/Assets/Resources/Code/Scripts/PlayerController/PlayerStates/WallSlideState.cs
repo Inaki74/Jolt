@@ -94,8 +94,8 @@ namespace Jolt
                             _stateMachine.WallJumpState.WallSide = Vector2.right;
                         }
 
-                        //_stateMachine.ChangeState(_stateMachine.WallJumpState);
-                        //return false;
+                        _stateMachine.ChangeState(_stateMachine.WallJumpState);
+                        return false;
                     }
 
                     return true;
