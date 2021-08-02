@@ -55,17 +55,27 @@ namespace Jolt
                     _currentTime = Time.time;
 
                     //_isTouchingWall = _player.CheckIsTouchingWallLeft() || _player.CheckIsTouchingWallRight();
-                    bool timeout = _currentTime - _enterTime > 0.25f;
+                    bool timeout = _currentTime - _enterTime > 0.15f;
                     _reachedPeak = _player.CheckIsFreeFalling();
                     _jumpHeld = _player.InputManager.JumpHeld;
 
                     if (_forceApplied)
                     {
-                        if(!_jumpHeld || _reachedPeak || timeout)
+                        if (timeout)
                         {
+                            if (_jumpHeld)
+                            {
+                                _stateMachine.ChangeState(_stateMachine.FloatingState);
+                                return false;
+                            }
+
                             _stateMachine.ChangeState(_stateMachine.AirborneState);
                             return false;
                         }
+
+                        
+
+                        
                     }
 
                     return true;

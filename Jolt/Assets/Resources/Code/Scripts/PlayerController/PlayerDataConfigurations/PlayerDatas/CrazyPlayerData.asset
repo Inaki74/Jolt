@@ -32,14 +32,16 @@ MonoBehaviour:
   _freeFallGravity: 6
   _maxDeformedScale: 0.6
   _jumpForce: 12
-  _jumpGravity: 2.5
+  _jumpGravity: 4
   _jumpDrag: 0
-  _jumpCoyoteTiming: 0
+  _jumpCoyoteTiming: 0.075
+  _floatGravity: 2
+  _floatDrag: 0
   _wallSlideGravity: 0.5
   _wallSlideDrag: 1
   _inverseMultiplierOfFallSpeed: -3
-  _wallJumpGravity: 0
+  _wallJumpGravity: 3
   _wallJumpDrag: 0
-  _wallJumpForceHorizontal: 14
+  _wallJumpForceHorizontal: 12
   _wallJumpForceVerticalRatioWithHorizontal: 1
-  _wallJumpCoyoteTiming: 0
+  _wallJumpCoyoteTiming: 0.2

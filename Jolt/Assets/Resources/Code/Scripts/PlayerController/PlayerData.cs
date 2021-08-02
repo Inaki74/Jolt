@@ -51,6 +51,10 @@ namespace Jolt
             [SerializeField] private float _jumpDrag;
             [SerializeField] private float _jumpCoyoteTiming;
 
+            [Header("Floating State")]
+            [SerializeField] private float _floatGravity;
+            [SerializeField] private float _floatDrag;
+
             [Header("Wall Slide State")]
             [SerializeField] private float _wallSlideGravity;
             [SerializeField] private float _wallSlideDrag;
@@ -104,6 +108,10 @@ namespace Jolt
             public float JumpDrag { get { return _jumpDrag; } }
 
             public float JumpCoyoteTiming { get { return _jumpCoyoteTiming; } }
+
+            public float FloatGravity { get { return _floatGravity; } }
+
+            public float FloatDrag { get { return _floatDrag; } }
 
             public float WallSlideGravity { get { return _wallSlideGravity; } }
 

@@ -8,7 +8,7 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class JumpState : PlayerState
+            public class FloatingState : PlayerState
             {
                 protected override Color AssociatedColor => Color.green;
 
@@ -20,7 +20,7 @@ namespace Jolt
                 private bool _canDash;
                 private bool _reachedPeak;
 
-                public JumpState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
+                public FloatingState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -29,8 +29,8 @@ namespace Jolt
                     base.Enter();
 
                     _forceApplied = false;
-                    _player.SetGravityScale(_playerData.JumpGravity);
-                    _player.SetDrag(_playerData.JumpDrag);
+                    _player.SetGravityScale(_playerData.FloatGravity);
+                    _player.SetDrag(_playerData.FloatDrag);
                 }
 
                 public override void Exit()
@@ -62,15 +62,9 @@ namespace Jolt
                         return false;
                     }
 
-                    if (_forceApplied)
+                    if (!_jumpHeld || _reachedPeak)
                     {
-                        if (_isGrounded)
-                        {
-                            _stateMachine.ChangeState(_stateMachine.IdleState);
-                            return false;
-                        }
-
-                        _stateMachine.ChangeState(_stateMachine.FloatingState);
+                        _stateMachine.ChangeState(_stateMachine.AirborneState);
                         return false;
                     }
 
@@ -81,12 +75,6 @@ namespace Jolt
                 {
                     base.PhysicsUpdate();
 
-                    if (!_forceApplied)
-                    {
-                        _player.SetRigidbodyVelocityY(0f);
-                        _player.SetMovementByImpulse(Vector2.up, _playerData.JumpForce);
-                        _forceApplied = true;
-                    }
                     _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
 
