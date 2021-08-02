@@ -62,16 +62,19 @@ namespace Jolt
                         return false;
                     }
 
-                    if (_isGrounded && _forceApplied)
+                    if (_forceApplied)
                     {
-                        _stateMachine.ChangeState(_stateMachine.IdleState);
-                        return false;
-                    }
+                        if (_isGrounded)
+                        {
+                            _stateMachine.ChangeState(_stateMachine.IdleState);
+                            return false;
+                        }
 
-                    if (!_jumpPressed || _reachedPeak)
-                    {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
-                        return false;
+                        if (!_jumpPressed || _reachedPeak)
+                        {
+                            _stateMachine.ChangeState(_stateMachine.AirborneState);
+                            return false;
+                        }
                     }
 
                     return true;
@@ -83,6 +86,7 @@ namespace Jolt
 
                     if (!_forceApplied)
                     {
+                        _player.SetRigidbodyVelocityY(0f);
                         _player.SetMovementByImpulse(Vector2.up, _playerData.JumpForce);
                         _forceApplied = true;
                     }

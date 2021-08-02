@@ -56,7 +56,7 @@ namespace Jolt
 
                     if (!_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        _stateMachine.ChangeState(_stateMachine.CoyoteJumpState);
                         return false;
                     }
 

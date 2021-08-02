@@ -24,6 +24,7 @@ namespace Jolt.PlayerController
         float JumpForce { get; }
         float JumpGravity { get; }
         float JumpDrag { get; }
+        float CoyoteTiming { get; }
         float WallSlideGravity { get; }
         float WallSlideDrag { get; }
         float WallJumpForceHorizontal { get; }
