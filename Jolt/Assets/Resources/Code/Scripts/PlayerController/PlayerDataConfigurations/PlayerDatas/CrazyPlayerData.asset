@@ -21,7 +21,7 @@ MonoBehaviour:
   _dashTimeOut: 0.12
   _dashSpeed: 30
   _checkWallRadius: 0.04
-  _checkGroundRadius: 0.04
+  _checkGroundRadius: 0.042
   _whatIsGround:
     serializedVersion: 2
     m_Bits: 256

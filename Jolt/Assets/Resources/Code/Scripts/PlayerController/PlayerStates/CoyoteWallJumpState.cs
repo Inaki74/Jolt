@@ -68,6 +68,12 @@ namespace Jolt
                     base.PhysicsUpdate();
                 }
 
+                protected override void PhysicsFirstStep()
+                {
+                    base.PhysicsFirstStep();
+                    
+                }
+
                 public override string ToString()
                 {
                     return "IdleState";

@@ -15,6 +15,8 @@ namespace Jolt
                 protected IPlayerData _playerData;
                 protected virtual Color AssociatedColor => Color.black;
 
+                private bool _runOnce;
+                private bool _cleanup;
                 protected float _enterTime;
 
                 public PlayerState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData)
@@ -26,11 +28,22 @@ namespace Jolt
 
                 public virtual void Enter()
                 {
+                    _runOnce = false;
                     _player.Sr.color = AssociatedColor;
                     _enterTime = Time.time;
                 }
 
                 public virtual void Exit()
+                {
+                    _cleanup = true;
+                }
+
+                protected virtual void PhysicsFirstStep()
+                {
+
+                }
+
+                protected virtual void PhysicsLastStep()
                 {
 
                 }
@@ -42,6 +55,11 @@ namespace Jolt
 
                 public virtual void PhysicsUpdate()
                 {
+                    if (!_runOnce)
+                    {
+                        PhysicsFirstStep();
+                        _runOnce = true;
+                    }
                 }
             }
         }

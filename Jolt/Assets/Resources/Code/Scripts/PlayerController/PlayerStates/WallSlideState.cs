@@ -23,10 +23,6 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
-
-                    //_player.SetRigidbodyVelocityY(_playerData.InverseMultiplierOfFallSpeed);
-                    //_player.SetGravityScale(_playerData.WallSlideGravity);
-                    //_player.SetDrag(_playerData.WallSlideDrag);
                 }
 
                 public override void Exit()
@@ -74,6 +70,15 @@ namespace Jolt
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
+                }
+
+                protected override void PhysicsFirstStep()
+                {
+                    base.PhysicsFirstStep();
+
+                    _player.SetRigidbodyVelocityY(_playerData.InverseMultiplierOfFallSpeed);
+                    _player.SetGravityScale(_playerData.WallSlideGravity);
+                    _player.SetDrag(_playerData.WallSlideDrag);
                 }
 
                 public override string ToString()

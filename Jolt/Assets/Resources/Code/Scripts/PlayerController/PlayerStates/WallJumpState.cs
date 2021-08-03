@@ -26,10 +26,6 @@ namespace Jolt
                     base.Enter();
 
                     _forceApplied = false;
-
-                    _player.SetGravityScale(_playerData.WallJumpGravity);
-                    _player.SetDrag(_playerData.WallJumpDrag);
-                    //_player.SetRigidbodyVelocityX(0f);
                 }
 
                 public override void Exit()
@@ -83,6 +79,14 @@ namespace Jolt
                         WallJump();
                         _forceApplied = true;
                     }
+                }
+
+                protected override void PhysicsFirstStep()
+                {
+                    base.PhysicsFirstStep();
+
+                    _player.SetGravityScale(_playerData.WallJumpGravity);
+                    _player.SetDrag(_playerData.WallJumpDrag);
                 }
 
                 public override string ToString()

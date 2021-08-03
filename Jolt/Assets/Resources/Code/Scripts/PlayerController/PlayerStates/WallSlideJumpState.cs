@@ -22,9 +22,6 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
-
-                    _player.SetGravityScale(_playerData.JumpGravity);
-                    _player.SetDrag(_playerData.JumpDrag);
                 }
 
                 public override void Exit()
@@ -71,6 +68,14 @@ namespace Jolt
                         _player.SetMovementByImpulse(Vector2.up, _playerData.JumpForce);
                         ForceApplied = true;
                     }
+                }
+
+                protected override void PhysicsFirstStep()
+                {
+                    base.PhysicsFirstStep();
+
+                    _player.SetGravityScale(_playerData.JumpGravity);
+                    _player.SetDrag(_playerData.JumpDrag);
                 }
 
                 public override string ToString()
