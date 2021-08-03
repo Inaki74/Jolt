@@ -20,7 +20,7 @@ MonoBehaviour:
   _circleRadius: 0.15
   _dashTimeOut: 0.12
   _dashSpeed: 30
-  _checkWallRadius: 0.05
+  _checkWallRadius: 0.04
   _checkGroundRadius: 0.04
   _whatIsGround:
     serializedVersion: 2
@@ -44,4 +44,4 @@ MonoBehaviour:
   _wallJumpDrag: 0
   _wallJumpForceHorizontal: 12
   _wallJumpForceVerticalRatioWithHorizontal: 1
-  _wallJumpCoyoteTiming: 0.2
+  _wallJumpCoyoteTiming: 0.1

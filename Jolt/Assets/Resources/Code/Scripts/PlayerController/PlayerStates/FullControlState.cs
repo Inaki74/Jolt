@@ -8,17 +8,17 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class CoyoteWallJumpState : FullControlState
+            public abstract class FullControlState : AliveState
             {
                 protected override Color AssociatedColor => Color.magenta;
 
-                public Vector2 WallSide { private get; set; }
+                protected Vector2 _moveInput;
+                protected bool _jumpPressed;
+                protected bool _jumpHeld;
+                protected bool _isStartingDash;
+                protected bool _canDash;
 
-                private float _currentTime;
-                private bool _isTouchingWallLeft;
-                private bool _isTouchingWallRight;
-
-                public CoyoteWallJumpState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
+                public FullControlState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -41,22 +41,15 @@ namespace Jolt
                         return false;
                     }
 
-                    _currentTime = Time.time;
+                    _moveInput = _player.InputManager.MovementVector;
+                    _jumpPressed = _player.InputManager.JumpPressed;
+                    _jumpHeld = _player.InputManager.JumpHeld;
+                    _isStartingDash = _player.InputManager.DashBegin;
+                    _canDash = _stateMachine.PreDashState.CanDash();
 
-                    bool timeout = _currentTime - _enterTime > _playerData.WallJumpCoyoteTiming;
-                    _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
-                    _isTouchingWallRight = _player.CheckIsTouchingWallRight();
-                    bool isTouchingWall = _isTouchingWallLeft || _isTouchingWallRight;
-
-                    if (_jumpPressed)
+                    if (_isStartingDash && _canDash)
                     {
-                        _stateMachine.ChangeState(_stateMachine.WallJumpState);
-                        return false;
-                    }
-
-                    if (timeout)
-                    {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        _stateMachine.ChangeState(_stateMachine.PreDashState);
                         return false;
                     }
 
@@ -66,6 +59,8 @@ namespace Jolt
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
+
+                    _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
 
                 public override string ToString()

@@ -8,16 +8,12 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class AirborneState : AliveState
+            public class AirborneState : FullControlState
             {
                 protected override Color AssociatedColor => Color.red;
 
-                private Vector2 _moveInput;
                 private bool _isGrounded;
-                private bool _isStartingDash;
                 private bool _isMoving;
-                private bool _canDash;
-                private bool _jumpPressed;
                 private bool _isTouchingWallLeft;
                 private bool _isTouchingWallRight;
                 private float _freefallDeformedScaleX;
@@ -48,11 +44,7 @@ namespace Jolt
                     }
 
                     _isMoving = _moveInput.x != 0;
-                    _moveInput = _player.InputManager.MovementVector;
-                    _jumpPressed = _player.InputManager.JumpPressed;
                     _isGrounded = _player.CheckIsGrounded();
-                    _isStartingDash = _player.InputManager.DashBegin;
-                    _canDash = _stateMachine.PreDashState.CanDash();
                     _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
                     _isTouchingWallRight = _player.CheckIsTouchingWallRight();
                     bool isTouchingWall = _isTouchingWallLeft || _isTouchingWallRight;
@@ -60,11 +52,7 @@ namespace Jolt
                     bool isMovingLeft = _moveInput.x < 0f;
 
                     // If it hits ground -> recoil
-                    if (_isStartingDash && _canDash)
-                    {
-                        _stateMachine.ChangeState(_stateMachine.PreDashState);
-                        return false;
-                    }
+                    
                     if (_isGrounded)
                     {
                         _stateMachine.ChangeState(_stateMachine.IdleState);
@@ -80,21 +68,6 @@ namespace Jolt
                     if (_isTouchingWallRight && isMovingRight)
                     {
                         _stateMachine.ChangeState(_stateMachine.WallSlideState);
-                        return false;
-                    }
-
-                    if (_jumpPressed && isTouchingWall)
-                    {
-                        if (_isTouchingWallLeft)
-                        {
-                            _stateMachine.WallJumpState.JumpDirection = Vector2.right;
-                        }
-                        if (_isTouchingWallRight)
-                        {
-                            _stateMachine.WallJumpState.JumpDirection = Vector2.left;
-                        }
-
-                        _stateMachine.ChangeState(_stateMachine.WallJumpState);
                         return false;
                     }
 
@@ -124,24 +97,25 @@ namespace Jolt
                         _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                     }
 
-                    if (_isMoving)
-                    {
-                        if (_stateMachine.LastState == "ExitRailState")
-                        {
-                            _player.SetMovementXByForce(Vector2.right, _playerData.MovementSpeed * _moveInput.x);
-                        }
-                        else
-                        {
-                            _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
-                        }
-                    }
-                    else
-                    {
-                        if (_stateMachine.LastState != "ExitRailState")
-                        {
-                            _player.SetRigidbodyVelocityX(0f);
-                        }
-                    }
+                    // TODO: WTF is this.
+                    //if (_isMoving)
+                    //{
+                    //    if (_stateMachine.LastState == "ExitRailState")
+                    //    {
+                    //        _player.SetMovementXByForce(Vector2.right, _playerData.MovementSpeed * _moveInput.x);
+                    //    }
+                    //    else
+                    //    {
+                    //        _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    if (_stateMachine.LastState != "ExitRailState")
+                    //    {
+                    //        _player.SetRigidbodyVelocityX(0f);
+                    //    }
+                    //}
                 }
 
                 public override string ToString()

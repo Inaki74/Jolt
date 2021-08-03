@@ -8,14 +8,13 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class FloatingState : FullControlState
+            public class WallSlideFloatingState : OnWallState
             {
-                protected override Color AssociatedColor => Color.green;
+                protected override Color AssociatedColor => Color.gray;
 
                 private bool _reachedPeak;
-                private bool _isTouchingWall;
 
-                public FloatingState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
+                public WallSlideFloatingState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -43,18 +42,12 @@ namespace Jolt
                     {
                         return false;
                     }
+
                     _reachedPeak = _player.CheckIsFreeFalling();
-                    _isTouchingWall = _player.CheckIsTouchingWallLeft() || _player.CheckIsTouchingWallRight();
 
                     if (!_jumpHeld || _reachedPeak)
                     {
                         _stateMachine.ChangeState(_stateMachine.AirborneState);
-                        return false;
-                    }
-
-                    if (_isTouchingWall)
-                    {
-                        _stateMachine.ChangeState(_stateMachine.WallSlideFloatingState);
                         return false;
                     }
 
@@ -74,3 +67,5 @@ namespace Jolt
         }
     }
 }
+
+

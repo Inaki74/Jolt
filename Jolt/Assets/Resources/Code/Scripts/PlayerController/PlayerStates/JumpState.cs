@@ -8,17 +8,13 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class JumpState : PlayerState
+            public class JumpState : FullControlState
             {
                 protected override Color AssociatedColor => Color.green;
 
-                private bool _forceApplied;
-                private bool _jumpHeld;
+                public bool ForceApplied { private get; set; }
                 private bool _isGrounded;
-                private Vector2 _moveInput;
-                private bool _isStartingDash;
-                private bool _canDash;
-                private bool _reachedPeak;
+                private bool _isTouchingWall;
 
                 public JumpState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -28,7 +24,6 @@ namespace Jolt
                 {
                     base.Enter();
 
-                    _forceApplied = false;
                     _player.SetGravityScale(_playerData.JumpGravity);
                     _player.SetDrag(_playerData.JumpDrag);
                 }
@@ -37,6 +32,7 @@ namespace Jolt
                 {
                     base.Exit();
 
+                    ForceApplied = false;
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                     _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
                 }
@@ -50,20 +46,17 @@ namespace Jolt
                         return false;
                     }
 
-                    _moveInput = _player.InputManager.MovementVector;
-                    _jumpHeld = _player.InputManager.JumpHeld;
-                    _isStartingDash = _player.InputManager.DashBegin;
-                    _canDash = _stateMachine.PreDashState.CanDash();
-                    _reachedPeak = _player.CheckIsFreeFalling();
+                    _isTouchingWall = _player.CheckIsTouchingWallLeft() || _player.CheckIsTouchingWallRight();
 
-                    if (_isStartingDash && _canDash)
+                    if (ForceApplied)
                     {
-                        _stateMachine.ChangeState(_stateMachine.PreDashState);
-                        return false;
-                    }
+                        if (_isTouchingWall)
+                        {
+                            _stateMachine.WallSlideJumpState.ForceApplied = true;
+                            _stateMachine.ChangeState(_stateMachine.WallSlideJumpState);
+                            return false;
+                        }
 
-                    if (_forceApplied)
-                    {
                         if (_isGrounded)
                         {
                             _stateMachine.ChangeState(_stateMachine.IdleState);
@@ -81,13 +74,12 @@ namespace Jolt
                 {
                     base.PhysicsUpdate();
 
-                    if (!_forceApplied)
+                    if (!ForceApplied)
                     {
                         _player.SetRigidbodyVelocityY(0f);
                         _player.SetMovementByImpulse(Vector2.up, _playerData.JumpForce);
-                        _forceApplied = true;
+                        ForceApplied = true;
                     }
-                    _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
 
                 public override string ToString()

@@ -8,14 +8,12 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class WallJumpState : AliveState
+            public class WallJumpState : FullControlState
             {
                 protected override Color AssociatedColor => Color.green;
 
-                private bool _jumpHeld;
                 private bool _forceApplied;
                 private float _currentTime;
-                private bool _reachedPeak;
 
                 public Vector2 JumpDirection { private get; set; }
 
@@ -54,9 +52,7 @@ namespace Jolt
 
                     _currentTime = Time.time;
 
-                    //_isTouchingWall = _player.CheckIsTouchingWallLeft() || _player.CheckIsTouchingWallRight();
-                    bool timeout = _currentTime - _enterTime > 0.15f;
-                    _reachedPeak = _player.CheckIsFreeFalling();
+                    bool timeout = _currentTime - _enterTime > 0.15f; // TODO: Make this a variable or maybe i dont need it.
                     _jumpHeld = _player.InputManager.JumpHeld;
 
                     if (_forceApplied)
@@ -72,10 +68,6 @@ namespace Jolt
                             _stateMachine.ChangeState(_stateMachine.AirborneState);
                             return false;
                         }
-
-                        
-
-                        
                     }
 
                     return true;

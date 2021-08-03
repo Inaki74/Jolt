@@ -8,12 +8,10 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class CoyoteJumpState : PlayerState
+            public class CoyoteJumpState : FullControlState
             {
                 protected override Color AssociatedColor => Color.magenta;
 
-                private Vector2 _moveInput;
-                private bool _jumpPressed;
                 private float _currentTime;
 
                 public CoyoteJumpState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
@@ -41,8 +39,6 @@ namespace Jolt
 
                     _currentTime = Time.time;
 
-                    _moveInput = _player.InputManager.MovementVector;
-                    _jumpPressed = _player.InputManager.JumpPressed;
                     bool timeout = _currentTime - _enterTime > _playerData.JumpCoyoteTiming;
 
                     if (_jumpPressed)
@@ -63,7 +59,6 @@ namespace Jolt
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
-                    _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
 
                 public override string ToString()
