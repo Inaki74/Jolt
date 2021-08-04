@@ -53,11 +53,6 @@ namespace Jolt
                     base.PhysicsUpdate();
                     _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
-
-                public override string ToString()
-                {
-                    return "RecoilState";
-                }
             }
         }
     }

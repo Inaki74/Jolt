@@ -9,5 +9,6 @@ namespace Jolt.PlayerController
         Vector3 InitialDashPoint { get; set; }
         Vector3 FinalDashPoint { get; set; }
         bool JumpPressed { get; set; }
+        bool JumpHeld { get; set; }
     }
 }

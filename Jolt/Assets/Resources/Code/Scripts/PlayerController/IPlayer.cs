@@ -14,6 +14,8 @@ namespace Jolt.PlayerController
         bool CheckHasReachedPoint(Vector2 point);
         bool CheckIsGrounded();
         bool CheckIsFreeFalling();
+        bool CheckIsTouchingWallLeft();
+        bool CheckIsTouchingWallRight();
         bool CheckIsTouchingNode();
         bool CheckIsTouchingRail();
         void DeactivateArrowRendering();
@@ -36,5 +38,6 @@ namespace Jolt.PlayerController
         void SetPosition(Vector2 position);
         void SetRigidbodyVelocityX(float velocity);
         void SetRigidbodyVelocityY(float velocity);
+        void SetScale(Vector2 scale);
     }
 }

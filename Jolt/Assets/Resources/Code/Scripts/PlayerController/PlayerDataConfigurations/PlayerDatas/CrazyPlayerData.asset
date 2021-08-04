@@ -15,12 +15,13 @@ MonoBehaviour:
   _playerPhysicsData: {fileID: 11400000, guid: c854d886294874f0ba9fd64350b26df7, type: 2}
   _movementSpeed: 8
   _timeSlow: 0.1
-  _preDashTimeOut: 0.001
+  _preDashTimeOut: 0
   _amountOfDashes: 2
   _circleRadius: 0.15
   _dashTimeOut: 0.12
   _dashSpeed: 30
-  _checkGroundRadius: 0.05
+  _checkWallRadius: 0.05
+  _checkGroundRadius: 0.042
   _whatIsGround:
     serializedVersion: 2
     m_Bits: 256
@@ -28,5 +29,20 @@ MonoBehaviour:
   _deadTimer: 1
   _lastCheckpoint: {x: 4, y: 0}
   _recoilTimer: 0.2
-  _jumpForce: 15
-  _floatGravity: 0
+  _freeFallGravity: 6
+  _maxDeformedScale: 0.6
+  _jumpForce: 12
+  _jumpGravity: 4
+  _jumpDrag: 0
+  _jumpCoyoteTiming: 0.075
+  _floatGravity: 2
+  _floatDrag: 0
+  _wallSlideGravity: 0.5
+  _wallSlideDrag: 1
+  _inverseMultiplierOfFallSpeed: -3
+  _wallJumpDuration: 0.15
+  _wallJumpGravity: 3
+  _wallJumpDrag: 1
+  _wallJumpForceHorizontal: 13
+  _wallJumpForceVerticalRatioWithHorizontal: 1.3
+  _wallJumpCoyoteTiming: 0.075

@@ -54,10 +54,9 @@ namespace Jolt
                 _inputController.Pointer.Returns(false);
                 _inputManager.SetInputController(_inputController);
                 bool dashBegin = false;
-                Vector3 initialDashPoint = Vector3.zero;
                 Vector3 finalDashPoint = Vector3.zero;
 
-                _inputManager.ManageDash(ref dashBegin, ref initialDashPoint, ref finalDashPoint);
+                _inputManager.ManageDash(ref dashBegin, ref finalDashPoint);
 
                 Assert.IsTrue(dashBegin);
             }
@@ -69,10 +68,9 @@ namespace Jolt
                 _inputController.Pointer.Returns(false);
                 _inputManager.SetInputController(_inputController);
                 bool dashBegin = false;
-                Vector3 initialDashPoint = Vector3.zero;
                 Vector3 finalDashPoint = Vector3.zero;
 
-                _inputManager.ManageDash(ref dashBegin, ref initialDashPoint, ref finalDashPoint);
+                _inputManager.ManageDash(ref dashBegin, ref finalDashPoint);
 
                 Assert.AreEqual(Vector3.zero, finalDashPoint);
             }
@@ -86,10 +84,9 @@ namespace Jolt
                 _inputController.Vertical.Returns(-1f);
                 _inputManager.SetInputController(_inputController);
                 bool dashBegin = false;
-                Vector3 initialDashPoint = Vector3.zero;
                 Vector3 finalDashPoint = Vector3.zero;
 
-                _inputManager.ManageDash(ref dashBegin, ref initialDashPoint, ref finalDashPoint);
+                _inputManager.ManageDash(ref dashBegin, ref finalDashPoint);
 
                 Assert.AreEqual(Vector3.down, finalDashPoint);
             }
@@ -102,10 +99,9 @@ namespace Jolt
                 _inputController.Vertical.Returns(-1f);
                 _inputManager.SetInputController(_inputController);
                 bool dashBegin = false;
-                Vector3 initialDashPoint = Vector3.zero;
                 Vector3 finalDashPoint = Vector3.zero;
 
-                _inputManager.ManageDash(ref dashBegin, ref initialDashPoint, ref finalDashPoint);
+                _inputManager.ManageDash(ref dashBegin, ref finalDashPoint);
 
                 Assert.IsFalse(dashBegin);
             }

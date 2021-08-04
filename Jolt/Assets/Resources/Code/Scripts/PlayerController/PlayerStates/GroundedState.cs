@@ -8,13 +8,11 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public abstract class GroundedState : AliveState
+            public abstract class GroundedState : FullControlState
             {
-                protected Vector2 _moveInput;
                 protected bool _isGrounded;
-                protected bool _isStartingDash;
                 protected bool _isMoving;
-                protected bool _jumpPressed;
+                private bool _isTouchingWall;
 
                 public GroundedState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -36,27 +34,26 @@ namespace Jolt
                         return false;
                     }
 
-                    _moveInput = _player.InputManager.MovementVector;
-                    _jumpPressed = _player.InputManager.JumpPressed;
-                    _isStartingDash = _player.InputManager.DashBegin;
                     _isGrounded = _player.CheckIsGrounded();
                     _isMoving = _moveInput.x != 0;
+                    _isTouchingWall = _player.CheckIsTouchingWallLeft() || _player.CheckIsTouchingWallRight();
 
-                    if (_isStartingDash)
+                    if (_jumpPressed)
                     {
-                        _stateMachine.ChangeState(_stateMachine.PreDashState);
+                        //TODO
+                        if (_isTouchingWall)
+                        {
+                            _stateMachine.ChangeState(_stateMachine.WallSlideJumpState);
+                            return false;
+                        }
+
+                        _stateMachine.ChangeState(_stateMachine.JumpState);
                         return false;
                     }
 
                     if (!_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
-                        return false;
-                    }
-
-                    if (_jumpPressed)
-                    {
-                        _stateMachine.ChangeState(_stateMachine.JumpState);
+                        _stateMachine.ChangeState(_stateMachine.CoyoteJumpState);
                         return false;
                     }
 

@@ -37,6 +37,9 @@ namespace Jolt
             private bool _jumpPressed;
             public bool JumpPressed { get => _jumpPressed; set => _jumpPressed = value; }
 
+            private bool _jumpHeld;
+            public bool JumpHeld { get => _jumpHeld; set => _jumpHeld = value; }
+
             private void Start()
             {
                 DecideControlScheme();
@@ -83,9 +86,9 @@ namespace Jolt
             {
                 _playerInputController.ManageMovement(ref _movementVector);
 
-                _playerInputController.ManageDash(ref _dashBegin, ref _initialDashPoint, ref _finalDashPoint);
+                _playerInputController.ManageDash(ref _dashBegin, ref _finalDashPoint);
 
-                _playerInputController.ManageJump(ref _jumpPressed);
+                _playerInputController.ManageJump(ref _jumpPressed, ref _jumpHeld);
             }
         }
     }

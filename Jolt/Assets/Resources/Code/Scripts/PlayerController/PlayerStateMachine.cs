@@ -26,7 +26,14 @@ namespace Jolt
             public ExitRailState ExitRailState { get; private set; }
             public DeadState DeadState { get; private set; }
             public JumpState JumpState { get; private set; }
-            public FallingState FallingState { get; private set; }
+            public FloatingState FloatingState { get; private set; }
+            public CoyoteJumpState CoyoteJumpState { get; private set; }
+            public WallSlideState WallSlideState { get; private set; }
+            public WallJumpState WallJumpState { get; private set; }
+            public CoyoteWallJumpState CoyoteWallJumpState { get; private set; }
+            public WallSlideFloatingState WallSlideFloatingState { get; private set; }
+            public WallSlideJumpState WallSlideJumpState { get; private set; }
+            public WallAirborneState WallAirborneState { get; private set; }
 
             public PlayerStateMachine(IPlayer player, IPlayerData playerData)
             {
@@ -42,7 +49,14 @@ namespace Jolt
                 ExitRailState = new ExitRailState(this, player, playerData);
                 DeadState = new DeadState(this, player, playerData);
                 JumpState = new JumpState(this, player, playerData);
-                FallingState = new FallingState(this, player, playerData);
+                FloatingState = new FloatingState(this, player, playerData);
+                CoyoteJumpState = new CoyoteJumpState(this, player, playerData);
+                WallSlideState = new WallSlideState(this, player, playerData);
+                WallJumpState = new WallJumpState(this, player, playerData);
+                CoyoteWallJumpState = new CoyoteWallJumpState(this, player, playerData);
+                WallSlideFloatingState = new WallSlideFloatingState(this, player, playerData);
+                WallSlideJumpState = new WallSlideJumpState(this, player, playerData);
+                WallAirborneState = new WallAirborneState(this, player, playerData);
             }
 
             public void Initialize()

@@ -47,6 +47,12 @@ namespace Jolt
             [SerializeField]
             private Transform _groundCheckTwo;
 
+            [SerializeField]
+            private Transform _wallCheckOne;
+
+            [SerializeField]
+            private Transform _wallCheckTwo;
+
             private Vector3 _dashStart;
             private Vector3 _dashFinish;
 
@@ -192,6 +198,11 @@ namespace Jolt
                 Rb.drag = drag;
             }
 
+            public void SetScale(Vector2 scale)
+            {
+                transform.localScale = scale;
+            }
+
             public void SetActivePhysicsCollider(bool set)
             {
                 Cc.enabled = set;
@@ -213,6 +224,16 @@ namespace Jolt
             public bool CheckIsFreeFalling()
             {
                 return Rb.velocity.y < 0f;
+            }
+
+            public bool CheckIsTouchingWallLeft()
+            {
+                return Physics2D.OverlapCircle(_wallCheckTwo.position, _playerData.CheckWallRadius, _playerData.WhatIsGround);
+            }
+
+            public bool CheckIsTouchingWallRight()
+            {
+                return Physics2D.OverlapCircle(_wallCheckOne.position, _playerData.CheckWallRadius, _playerData.WhatIsGround);
             }
 
             public bool CheckIsTouchingNode()
@@ -269,6 +290,10 @@ namespace Jolt
             {
                 Instantiate(_deathParticles, transform.position, Quaternion.identity);
             }
+
+            
+
+
             #endregion
         }
 

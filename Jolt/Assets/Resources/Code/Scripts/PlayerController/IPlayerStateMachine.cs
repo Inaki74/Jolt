@@ -18,7 +18,14 @@ namespace Jolt.PlayerController
         ExitRailState ExitRailState { get; }
         DeadState DeadState { get; }
         JumpState JumpState { get; }
-        FallingState FallingState { get; }
+        FloatingState FloatingState { get; }
+        CoyoteJumpState CoyoteJumpState { get; }
+        WallSlideState WallSlideState { get; }
+        WallJumpState WallJumpState { get; }
+        WallSlideFloatingState WallSlideFloatingState { get; }
+        WallSlideJumpState WallSlideJumpState { get; }
+        CoyoteWallJumpState CoyoteWallJumpState { get; }
+        WallAirborneState WallAirborneState { get; }
 
         void ChangeState(PlayerState newState);
         string GetState();

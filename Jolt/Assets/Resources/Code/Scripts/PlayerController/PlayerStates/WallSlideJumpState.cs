@@ -8,15 +8,14 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class JumpState : FullControlState
+            public class WallSlideJumpState : OnWallState
             {
-                protected override Color AssociatedColor => Color.green;
+                protected override Color AssociatedColor => Color.gray;
 
                 public bool ForceApplied { private get; set; }
                 private bool _isGrounded;
-                private bool _isTouchingWall;
 
-                public JumpState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
+                public WallSlideJumpState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -43,24 +42,15 @@ namespace Jolt
                         return false;
                     }
 
-                    _isTouchingWall = _player.CheckIsTouchingWallLeft() || _player.CheckIsTouchingWallRight();
-
-                    if (ForceApplied)
+                    if (ForceApplied && !_isGrounded)
                     {
-                        if (_isTouchingWall)
-                        {
-                            _stateMachine.WallSlideJumpState.ForceApplied = true;
-                            _stateMachine.ChangeState(_stateMachine.WallSlideJumpState);
-                            return false;
-                        }
+                        _stateMachine.ChangeState(_stateMachine.WallSlideFloatingState);
+                        return false;
+                    }
 
-                        if (_isGrounded)
-                        {
-                            _stateMachine.ChangeState(_stateMachine.IdleState);
-                            return false;
-                        }
-
-                        _stateMachine.ChangeState(_stateMachine.FloatingState);
+                    if (ForceApplied && _isGrounded)
+                    {
+                        _stateMachine.ChangeState(_stateMachine.IdleState);
                         return false;
                     }
 
@@ -70,7 +60,6 @@ namespace Jolt
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
-
                     if (!ForceApplied)
                     {
                         _player.SetRigidbodyVelocityY(0f);
@@ -90,3 +79,5 @@ namespace Jolt
         }
     }
 }
+
+

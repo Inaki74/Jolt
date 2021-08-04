@@ -12,7 +12,7 @@ namespace Jolt
             {
                 private IInputController _inputController;
 
-                public void ManageDash(ref bool dashBegin, ref Vector3 initialDashPoint, ref Vector3 finalDashPoint)
+                public void ManageDash(ref bool dashBegin, ref Vector3 finalDashPoint)
                 {
                     float horizontalInput = _inputController.Horizontal;
                     float verticalInput = _inputController.Vertical;
@@ -37,25 +37,28 @@ namespace Jolt
                         dashBegin = false;
                     }
 
-                    if (_inputController.DashDown)
+                    if (_inputController.DashDown && inputVector != Vector2.zero)
                     {
                         dashBegin = true;
                         finalDashPoint = inputVector;
                     }
                 }
 
-                public void ManageJump(ref bool jumpingBool)
+                public void ManageJump(ref bool jumpingBool, ref bool holdJump)
                 {
-                    bool jumpInput = _inputController.JumpDown || _inputController.JumpHold;
+                    bool jumpInput = _inputController.JumpDown;
+                    bool holdInput = _inputController.JumpHold;
 
                     jumpingBool = jumpInput;
+                    holdJump = holdInput;
                 }
 
                 public void ManageMovement(ref Vector2 movementVector)
                 {
                     float horizontalInput = _inputController.Horizontal;
+                    float verticalInput = _inputController.Vertical;
 
-                    movementVector.Set(horizontalInput, movementVector.y);
+                    movementVector.Set(horizontalInput, verticalInput);
                 }
 
                 public void SetInputController(IInputController inputController)
