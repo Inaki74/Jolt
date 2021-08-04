@@ -33,6 +33,18 @@ namespace Jolt
 
                 public override bool LogicUpdate()
                 {
+                    _jumpHeld = _player.InputManager.JumpHeld;
+                    _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
+                    _isTouchingWallRight = _player.CheckIsTouchingWallRight();
+
+                    bool isTouchingWall = _isTouchingWallLeft || _isTouchingWallRight;
+
+                    if (_jumpHeld && !isTouchingWall)
+                    {
+                        _stateMachine.ChangeState(_stateMachine.FloatingState);
+                        return false;
+                    }
+
                     bool continueExecution = base.LogicUpdate();
 
                     if (!continueExecution)

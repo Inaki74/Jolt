@@ -42,8 +42,6 @@ namespace Jolt
                         return false;
                     }
 
-                    _isGrounded = _player.CheckIsGrounded();
-
                     if (ForceApplied && !_isGrounded)
                     {
                         _stateMachine.ChangeState(_stateMachine.WallSlideFloatingState);

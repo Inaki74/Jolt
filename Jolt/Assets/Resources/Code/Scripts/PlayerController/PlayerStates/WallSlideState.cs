@@ -12,10 +12,6 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.blue;
 
-                private bool _isGrounded;
-                private bool _isTouchingWallLeft;
-                private bool _isTouchingWallRight;
-
                 public WallSlideState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
@@ -59,7 +55,6 @@ namespace Jolt
                         (_isTouchingWallRight && !isMovingRight) ||
                         (!isTouchingWall))
                     {
-
                         _stateMachine.ChangeState(_stateMachine.CoyoteWallJumpState);
                         return false;
                     }

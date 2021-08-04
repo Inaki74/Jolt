@@ -12,9 +12,9 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.magenta;
 
-                private bool _isGrounded;
-                private bool _isTouchingWallLeft;
-                private bool _isTouchingWallRight;
+                protected bool _isGrounded;
+                protected bool _isTouchingWallLeft;
+                protected bool _isTouchingWallRight;
 
                 public OnWallState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
