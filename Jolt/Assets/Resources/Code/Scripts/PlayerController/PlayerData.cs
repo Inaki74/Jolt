@@ -61,6 +61,7 @@ namespace Jolt
             [SerializeField] private float _inverseMultiplierOfFallSpeed;
 
             [Header("Wall Jump State")]
+            [SerializeField] private float _wallJumpDuration;
             [SerializeField] private float _wallJumpGravity;
             [SerializeField] private float _wallJumpDrag;
             [SerializeField] private float _wallJumpForceHorizontal;
@@ -118,6 +119,8 @@ namespace Jolt
             public float WallSlideDrag { get { return _wallSlideDrag; } }
 
             public float InverseMultiplierOfFallSpeed { get { return _inverseMultiplierOfFallSpeed; } }
+
+            public float WallJumpDuration { get { return _wallJumpDuration; } }
 
             public float WallJumpGravity { get { return _wallJumpGravity; } }
 

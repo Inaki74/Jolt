@@ -19,8 +19,6 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
-
-                    _player.SetRigidbodyVelocityX(0f);
                 }
 
                 public override bool LogicUpdate()
@@ -42,9 +40,10 @@ namespace Jolt
                     return true;
                 }
 
-                public override string ToString()
+                protected override void PhysicsFirstStep()
                 {
-                    return "IdleState";
+                    base.PhysicsFirstStep();
+                    _player.SetRigidbodyVelocityX(0f);
                 }
             }
         }

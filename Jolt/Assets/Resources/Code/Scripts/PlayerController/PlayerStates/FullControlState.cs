@@ -8,13 +8,17 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class CoyoteJumpState : FullControlState
+            public abstract class FullControlState : AliveState
             {
                 protected override Color AssociatedColor => Color.magenta;
 
-                private float _currentTime;
+                protected Vector2 _moveInput;
+                protected bool _jumpPressed;
+                protected bool _jumpHeld;
+                protected bool _isStartingDash;
+                protected bool _canDash;
 
-                public CoyoteJumpState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
+                public FullControlState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -37,19 +41,15 @@ namespace Jolt
                         return false;
                     }
 
-                    _currentTime = Time.time;
+                    _moveInput = _player.InputManager.MovementVector;
+                    _jumpPressed = _player.InputManager.JumpPressed;
+                    _jumpHeld = _player.InputManager.JumpHeld;
+                    _isStartingDash = _player.InputManager.DashBegin;
+                    _canDash = _stateMachine.PreDashState.CanDash();
 
-                    bool timeout = _currentTime - _enterTime > _playerData.JumpCoyoteTiming;
-
-                    if (_jumpPressed)
+                    if (_isStartingDash && _canDash)
                     {
-                        _stateMachine.ChangeState(_stateMachine.JumpState);
-                        return false;
-                    }
-
-                    if (timeout)
-                    {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        _stateMachine.ChangeState(_stateMachine.PreDashState);
                         return false;
                     }
 
@@ -59,6 +59,8 @@ namespace Jolt
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
+
+                    _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
             }
         }

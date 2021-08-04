@@ -8,14 +8,12 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class WallJumpState : AliveState
+            public class WallJumpState : FullControlState
             {
                 protected override Color AssociatedColor => Color.green;
 
-                private bool _jumpHeld;
                 private bool _forceApplied;
                 private float _currentTime;
-                private bool _reachedPeak;
 
                 public Vector2 JumpDirection { private get; set; }
 
@@ -28,10 +26,6 @@ namespace Jolt
                     base.Enter();
 
                     _forceApplied = false;
-
-                    _player.SetGravityScale(_playerData.WallJumpGravity);
-                    _player.SetDrag(_playerData.WallJumpDrag);
-                    //_player.SetRigidbodyVelocityX(0f);
                 }
 
                 public override void Exit()
@@ -54,9 +48,7 @@ namespace Jolt
 
                     _currentTime = Time.time;
 
-                    //_isTouchingWall = _player.CheckIsTouchingWallLeft() || _player.CheckIsTouchingWallRight();
-                    bool timeout = _currentTime - _enterTime > 0.15f;
-                    _reachedPeak = _player.CheckIsFreeFalling();
+                    bool timeout = _currentTime - _enterTime > _playerData.WallJumpDuration; // TODO: Make this a variable or maybe i dont need it.
                     _jumpHeld = _player.InputManager.JumpHeld;
 
                     if (_forceApplied)
@@ -72,10 +64,6 @@ namespace Jolt
                             _stateMachine.ChangeState(_stateMachine.AirborneState);
                             return false;
                         }
-
-                        
-
-                        
                     }
 
                     return true;
@@ -83,7 +71,7 @@ namespace Jolt
 
                 public override void PhysicsUpdate()
                 {
-                    base.PhysicsUpdate();
+                    //base.PhysicsUpdate();
 
                     if (!_forceApplied)
                     {
@@ -93,9 +81,12 @@ namespace Jolt
                     }
                 }
 
-                public override string ToString()
+                protected override void PhysicsFirstStep()
                 {
-                    return "IdleState";
+                    base.PhysicsFirstStep();
+
+                    _player.SetGravityScale(_playerData.WallJumpGravity);
+                    _player.SetDrag(_playerData.WallJumpDrag);
                 }
 
                 private void WallJump()

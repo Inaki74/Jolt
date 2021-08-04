@@ -38,13 +38,6 @@ namespace Jolt
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
-
-                    _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
-                }
-
-                public override string ToString()
-                {
-                    return "MoveState";
                 }
             }
         }

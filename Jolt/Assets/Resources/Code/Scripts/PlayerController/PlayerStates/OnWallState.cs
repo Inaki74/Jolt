@@ -8,17 +8,15 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class CoyoteWallJumpState : FullControlState
+            public abstract class OnWallState : FullControlState
             {
                 protected override Color AssociatedColor => Color.magenta;
 
-                public Vector2 WallSide { private get; set; }
+                protected bool _isGrounded;
+                protected bool _isTouchingWallLeft;
+                protected bool _isTouchingWallRight;
 
-                private float _currentTime;
-                private bool _isTouchingWallLeft;
-                private bool _isTouchingWallRight;
-
-                public CoyoteWallJumpState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
+                public OnWallState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -41,9 +39,7 @@ namespace Jolt
                         return false;
                     }
 
-                    _currentTime = Time.time;
-
-                    bool timeout = _currentTime - _enterTime > _playerData.WallJumpCoyoteTiming;
+                    _isGrounded = _player.CheckIsGrounded();
                     _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
                     _isTouchingWallRight = _player.CheckIsTouchingWallRight();
                     bool isTouchingWall = _isTouchingWallLeft || _isTouchingWallRight;
@@ -54,10 +50,20 @@ namespace Jolt
                         return false;
                     }
 
-                    if (timeout)
+                    if (!isTouchingWall)
                     {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        _stateMachine.ChangeState(_stateMachine.CoyoteWallJumpState);
                         return false;
+                    }
+
+                    if (_isTouchingWallLeft)
+                    {
+                        _stateMachine.WallJumpState.JumpDirection = Vector2.right;
+                    }
+
+                    if (_isTouchingWallRight)
+                    {
+                        _stateMachine.WallJumpState.JumpDirection = Vector2.left;
                     }
 
                     return true;
@@ -71,8 +77,10 @@ namespace Jolt
                 protected override void PhysicsFirstStep()
                 {
                     base.PhysicsFirstStep();
-                    
+
+                    _player.SetRigidbodyVelocityX(0f);
                 }
+
             }
         }
     }
