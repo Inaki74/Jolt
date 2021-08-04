@@ -73,8 +73,8 @@ namespace Jolt
 
                     if (!ForceApplied)
                     {
-                        _player.SetRigidbodyVelocityY(0f);
-                        _player.SetMovementByImpulse(Vector2.up, _playerData.JumpForce);
+                        _player.SetRigidbodyVelocityY(_playerData.JumpForce);
+                        //_player.SetMovementByImpulse(Vector2.up, _playerData.JumpForce);
                         ForceApplied = true;
                     }
                 }

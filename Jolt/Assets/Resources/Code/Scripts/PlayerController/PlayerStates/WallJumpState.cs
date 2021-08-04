@@ -97,9 +97,12 @@ namespace Jolt
 
                     Vector2 impulseDirection = new Vector2(horizontalForce, verticalForce);
                     Vector2 side = new Vector2(JumpDirection.x, Mathf.Abs(JumpDirection.x));
-                    impulseDirection = impulseDirection * side;
+                    impulseDirection = impulseDirection * side * speed;
 
-                    _player.SetMovementByImpulse(impulseDirection, speed);
+                    _player.SetRigidbodyVelocityX(impulseDirection.x);
+                    _player.SetRigidbodyVelocityY(impulseDirection.y);
+
+                    //_player.SetMovementByImpulse(impulseDirection, speed);
                 }
             }
         }
