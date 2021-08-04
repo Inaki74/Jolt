@@ -56,6 +56,16 @@ namespace Jolt
                         return false;
                     }
 
+                    if (_isTouchingWallLeft)
+                    {
+                        _stateMachine.WallJumpState.JumpDirection = Vector2.right;
+                    }
+
+                    if (_isTouchingWallRight)
+                    {
+                        _stateMachine.WallJumpState.JumpDirection = Vector2.left;
+                    }
+
                     return true;
                 }
 
@@ -71,10 +81,6 @@ namespace Jolt
                     _player.SetRigidbodyVelocityX(0f);
                 }
 
-                public override string ToString()
-                {
-                    return "IdleState";
-                }
             }
         }
     }

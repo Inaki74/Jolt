@@ -25,6 +25,7 @@ namespace Jolt.PlayerController
         WallSlideFloatingState WallSlideFloatingState { get; }
         WallSlideJumpState WallSlideJumpState { get; }
         CoyoteWallJumpState CoyoteWallJumpState { get; }
+        WallAirborneState WallAirborneState { get; }
 
         void ChangeState(PlayerState newState);
         string GetState();

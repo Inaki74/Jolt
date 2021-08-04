@@ -63,11 +63,6 @@ namespace Jolt
 
                     return true;
                 }
-
-                public override string ToString()
-                {
-                    return "DeadState";
-                }
             }
 
         }

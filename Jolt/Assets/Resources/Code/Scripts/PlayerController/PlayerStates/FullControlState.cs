@@ -62,11 +62,6 @@ namespace Jolt
 
                     _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
-
-                public override string ToString()
-                {
-                    return "IdleState";
-                }
             }
         }
     }

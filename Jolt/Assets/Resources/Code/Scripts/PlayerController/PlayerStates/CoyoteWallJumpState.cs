@@ -73,11 +73,6 @@ namespace Jolt
                     base.PhysicsFirstStep();
                     
                 }
-
-                public override string ToString()
-                {
-                    return "IdleState";
-                }
             }
         }
     }

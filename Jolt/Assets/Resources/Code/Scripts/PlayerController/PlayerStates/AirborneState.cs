@@ -59,15 +59,16 @@ namespace Jolt
                         return false;
                     }
 
-                    if (_isTouchingWallLeft && isMovingLeft)
+                    if (isTouchingWall)
                     {
-                        _stateMachine.ChangeState(_stateMachine.WallSlideState);
-                        return false;
-                    }
+                        if((_isTouchingWallLeft && isMovingLeft) ||
+                            (_isTouchingWallRight && isMovingRight))
+                        {
+                            _stateMachine.ChangeState(_stateMachine.WallSlideState);
+                            return false;
+                        }
 
-                    if (_isTouchingWallRight && isMovingRight)
-                    {
-                        _stateMachine.ChangeState(_stateMachine.WallSlideState);
+                        _stateMachine.ChangeState(_stateMachine.WallAirborneState);
                         return false;
                     }
 
@@ -78,24 +79,7 @@ namespace Jolt
                 {
                     base.PhysicsUpdate();
 
-                    if(_moveInput.y < 0f)
-                    {
-                        if(_freefallDeformedScaleX > _playerData.MaxDeformedScale)
-                        {
-                            _freefallDeformedScaleX -= 0.01f;
-                        }
-                        
-                        Vector2 newScale = new Vector2(_freefallDeformedScaleX, 1f);
-                        _player.SetScale(newScale);
-
-                        _player.SetGravityScale(_playerData.FreeFallGravity);
-                    }
-                    else
-                    {
-                        _freefallDeformedScaleX = 1f;
-                        _player.SetScale(Vector2.one);
-                        _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
-                    }
+                    Freefall();
 
                     // TODO: WTF is this.
                     //if (_isMoving)
@@ -118,9 +102,26 @@ namespace Jolt
                     //}
                 }
 
-                public override string ToString()
+                private void Freefall()
                 {
-                    return "AirborneState";
+                    if (_moveInput.y < 0f)
+                    {
+                        if (_freefallDeformedScaleX > _playerData.MaxDeformedScale)
+                        {
+                            _freefallDeformedScaleX -= 0.01f;
+                        }
+
+                        Vector2 newScale = new Vector2(_freefallDeformedScaleX, 1f);
+                        _player.SetScale(newScale);
+
+                        _player.SetGravityScale(_playerData.FreeFallGravity);
+                    }
+                    else
+                    {
+                        _freefallDeformedScaleX = 1f;
+                        _player.SetScale(Vector2.one);
+                        _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
+                    }
                 }
             }
         }

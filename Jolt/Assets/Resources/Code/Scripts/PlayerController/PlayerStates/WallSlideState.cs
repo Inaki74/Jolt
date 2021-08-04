@@ -38,10 +38,6 @@ namespace Jolt
                         return false;
                     }
 
-                    _isGrounded = _player.CheckIsGrounded();
-                    _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
-                    _isTouchingWallRight = _player.CheckIsTouchingWallRight();
-                    bool isTouchingWall = _isTouchingWallLeft || _isTouchingWallRight;
                     bool isMovingRight = _moveInput.x > 0f;
                     bool isMovingLeft = _moveInput.x < 0f;
 
@@ -52,10 +48,9 @@ namespace Jolt
                     }
 
                     if ((_isTouchingWallLeft && !isMovingLeft) ||
-                        (_isTouchingWallRight && !isMovingRight) ||
-                        (!isTouchingWall))
+                        (_isTouchingWallRight && !isMovingRight))
                     {
-                        _stateMachine.ChangeState(_stateMachine.CoyoteWallJumpState);
+                        _stateMachine.ChangeState(_stateMachine.WallAirborneState);
                         return false;
                     }
 
@@ -74,11 +69,6 @@ namespace Jolt
                     _player.SetRigidbodyVelocityY(_playerData.InverseMultiplierOfFallSpeed);
                     _player.SetGravityScale(_playerData.WallSlideGravity);
                     _player.SetDrag(_playerData.WallSlideDrag);
-                }
-
-                public override string ToString()
-                {
-                    return "IdleState";
                 }
             }
         }

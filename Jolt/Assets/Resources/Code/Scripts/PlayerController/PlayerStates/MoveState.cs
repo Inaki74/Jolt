@@ -39,11 +39,6 @@ namespace Jolt
                 {
                     base.PhysicsUpdate();
                 }
-
-                public override string ToString()
-                {
-                    return "MoveState";
-                }
             }
         }
     }

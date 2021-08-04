@@ -28,6 +28,7 @@ namespace Jolt
 
                 public virtual void Enter()
                 {
+                    Debug.Log(this);
                     _runOnce = false;
                     _player.Sr.color = AssociatedColor;
                     _enterTime = Time.time;

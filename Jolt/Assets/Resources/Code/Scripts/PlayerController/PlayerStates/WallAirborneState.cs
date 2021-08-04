@@ -8,13 +8,13 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class CoyoteJumpState : FullControlState
+            public class WallAirborneState : OnWallState
             {
-                protected override Color AssociatedColor => Color.magenta;
+                protected override Color AssociatedColor => Color.black;
 
-                private float _currentTime;
+                public bool ForceApplied { private get; set; }
 
-                public CoyoteJumpState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
+                public WallAirborneState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
 
@@ -37,19 +37,19 @@ namespace Jolt
                         return false;
                     }
 
-                    _currentTime = Time.time;
+                    bool isMovingRight = _moveInput.x > 0f;
+                    bool isMovingLeft = _moveInput.x < 0f;
 
-                    bool timeout = _currentTime - _enterTime > _playerData.JumpCoyoteTiming;
-
-                    if (_jumpPressed)
+                    if (_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.JumpState);
+                        _stateMachine.ChangeState(_stateMachine.IdleState);
                         return false;
                     }
 
-                    if (timeout)
+                    if ((_isTouchingWallLeft && isMovingLeft) ||
+                        (_isTouchingWallRight && isMovingRight))
                     {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        _stateMachine.ChangeState(_stateMachine.WallSlideState);
                         return false;
                     }
 
@@ -60,7 +60,14 @@ namespace Jolt
                 {
                     base.PhysicsUpdate();
                 }
+
+                protected override void PhysicsFirstStep()
+                {
+                    base.PhysicsFirstStep();
+                }
             }
         }
     }
 }
+
+

@@ -33,15 +33,8 @@ namespace Jolt
 
                 public override bool LogicUpdate()
                 {
-                    _jumpHeld = _player.InputManager.JumpHeld;
-                    _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
-                    _isTouchingWallRight = _player.CheckIsTouchingWallRight();
-
-                    bool isTouchingWall = _isTouchingWallLeft || _isTouchingWallRight;
-
-                    if (_jumpHeld && !isTouchingWall)
+                    if (!CheckFloatingStateChange())
                     {
-                        _stateMachine.ChangeState(_stateMachine.FloatingState);
                         return false;
                     }
 
@@ -53,10 +46,19 @@ namespace Jolt
                     }
 
                     _reachedPeak = _player.CheckIsFreeFalling();
+                    bool isMovingRight = _moveInput.x > 0f;
+                    bool isMovingLeft = _moveInput.x < 0f;
 
                     if (!_jumpHeld || _reachedPeak)
                     {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        if((_isTouchingWallLeft && isMovingLeft) ||
+                            (_isTouchingWallRight && isMovingRight))
+                        {
+                            _stateMachine.ChangeState(_stateMachine.WallSlideState);
+                            return false;
+                        }
+
+                        _stateMachine.ChangeState(_stateMachine.WallAirborneState);
                         return false;
                     }
 
@@ -75,9 +77,21 @@ namespace Jolt
                     _player.SetDrag(_playerData.FloatDrag);
                 }
 
-                public override string ToString()
+                private bool CheckFloatingStateChange()
                 {
-                    return "IdleState";
+                    _jumpHeld = _player.InputManager.JumpHeld;
+                    _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
+                    _isTouchingWallRight = _player.CheckIsTouchingWallRight();
+
+                    bool isTouchingWall = _isTouchingWallLeft || _isTouchingWallRight;
+
+                    if (_jumpHeld && !isTouchingWall)
+                    {
+                        _stateMachine.ChangeState(_stateMachine.FloatingState);
+                        return false;
+                    }
+
+                    return true;
                 }
             }
         }

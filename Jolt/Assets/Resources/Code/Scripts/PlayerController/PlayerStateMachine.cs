@@ -33,6 +33,7 @@ namespace Jolt
             public CoyoteWallJumpState CoyoteWallJumpState { get; private set; }
             public WallSlideFloatingState WallSlideFloatingState { get; private set; }
             public WallSlideJumpState WallSlideJumpState { get; private set; }
+            public WallAirborneState WallAirborneState { get; private set; }
 
             public PlayerStateMachine(IPlayer player, IPlayerData playerData)
             {
@@ -55,6 +56,7 @@ namespace Jolt
                 CoyoteWallJumpState = new CoyoteWallJumpState(this, player, playerData);
                 WallSlideFloatingState = new WallSlideFloatingState(this, player, playerData);
                 WallSlideJumpState = new WallSlideJumpState(this, player, playerData);
+                WallAirborneState = new WallAirborneState(this, player, playerData);
             }
 
             public void Initialize()

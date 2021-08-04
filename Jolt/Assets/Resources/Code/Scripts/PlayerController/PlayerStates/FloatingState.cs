@@ -73,11 +73,6 @@ namespace Jolt
                     _player.SetGravityScale(_playerData.FloatGravity);
                     _player.SetDrag(_playerData.FloatDrag);
                 }
-
-                public override string ToString()
-                {
-                    return "IdleState";
-                }
             }
         }
     }

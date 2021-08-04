@@ -45,11 +45,6 @@ namespace Jolt
                     base.PhysicsFirstStep();
                     _player.SetRigidbodyVelocityX(0f);
                 }
-
-                public override string ToString()
-                {
-                    return "IdleState";
-                }
             }
         }
     }

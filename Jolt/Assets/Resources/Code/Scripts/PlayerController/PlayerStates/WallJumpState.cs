@@ -48,7 +48,7 @@ namespace Jolt
 
                     _currentTime = Time.time;
 
-                    bool timeout = _currentTime - _enterTime > 0.15f; // TODO: Make this a variable or maybe i dont need it.
+                    bool timeout = _currentTime - _enterTime > _playerData.WallJumpDuration; // TODO: Make this a variable or maybe i dont need it.
                     _jumpHeld = _player.InputManager.JumpHeld;
 
                     if (_forceApplied)
@@ -71,7 +71,7 @@ namespace Jolt
 
                 public override void PhysicsUpdate()
                 {
-                    base.PhysicsUpdate();
+                    //base.PhysicsUpdate();
 
                     if (!_forceApplied)
                     {
@@ -87,11 +87,6 @@ namespace Jolt
 
                     _player.SetGravityScale(_playerData.WallJumpGravity);
                     _player.SetDrag(_playerData.WallJumpDrag);
-                }
-
-                public override string ToString()
-                {
-                    return "IdleState";
                 }
 
                 private void WallJump()
