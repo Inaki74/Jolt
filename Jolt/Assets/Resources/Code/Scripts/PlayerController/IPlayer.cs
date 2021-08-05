@@ -9,6 +9,7 @@ namespace Jolt.PlayerController
         SpriteRenderer Sr { get; }
         BoxCollider2D Bc { get; }
         bool IsDead { get; set; }
+        Vector2 Velocity { get; set; }
 
         bool CheckHasReachedPoint(Vector2 point);
         bool CheckIsGrounded();
@@ -22,7 +23,6 @@ namespace Jolt.PlayerController
         Collider2D GetNodeInfo();
         RailController GetRailInfo();
         void InstantiateDeathParticles();
-        void MoveTowardsVector(Vector2 vector, float velocity);
         void ResetPosition();
         void SetActivePhysicsCollider(bool set);
         void SetActiveSpriteRenderer(bool set);
@@ -31,7 +31,11 @@ namespace Jolt.PlayerController
         void SetDrag(float drag);
         void SetPosition(Vector2 position);
         void SetScale(Vector2 scale);
+        void Gravity();
+        void ResetGravity();
+        void SetVelocity(Vector2 velocity);
         void Dash(Vector3 startPos, Vector3 finalPos, float velocity);
+        void Move(Vector2 vector);
         void MoveX(float direction, float velocity);
         void MoveY(float direction, float velocity);
     }

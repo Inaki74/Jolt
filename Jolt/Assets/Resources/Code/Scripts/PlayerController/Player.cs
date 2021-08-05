@@ -7,6 +7,7 @@ namespace Jolt
 {
     namespace PlayerController
     {
+        [RequireComponent(typeof(PlayerController))]
         [RequireComponent(typeof(SpriteRenderer))]
         [RequireComponent(typeof(BoxCollider2D))]
         [RequireComponent(typeof(PlayerInputManager))]
@@ -24,8 +25,7 @@ namespace Jolt
 
             public IPlayerStateMachine StateMachine { get; private set; }
             public IPlayerInputManager InputManager { get; private set; }
-
-            //public Rigidbody2D Rb { get; private set; }
+            public IPlayerController PlayerController { get; private set; }
             public SpriteRenderer Sr { get; private set; }
             public BoxCollider2D Bc { get; private set; }
 
@@ -34,6 +34,13 @@ namespace Jolt
             #endregion
 
             #region Auxiliary Variables
+            private const float GRAVITY = -9.8f;
+
+            private float _gravityScale;
+
+            private Vector2 _velocity;
+            public Vector2 Velocity { get { return _velocity; } set { _velocity = value; } }
+
             //[SerializeField]
             //private Vector2 _checkpoint;
 
@@ -83,7 +90,7 @@ namespace Jolt
 
             private void GetComponents()
             {
-                //Rb = GetComponent<Rigidbody2D>();
+                PlayerController = GetComponent<PlayerController>();
                 Sr = GetComponent<SpriteRenderer>();
                 Bc = GetComponent<BoxCollider2D>();
                 InputManager = GetComponent<PlayerInputManager>();
@@ -95,7 +102,7 @@ namespace Jolt
 
             private void SetRigidbody()
             {
-                //Rb.gravityScale = _playerData.PlayerPhysicsData.StandardGravity;
+                _gravityScale = _playerData.PlayerPhysicsData.StandardGravity;
                 //Rb.drag = _playerData.PlayerPhysicsData.StandardLinearDrag;
             }
 
@@ -116,23 +123,24 @@ namespace Jolt
             #endregion
 
             #region Set Functions
-            public void MoveTowardsVector(Vector2 vector, float velocity)
+            public void Gravity()
             {
-                //Debug.Log("Transform: (" + transform.position.x + " , " + transform.position.y + ") , Point: (" + v.x + " , " + v.y + ")");
-                _auxVector2.Set(vector.x, vector.y);
-                transform.position = Vector2.MoveTowards(transform.position, _auxVector2, velocity * Time.deltaTime);
+                _velocity.y += Time.deltaTime * GRAVITY * _gravityScale;
+            }
+
+            public void Move(Vector2 vector)
+            {
+                PlayerController.Move(vector);
             }
 
             public void MoveX(float direction, float velocity)
             {
-                //_auxVector2.Set(velocity, Rb.velocity.y);
-                //Rb.velocity = _auxVector2;
+                PlayerController.MoveX(direction, velocity);
             }
 
             public void MoveY(float direction, float velocity)
             {
-                //_auxVector2.Set(Rb.velocity.x, velocity);
-                //Rb.velocity = _auxVector2;
+                PlayerController.MoveY(direction, velocity);
             }
 
             public void Dash(Vector3 startPos, Vector3 finalPos, float velocity)
@@ -173,7 +181,17 @@ namespace Jolt
 
             public void SetGravityScale(float gravity)
             {
-                //Rb.gravityScale = gravity;
+                _gravityScale = gravity;
+            }
+
+            public void SetVelocity(Vector2 velocity)
+            {
+                _velocity = velocity;
+            }
+
+            public void ResetGravity()
+            {
+                _velocity.y = 0f;
             }
 
             public void SetDrag(float drag)

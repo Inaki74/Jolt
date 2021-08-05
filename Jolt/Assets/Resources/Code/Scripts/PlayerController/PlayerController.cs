@@ -10,7 +10,6 @@ namespace Jolt
         [RequireComponent(typeof(BoxCollider2D))]
         public class PlayerController : MonoBehaviour, IPlayerController
         {
-            public IPlayerInputManager InputManager { get; private set; }
             private Collider2D _collider;
 
             private const float _skinWidth = 0.025f;
@@ -32,8 +31,6 @@ namespace Jolt
             private void GetComponents()
             {
                 _collider = GetComponent<BoxCollider2D>();
-
-                InputManager = GetComponent<PlayerInputManager>();
             }
 
             private void SetRaycastPositions()
@@ -59,18 +56,10 @@ namespace Jolt
                 _verticalRaySpacing = colliderBounds.size.y / (_verticalRayCount - 1);
             }
 
-            // Update is called once per frame
-            void Update()
+            public void Move(Vector2 direction)
             {
-                Vector2 movementVector = InputManager.MovementVector;
-
-                Move(movementVector, 5f);
-            }
-
-            public void Move(Vector2 direction, float speed)
-            {
-                MoveX(direction.x, speed);
-                MoveY(direction.y, speed);
+                MoveX(Mathf.Sign(direction.x), Mathf.Abs(direction.x));
+                MoveY(Mathf.Sign(direction.y), Mathf.Abs(direction.y));
             }
 
             public void MoveX(float direction, float speed)

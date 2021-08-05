@@ -60,14 +60,14 @@ namespace Jolt
                 {
                     base.PlayerControlAction();
 
+                    _player.Velocity = new Vector2(_playerData.MovementSpeed * _moveInput.x, _player.Velocity.y);
+                    _player.Gravity();
                     //_player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
 
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
-
-                    
                 }
             }
         }

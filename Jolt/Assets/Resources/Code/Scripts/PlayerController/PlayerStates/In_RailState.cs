@@ -76,7 +76,7 @@ namespace Jolt
                         _exiting = true;
                     }
 
-                    _player.MoveTowardsVector(_nextPath, _speed);
+                    //_player.MoveTowardsVector(_nextPath, _speed);
 
                     if (_exiting)
                     {
