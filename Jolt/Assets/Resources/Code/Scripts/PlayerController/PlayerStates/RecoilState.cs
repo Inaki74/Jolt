@@ -18,9 +18,9 @@ namespace Jolt
                 {
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -48,10 +48,15 @@ namespace Jolt
                     return true;
                 }
 
+                protected override void PlayerControlAction()
+                {
+                    base.PlayerControlAction();
+                    //_player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
+                }
+
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
-                    _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
             }
         }

@@ -20,19 +20,13 @@ namespace Jolt
                     base.Enter();
                     
                     _stateMachine.PreDashState.ResetAmountOfDashes();
+                    _player.SetGravityScale(0f);
                 }
 
                 public override void Exit()
                 {
                     base.Exit();
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
-                }
-
-                protected override void PhysicsFirstStep()
-                {
-                    base.PhysicsFirstStep();
-
-                    _player.SetGravityScale(0f);
                 }
             }
         }

@@ -23,9 +23,9 @@ namespace Jolt
                     _isAlive = true;
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    base.LogicUpdate();
+                    base.StateChangeCheck();
 
                     _isAlive = !_player.IsDead;
 

@@ -37,13 +37,13 @@ namespace Jolt
                     base.Exit();
 
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
-                    _player.SetRigidbodyVelocityX(0f);
-                    _player.SetRigidbodyVelocityY(0f);
+                    //_player.SetRigidbodyVelocityX(0f);
+                    //_player.SetRigidbodyVelocityY(0f);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -91,22 +91,23 @@ namespace Jolt
                     return true;
                 }
 
-                public override void PhysicsUpdate()
+                protected override void PlayerControlAction()
                 {
-                    base.PhysicsUpdate();
+                    base.PlayerControlAction();
+
                     _currentTime = Time.time;
 
                     if (_playOnce)
                     {
-                        _player.SetDashMovement(_playerData.DashSpeed);
+                        //_player.SetDashMovement(_playerData.DashSpeed);
 
                         _playOnce = false;
                     }
                 }
 
-                public override string ToString()
+                public override void PhysicsUpdate()
                 {
-                    return "DashingState";
+                    base.PhysicsUpdate();
                 }
             }
         }

@@ -13,7 +13,6 @@ namespace Jolt
                 protected override Color AssociatedColor => Color.gray;
 
                 public bool ForceApplied { private get; set; }
-                private bool _isGrounded;
 
                 public WallSlideJumpState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -22,6 +21,8 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
+                    _player.SetGravityScale(_playerData.JumpGravity);
+                    _player.SetDrag(_playerData.JumpDrag);
                 }
 
                 public override void Exit()
@@ -33,9 +34,9 @@ namespace Jolt
                     _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -57,23 +58,20 @@ namespace Jolt
                     return true;
                 }
 
-                public override void PhysicsUpdate()
+                protected override void PlayerControlAction()
                 {
-                    base.PhysicsUpdate();
+                    base.PlayerControlAction();
                     if (!ForceApplied)
                     {
-                        _player.SetRigidbodyVelocityY(_playerData.JumpForce);
+                        //_player.SetRigidbodyVelocityY(_playerData.JumpForce);
                         //_player.SetMovementByImpulse(Vector2.up, _playerData.JumpForce);
                         ForceApplied = true;
                     }
                 }
 
-                protected override void PhysicsFirstStep()
+                public override void PhysicsUpdate()
                 {
-                    base.PhysicsFirstStep();
-
-                    _player.SetGravityScale(_playerData.JumpGravity);
-                    _player.SetDrag(_playerData.JumpDrag);
+                    base.PhysicsUpdate();
                 }
             }
         }

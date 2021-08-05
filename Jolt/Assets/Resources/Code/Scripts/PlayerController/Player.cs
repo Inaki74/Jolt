@@ -7,7 +7,6 @@ namespace Jolt
 {
     namespace PlayerController
     {
-        [RequireComponent(typeof(Rigidbody2D))]
         [RequireComponent(typeof(SpriteRenderer))]
         [RequireComponent(typeof(CircleCollider2D))]
         [RequireComponent(typeof(PlayerInputManager))]
@@ -26,7 +25,7 @@ namespace Jolt
             public IPlayerStateMachine StateMachine { get; private set; }
             public IPlayerInputManager InputManager { get; private set; }
 
-            public Rigidbody2D Rb { get; private set; }
+            //public Rigidbody2D Rb { get; private set; }
             public SpriteRenderer Sr { get; private set; }
             public CircleCollider2D Cc { get; private set; }
 
@@ -84,7 +83,7 @@ namespace Jolt
 
             private void GetComponents()
             {
-                Rb = GetComponent<Rigidbody2D>();
+                //Rb = GetComponent<Rigidbody2D>();
                 Sr = GetComponent<SpriteRenderer>();
                 Cc = GetComponent<CircleCollider2D>();
                 InputManager = GetComponent<PlayerInputManager>();
@@ -96,8 +95,8 @@ namespace Jolt
 
             private void SetRigidbody()
             {
-                Rb.gravityScale = _playerData.PlayerPhysicsData.StandardGravity;
-                Rb.drag = _playerData.PlayerPhysicsData.StandardLinearDrag;
+                //Rb.gravityScale = _playerData.PlayerPhysicsData.StandardGravity;
+                //Rb.drag = _playerData.PlayerPhysicsData.StandardLinearDrag;
             }
 
             private void OnDrawGizmos()
@@ -124,46 +123,30 @@ namespace Jolt
                 transform.position = Vector2.MoveTowards(transform.position, _auxVector2, velocity * Time.deltaTime);
             }
 
-            public void SetRigidbodyVelocityX(float velocity)
+            public void MoveX(float direction, float velocity)
             {
-                _auxVector2.Set(velocity, Rb.velocity.y);
-                Rb.velocity = _auxVector2;
+                //_auxVector2.Set(velocity, Rb.velocity.y);
+                //Rb.velocity = _auxVector2;
             }
 
-            public void SetRigidbodyVelocityY(float velocity)
+            public void MoveY(float direction, float velocity)
             {
-                _auxVector2.Set(Rb.velocity.x, velocity);
-                Rb.velocity = _auxVector2;
+                //_auxVector2.Set(Rb.velocity.x, velocity);
+                //Rb.velocity = _auxVector2;
             }
 
-            public void SetMovementXByForce(Vector2 direction, float speed)
+            public void Dash(Vector3 startPos, Vector3 finalPos, float velocity)
             {
-                _auxVector2.Set(direction.x * speed, 0);
-                Rb.AddForce(_auxVector2, ForceMode2D.Force);
-            }
+                SetDashVectors(startPos, finalPos);
 
-            public void SetMovementYByForce(Vector2 direction, float speed)
-            {
-                _auxVector2.Set(0f, direction.y * speed);
-                Rb.AddForce(_auxVector2, ForceMode2D.Force);
-            }
-
-            public void SetMovementByImpulse(Vector2 direction, float speed)
-            {
-                _auxVector2.Set(direction.x * speed, direction.y * speed);
-                Rb.AddForce(_auxVector2, ForceMode2D.Impulse);
-            }
-
-            public void SetDashMovement(float velocity)
-            {
                 _auxVector2 = _dashFinish - _auxVector3;
                 _dashFinish = _auxVector2;
                 _auxVector2.Set(_dashFinish.normalized.x, _dashFinish.normalized.y);
-                Rb.velocity = _auxVector2 * velocity;
-                Rb.velocity = Vector2.ClampMagnitude(Rb.velocity, velocity);
+                //Rb.velocity = _auxVector2 * velocity;
+                //Rb.velocity = Vector2.ClampMagnitude(Rb.velocity, velocity);
             }
 
-            public void SetDashVectors(Vector3 startPos, Vector3 finalPos)
+            private void SetDashVectors(Vector3 startPos, Vector3 finalPos)
             {
                 Vector3 direction = (finalPos - startPos).normalized;
 
@@ -190,12 +173,12 @@ namespace Jolt
 
             public void SetGravityScale(float gravity)
             {
-                Rb.gravityScale = gravity;
+                //Rb.gravityScale = gravity;
             }
 
             public void SetDrag(float drag)
             {
-                Rb.drag = drag;
+                //Rb.drag = drag;
             }
 
             public void SetScale(Vector2 scale)
@@ -223,7 +206,8 @@ namespace Jolt
 
             public bool CheckIsFreeFalling()
             {
-                return Rb.velocity.y < 0f;
+                //return Rb.velocity.y < 0f;
+                return false;
             }
 
             public bool CheckIsTouchingWallLeft()
@@ -267,7 +251,8 @@ namespace Jolt
 
             public Vector2 GetCurrentVelocity()
             {
-                return Rb.velocity;
+                //return Rb.velocity;
+                return Vector2.zero;
             }
             #endregion
 

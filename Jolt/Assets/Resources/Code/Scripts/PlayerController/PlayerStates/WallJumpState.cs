@@ -26,6 +26,8 @@ namespace Jolt
                     base.Enter();
 
                     _forceApplied = false;
+                    _player.SetGravityScale(_playerData.WallJumpGravity);
+                    _player.SetDrag(_playerData.WallJumpDrag);
                 }
 
                 public override void Exit()
@@ -37,9 +39,9 @@ namespace Jolt
                     _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -48,7 +50,7 @@ namespace Jolt
 
                     _currentTime = Time.time;
 
-                    bool timeout = _currentTime - _enterTime > _playerData.WallJumpDuration; // TODO: Make this a variable or maybe i dont need it.
+                    bool timeout = _currentTime - _enterTime > _playerData.WallJumpDuration;
                     _jumpHeld = _player.InputManager.JumpHeld;
 
                     if (_forceApplied)
@@ -69,24 +71,21 @@ namespace Jolt
                     return true;
                 }
 
-                public override void PhysicsUpdate()
+                protected override void PlayerControlAction()
                 {
-                    //base.PhysicsUpdate();
+                    base.PlayerControlAction();
 
                     if (!_forceApplied)
                     {
-                        _player.SetRigidbodyVelocityY(0f);
+                        //_player.SetRigidbodyVelocityY(0f);
                         WallJump();
                         _forceApplied = true;
                     }
                 }
 
-                protected override void PhysicsFirstStep()
+                public override void PhysicsUpdate()
                 {
-                    base.PhysicsFirstStep();
-
-                    _player.SetGravityScale(_playerData.WallJumpGravity);
-                    _player.SetDrag(_playerData.WallJumpDrag);
+                    base.PhysicsUpdate();
                 }
 
                 private void WallJump()
@@ -99,8 +98,8 @@ namespace Jolt
                     Vector2 side = new Vector2(JumpDirection.x, Mathf.Abs(JumpDirection.x));
                     impulseDirection = impulseDirection * side * speed;
 
-                    _player.SetRigidbodyVelocityX(impulseDirection.x);
-                    _player.SetRigidbodyVelocityY(impulseDirection.y);
+                    //_player.MoveX(impulseDirection.x);
+                    //_player.MoveY(impulseDirection.y);
 
                     //_player.SetMovementByImpulse(impulseDirection, speed);
                 }

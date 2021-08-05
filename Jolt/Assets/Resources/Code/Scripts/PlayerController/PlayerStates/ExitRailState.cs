@@ -29,12 +29,12 @@ namespace Jolt
                     base.Enter();
 
                     ExitVector.Normalize();
-                    _player.SetMovementByImpulse(ExitVector, ExitSpeed);
+                    //_player.SetMovementByImpulse(ExitVector, ExitSpeed);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -64,16 +64,15 @@ namespace Jolt
                     return true;
                 }
 
-                public override void PhysicsUpdate()
+                protected override void PlayerControlAction()
                 {
-                    base.PhysicsUpdate();
-
+                    base.PlayerControlAction();
                     //Exit right
                     if (ExitVector.x > 0)
                     {
                         if (_player.GetCurrentVelocity().x < _playerData.MovementSpeed || _moveInput.x < 0)
                         {
-                            _player.SetMovementXByForce(_moveInput, _playerData.MovementSpeed + ExitSpeed);
+                            //_player.SetMovementXByForce(_moveInput, _playerData.MovementSpeed + ExitSpeed);
                         }
                     }
                     //Exit left
@@ -81,9 +80,14 @@ namespace Jolt
                     {
                         if (_player.GetCurrentVelocity().x > -_playerData.MovementSpeed || _moveInput.x > 0)
                         {
-                            _player.SetMovementXByForce(_moveInput, _playerData.MovementSpeed + ExitSpeed);
+                            //_player.SetMovementXByForce(_moveInput, _playerData.MovementSpeed + ExitSpeed);
                         }
                     }
+                }
+
+                public override void PhysicsUpdate()
+                {
+                    base.PhysicsUpdate();
                 }
 
                 public override string ToString()

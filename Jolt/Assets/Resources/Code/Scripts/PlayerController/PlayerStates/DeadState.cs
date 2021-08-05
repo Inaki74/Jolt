@@ -27,8 +27,8 @@ namespace Jolt
                     base.Enter();
 
                     _player.SetGravityScale(0f);
-                    _player.SetRigidbodyVelocityX(0f);
-                    _player.SetRigidbodyVelocityY(0f);
+                    //_player.SetRigidbodyVelocityX(0f);
+                    //_player.SetRigidbodyVelocityY(0f);
                     _player.SetActivePhysicsCollider(false);
                     _player.InstantiateDeathParticles();
                 }
@@ -43,9 +43,9 @@ namespace Jolt
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {

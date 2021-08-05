@@ -21,6 +21,8 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
+                    _player.SetGravityScale(_playerData.FloatGravity);
+                    _player.SetDrag(_playerData.FloatDrag);
                 }
 
                 public override void Exit()
@@ -31,14 +33,14 @@ namespace Jolt
                     _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
                     if (!CheckFloatingStateChange())
                     {
                         return false;
                     }
 
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -65,16 +67,14 @@ namespace Jolt
                     return true;
                 }
 
+                protected override void PlayerControlAction()
+                {
+                    base.PlayerControlAction();
+                }
+
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
-                }
-
-                protected override void PhysicsFirstStep()
-                {
-                    base.PhysicsFirstStep();
-                    _player.SetGravityScale(_playerData.FloatGravity);
-                    _player.SetDrag(_playerData.FloatDrag);
                 }
 
                 private bool CheckFloatingStateChange()

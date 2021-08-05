@@ -39,9 +39,9 @@ namespace Jolt
                     Time.timeScale = 1f;
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -51,7 +51,7 @@ namespace Jolt
                     _currentTime = Time.time;
                     _isDashStarted = _player.InputManager.DashBegin && (_currentTime - _enterTime < _playerData.PreDashTimeOut);
 
-                    _player.SetDashVectors(_player.InputManager.InitialDashPoint, _player.InputManager.FinalDashPoint);
+                    //_player.SetDashVectors(_player.InputManager.InitialDashPoint, _player.InputManager.FinalDashPoint);
                     _player.SetArrowRendering();
 
                     //Cant be Cancelled, go to dashing when stopped pressing or after timeout
@@ -65,11 +65,18 @@ namespace Jolt
                     return true;
                 }
 
+                protected override void PlayerControlAction()
+                {
+                    base.PlayerControlAction();
+
+                    _player.SetPosition(_player.GetNodeInfo().transform.position);
+                }
+
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
 
-                    _player.SetPosition(_player.GetNodeInfo().transform.position);
+                    
                 }
 
                 public override string ToString()

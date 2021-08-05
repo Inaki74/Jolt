@@ -22,9 +22,9 @@ namespace Jolt
                     //base.Exit();
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -42,11 +42,16 @@ namespace Jolt
                     return true;
                 }
 
+                protected override void PlayerControlAction()
+                {
+                    base.PlayerControlAction();
+
+                    _player.SetPosition(_player.GetNodeInfo().transform.position);
+                }
+
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
-
-                    _player.SetPosition(_player.GetNodeInfo().transform.position);
                 }
 
                 public override string ToString()

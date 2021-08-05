@@ -6,7 +6,6 @@ namespace Jolt.PlayerController
     {
         IPlayerStateMachine StateMachine { get; }
         IPlayerInputManager InputManager { get; }
-        Rigidbody2D Rb { get; }
         SpriteRenderer Sr { get; }
         CircleCollider2D Cc { get; }
         bool IsDead { get; set; }
@@ -28,16 +27,12 @@ namespace Jolt.PlayerController
         void SetActivePhysicsCollider(bool set);
         void SetActiveSpriteRenderer(bool set);
         void SetArrowRendering();
-        void SetDashMovement(float velocity);
-        void SetDashVectors(Vector3 startPos, Vector3 finalPos);
         void SetGravityScale(float gravity);
         void SetDrag(float drag);
-        void SetMovementByImpulse(Vector2 direction, float speed);
-        void SetMovementXByForce(Vector2 direction, float speed);
-        void SetMovementYByForce(Vector2 direction, float speed);
         void SetPosition(Vector2 position);
-        void SetRigidbodyVelocityX(float velocity);
-        void SetRigidbodyVelocityY(float velocity);
         void SetScale(Vector2 scale);
+        void Dash(Vector3 startPos, Vector3 finalPos, float velocity);
+        void MoveX(float direction, float velocity);
+        void MoveY(float direction, float velocity);
     }
 }

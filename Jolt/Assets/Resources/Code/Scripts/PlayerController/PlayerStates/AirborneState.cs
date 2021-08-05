@@ -34,9 +34,9 @@ namespace Jolt
                     _player.SetScale(Vector2.one);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -75,9 +75,9 @@ namespace Jolt
                     return true;
                 }
 
-                public override void PhysicsUpdate()
+                protected override void PlayerControlAction()
                 {
-                    base.PhysicsUpdate();
+                    base.PlayerControlAction();
 
                     Freefall();
 
@@ -100,6 +100,11 @@ namespace Jolt
                     //        _player.SetRigidbodyVelocityX(0f);
                     //    }
                     //}
+                }
+
+                public override void PhysicsUpdate()
+                {
+                    base.PhysicsUpdate();
                 }
 
                 private void Freefall()
