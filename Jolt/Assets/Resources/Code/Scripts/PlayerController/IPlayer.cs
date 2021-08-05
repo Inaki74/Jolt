@@ -7,7 +7,7 @@ namespace Jolt.PlayerController
         IPlayerStateMachine StateMachine { get; }
         IPlayerInputManager InputManager { get; }
         SpriteRenderer Sr { get; }
-        CircleCollider2D Cc { get; }
+        BoxCollider2D Bc { get; }
         bool IsDead { get; set; }
 
         bool CheckHasReachedPoint(Vector2 point);

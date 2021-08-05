@@ -10,6 +10,7 @@ namespace Jolt
         using PlayerStates;
 
         [RequireComponent(typeof(Player))]
+        [RequireComponent(typeof(Rigidbody2D))]
         public class PlayerCollisions : MonoBehaviour
         {
             public bool IsTouchingNode { get; private set; }

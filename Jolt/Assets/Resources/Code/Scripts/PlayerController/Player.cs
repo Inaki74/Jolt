@@ -8,7 +8,7 @@ namespace Jolt
     namespace PlayerController
     {
         [RequireComponent(typeof(SpriteRenderer))]
-        [RequireComponent(typeof(CircleCollider2D))]
+        [RequireComponent(typeof(BoxCollider2D))]
         [RequireComponent(typeof(PlayerInputManager))]
         [RequireComponent(typeof(PlayerCollisions))]
         [RequireComponent(typeof(LineRenderer))]
@@ -27,7 +27,7 @@ namespace Jolt
 
             //public Rigidbody2D Rb { get; private set; }
             public SpriteRenderer Sr { get; private set; }
-            public CircleCollider2D Cc { get; private set; }
+            public BoxCollider2D Bc { get; private set; }
 
             [SerializeField]
             private GameObject _deathParticles;
@@ -85,7 +85,7 @@ namespace Jolt
             {
                 //Rb = GetComponent<Rigidbody2D>();
                 Sr = GetComponent<SpriteRenderer>();
-                Cc = GetComponent<CircleCollider2D>();
+                Bc = GetComponent<BoxCollider2D>();
                 InputManager = GetComponent<PlayerInputManager>();
                 _playerCollisions = GetComponent<PlayerCollisions>();
 
@@ -188,7 +188,7 @@ namespace Jolt
 
             public void SetActivePhysicsCollider(bool set)
             {
-                Cc.enabled = set;
+                Bc.enabled = set;
             }
 
             public void SetActiveSpriteRenderer(bool set)
