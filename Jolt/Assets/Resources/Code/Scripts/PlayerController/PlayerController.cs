@@ -77,22 +77,22 @@ namespace Jolt
 
                 for (int i = 0; i < _verticalRayCount; i++)
                 {
-                    RaycastHit2D rayHit1 = Physics2D.Raycast(startPositionLeft, Vector2.right, boundingBoxWidth, _whatIsGround);
+                    RaycastHit2D rayHitLeftToRight = Physics2D.Raycast(startPositionLeft, Vector2.right, boundingBoxWidth, _whatIsGround);
 
-                    if (rayHit1)
+                    if (rayHitLeftToRight)
                     {
-                        Debug.DrawRay(startPositionLeft, Vector2.right * rayHit1.distance, Color.green, 3f);
-                        transform.Translate(rayHit1.distance + _skinWidth, 0f, 0f);
+                        Debug.DrawRay(startPositionLeft, Vector2.right * rayHitLeftToRight.distance, Color.green, 3f);
+                        transform.Translate(rayHitLeftToRight.distance + _skinWidth, 0f, 0f);
                         break;
                     }
 
-                    RaycastHit2D rayHit2 = Physics2D.Raycast(startPositionRight, Vector2.left, boundingBoxWidth, _whatIsGround);
+                    RaycastHit2D rayHitRightToLeft = Physics2D.Raycast(startPositionRight, Vector2.left, boundingBoxWidth, _whatIsGround);
 
-                    if (rayHit2)
+                    if (rayHitRightToLeft)
                     {
                         //
-                        Debug.DrawRay(startPositionLeft, Vector2.left * rayHit2.distance, Color.green, 3f);
-                        transform.Translate(-rayHit2.distance + _skinWidth, 0f, 0f);
+                        Debug.DrawRay(startPositionLeft, Vector2.left * rayHitRightToLeft.distance, Color.green, 3f);
+                        transform.Translate(-rayHitRightToLeft.distance + _skinWidth, 0f, 0f);
                         break;
                     }
 
@@ -105,22 +105,22 @@ namespace Jolt
 
                 for (int i = 0; i < _horizontalRayCount; i++)
                 {
-                    RaycastHit2D rayHit1 = Physics2D.Raycast(startPositionTop, Vector2.down, boundingBoxHeight, _whatIsGround);
+                    RaycastHit2D rayHitUpToDown = Physics2D.Raycast(startPositionTop, Vector2.down, boundingBoxHeight, _whatIsGround);
 
-                    if (rayHit1)
+                    if (rayHitUpToDown)
                     {
                         //
-                        Debug.DrawRay(startPositionTop, Vector2.down * rayHit1.distance, Color.green, 3f);
-                        transform.Translate(0f, -rayHit1.distance + _skinWidth, 0f);
+                        Debug.DrawRay(startPositionTop, Vector2.down * rayHitUpToDown.distance, Color.green, 3f);
+                        transform.Translate(0f, -rayHitUpToDown.distance + _skinWidth, 0f);
                         break;
                     }
 
-                    RaycastHit2D rayHit2 = Physics2D.Raycast(startPositionBottom, Vector2.up, boundingBoxHeight, _whatIsGround);
+                    RaycastHit2D rayHitDownToUp = Physics2D.Raycast(startPositionBottom, Vector2.up, boundingBoxHeight, _whatIsGround);
 
-                    if (rayHit2)
+                    if (rayHitDownToUp)
                     {
-                        Debug.DrawRay(startPositionBottom, Vector2.up * rayHit2.distance, Color.green, 3f);
-                        transform.Translate(0f, rayHit2.distance + _skinWidth, 0f);
+                        Debug.DrawRay(startPositionBottom, Vector2.up * rayHitDownToUp.distance, Color.green, 3f);
+                        transform.Translate(0f, rayHitDownToUp.distance + _skinWidth, 0f);
                         break;
                     }
 

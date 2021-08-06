@@ -31,6 +31,7 @@ MonoBehaviour:
   _recoilTimer: 0.2
   _freeFallGravity: 6
   _maxDeformedScale: 0.6
+  _scaleReductionModifier: 0.02
   _jumpForce: 12
   _jumpGravity: 4
   _jumpDrag: 0
