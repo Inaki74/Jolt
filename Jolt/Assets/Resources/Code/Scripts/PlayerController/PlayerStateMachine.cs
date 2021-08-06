@@ -99,6 +99,11 @@ namespace Jolt
                 _stateChanged = true;
                 _nextState = newState;
             }
+
+            public void ForceStateChange(PlayerState newState)
+            {
+                //TODO if needed
+            }
         }
     }
 }

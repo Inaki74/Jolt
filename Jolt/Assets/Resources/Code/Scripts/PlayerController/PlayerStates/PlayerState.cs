@@ -47,8 +47,8 @@ namespace Jolt
 
                 public void LogicUpdate()
                 {
-                    StateChangeCheck();
-                    PlayerControlAction();
+                    _stateMachine.CurrentState.StateChangeCheck();
+                    _stateMachine.CurrentState.PlayerControlAction();
                     _player.Move(_player.Velocity);
 
                     _stateMachine.ChangeState();

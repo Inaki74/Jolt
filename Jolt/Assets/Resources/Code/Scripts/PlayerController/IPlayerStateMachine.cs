@@ -29,6 +29,7 @@ namespace Jolt.PlayerController
 
         void ChangeState();
         void ScheduleStateChange(PlayerState newState);
+        void ForceStateChange(PlayerState newState);
         string GetState();
         void Initialize();
     }
