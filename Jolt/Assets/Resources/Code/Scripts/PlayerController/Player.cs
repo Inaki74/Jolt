@@ -36,6 +36,7 @@ namespace Jolt
             #region Auxiliary Variables
             private const float GRAVITY = -9.8f;
 
+            [SerializeField] private float _universalGravityScale;
             private float _gravityScale;
 
             private Vector2 _velocity;
@@ -125,7 +126,7 @@ namespace Jolt
             #region Set Functions
             public void Gravity()
             {
-                _velocity.y += Time.deltaTime * GRAVITY * _gravityScale;
+                _velocity.y += Time.deltaTime * GRAVITY * _gravityScale * _universalGravityScale;
             }
 
             public void Move(Vector2 vector)

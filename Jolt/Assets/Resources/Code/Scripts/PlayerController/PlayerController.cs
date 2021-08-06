@@ -10,7 +10,6 @@ namespace Jolt
         [RequireComponent(typeof(BoxCollider2D))]
         public class PlayerController : MonoBehaviour, IPlayerController
         {
-            private Player p;
             private Collider2D _collider;
 
             private const float _skinWidth = 0.025f;
@@ -27,12 +26,17 @@ namespace Jolt
             void Start()
             {
                 GetComponents();
+                CalculateRaySpacing();
+            }
+
+            void Update()
+            {
+                CheckIfInsideCollider();
             }
 
             private void GetComponents()
             {
                 _collider = GetComponent<BoxCollider2D>();
-                p = GetComponent<Player>();
             }
 
             private void SetRaycastPositions()
@@ -44,6 +48,7 @@ namespace Jolt
                 _raycastPositions.topLeft = new Vector2(colliderBounds.min.x, colliderBounds.max.y);
                 _raycastPositions.bottomRight = new Vector2(colliderBounds.max.x, colliderBounds.min.y);
                 _raycastPositions.bottomLeft = new Vector2(colliderBounds.min.x, colliderBounds.min.y);
+                _raycastPositions.center = colliderBounds.center;
             }
 
             private void CalculateRaySpacing()
@@ -56,6 +61,74 @@ namespace Jolt
 
                 _horizontalRaySpacing = colliderBounds.size.x / (_horizontalRayCount - 1);
                 _verticalRaySpacing = colliderBounds.size.y / (_verticalRayCount - 1);
+            }
+
+            private void CheckIfInsideCollider()
+            {
+                SetRaycastPositions();
+                CalculateRaySpacing();
+
+                Vector2 startPositionLeft = _raycastPositions.bottomLeft;
+                Vector2 startPositionTop = _raycastPositions.topLeft;
+                Vector2 startPositionRight = _raycastPositions.bottomRight;
+                Vector2 startPositionBottom = _raycastPositions.bottomLeft;
+                float boundingBoxWidth = Mathf.Abs(_raycastPositions.bottomLeft.x - _raycastPositions.center.x);
+                float boundingBoxHeight = Mathf.Abs(_raycastPositions.topLeft.y - _raycastPositions.center.y);
+
+                for (int i = 0; i < _verticalRayCount; i++)
+                {
+                    RaycastHit2D rayHit1 = Physics2D.Raycast(startPositionLeft, Vector2.right, boundingBoxWidth, _whatIsGround);
+
+                    if (rayHit1)
+                    {
+                        Debug.DrawRay(startPositionLeft, Vector2.right * rayHit1.distance, Color.green, 3f);
+                        transform.Translate(rayHit1.distance + _skinWidth, 0f, 0f);
+                        break;
+                    }
+
+                    RaycastHit2D rayHit2 = Physics2D.Raycast(startPositionRight, Vector2.left, boundingBoxWidth, _whatIsGround);
+
+                    if (rayHit2)
+                    {
+                        //
+                        Debug.DrawRay(startPositionLeft, Vector2.left * rayHit2.distance, Color.green, 3f);
+                        transform.Translate(-rayHit2.distance + _skinWidth, 0f, 0f);
+                        break;
+                    }
+
+
+                    Debug.DrawRay(startPositionLeft, Vector2.right * boundingBoxWidth, Color.blue);
+                    Debug.DrawRay(startPositionRight, Vector2.left * boundingBoxWidth, Color.blue);
+                    startPositionLeft += Vector2.up * _verticalRaySpacing;
+                    startPositionRight += Vector2.up * _verticalRaySpacing;
+                }
+
+                for (int i = 0; i < _horizontalRayCount; i++)
+                {
+                    RaycastHit2D rayHit1 = Physics2D.Raycast(startPositionTop, Vector2.down, boundingBoxHeight, _whatIsGround);
+
+                    if (rayHit1)
+                    {
+                        //
+                        Debug.DrawRay(startPositionTop, Vector2.down * rayHit1.distance, Color.green, 3f);
+                        transform.Translate(0f, -rayHit1.distance + _skinWidth, 0f);
+                        break;
+                    }
+
+                    RaycastHit2D rayHit2 = Physics2D.Raycast(startPositionBottom, Vector2.up, boundingBoxHeight, _whatIsGround);
+
+                    if (rayHit2)
+                    {
+                        Debug.DrawRay(startPositionBottom, Vector2.up * rayHit2.distance, Color.green, 3f);
+                        transform.Translate(0f, rayHit2.distance + _skinWidth, 0f);
+                        break;
+                    }
+
+                    Debug.DrawRay(startPositionTop, Vector2.down * boundingBoxHeight, Color.blue);
+                    Debug.DrawRay(startPositionBottom, Vector2.up * boundingBoxHeight, Color.blue);
+                    startPositionTop += Vector2.right * _horizontalRaySpacing;
+                    startPositionBottom += Vector2.right * _horizontalRaySpacing;
+                }
             }
 
             public void Move(Vector2 direction)
@@ -175,6 +248,7 @@ namespace Jolt
         {
             public Vector2 topLeft, topRight;
             public Vector2 bottomLeft, bottomRight;
+            public Vector2 center;
         }
     }
 }
