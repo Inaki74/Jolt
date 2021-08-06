@@ -122,7 +122,7 @@ namespace Jolt
                     {
                         if (_freefallDeformedScaleX > _playerData.MaxDeformedScale)
                         {
-                            _freefallDeformedScaleX -= 0.01f;
+                            _freefallDeformedScaleX -= -_player.Velocity.y * Time.deltaTime * _playerData.ScaleReductionModifier;
                         }
 
                         Vector2 newScale = new Vector2(_freefallDeformedScaleX, 1f);

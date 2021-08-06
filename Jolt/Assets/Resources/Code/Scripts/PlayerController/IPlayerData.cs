@@ -22,6 +22,7 @@ namespace Jolt.PlayerController
         float RecoilTimer { get;  }
         float FreeFallGravity { get; }
         float MaxDeformedScale { get; }
+        float ScaleReductionModifier { get; }
         float JumpForce { get; }
         float JumpGravity { get; }
         float JumpDrag { get; }

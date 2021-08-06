@@ -44,6 +44,7 @@ namespace Jolt
             [Header("Airborne State")]
             [SerializeField] private float _freeFallGravity;
             [SerializeField] private float _maxDeformedScale;
+            [SerializeField] private float _scaleReductionModifier;
 
             [Header("Jumping State")]
             [SerializeField] private float _jumpForce;
@@ -131,6 +132,8 @@ namespace Jolt
             public float WallJumpForceVerticalRatioWithHorizontal { get { return _wallJumpForceVerticalRatioWithHorizontal;  } }
 
             public float WallJumpCoyoteTiming { get { return _wallJumpCoyoteTiming; } }
+
+            public float ScaleReductionModifier { get { return _scaleReductionModifier; } }
         }
     }
 }
