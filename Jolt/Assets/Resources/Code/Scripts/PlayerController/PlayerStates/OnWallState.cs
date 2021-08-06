@@ -51,12 +51,6 @@ namespace Jolt
                         return false;
                     }
 
-                    if (!isTouchingWall)
-                    {
-                        _stateMachine.ChangeState(_stateMachine.CoyoteWallJumpState);
-                        return false;
-                    }
-
                     if (_isTouchingWallLeft)
                     {
                         _stateMachine.WallJumpState.JumpDirection = Vector2.right;
@@ -65,6 +59,12 @@ namespace Jolt
                     if (_isTouchingWallRight)
                     {
                         _stateMachine.WallJumpState.JumpDirection = Vector2.left;
+                    }
+
+                    if (!isTouchingWall)
+                    {
+                        _stateMachine.ChangeState(_stateMachine.CoyoteWallJumpState);
+                        return false;
                     }
 
                     return true;

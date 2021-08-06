@@ -45,4 +45,4 @@ MonoBehaviour:
   _wallJumpDrag: 1
   _wallJumpForceHorizontal: 13
   _wallJumpForceVerticalRatioWithHorizontal: 1
-  _wallJumpCoyoteTiming: 0.075
+  _wallJumpCoyoteTiming: 0.05
