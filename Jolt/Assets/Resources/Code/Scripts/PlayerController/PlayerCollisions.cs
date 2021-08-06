@@ -40,16 +40,6 @@ namespace Jolt
                 TriggerExit(collision, _player.StateMachine.CurrentState);
             }
 
-            private void OnCollisionEnter2D(Collision2D collision)
-            {
-                CollisionEnter(collision, _player.StateMachine.CurrentState);
-            }
-
-            private void OnCollisionExit2D(Collision2D collision)
-            {
-                CollisionExit(collision, _player.StateMachine.CurrentState);
-            }
-
             private void TriggerEnter(Collider2D collision, PlayerState state)
             {
                 TriggerEnterNode(collision, state);
@@ -59,6 +49,11 @@ namespace Jolt
                 if (collision.tag == "Checkpoint")
                 {
                     //_player.checkpoint = collision.transform.position;
+                }
+
+                if (collision.gameObject.tag == "Rubber")
+                {
+                    _player.IsDead = true;
                 }
             }
 
@@ -91,22 +86,6 @@ namespace Jolt
                     {
                         IsTouchingRail = false;
                     }
-                }
-            }
-
-            private void CollisionEnter(Collision2D collision, PlayerState state)
-            {
-                if (collision.gameObject.tag == "Rubber")
-                {
-                    _player.IsDead = true;
-                }
-            }
-
-            private void CollisionExit(Collision2D collision, PlayerState state)
-            {
-                if (collision.gameObject.tag == "Rubber")
-                {
-                    //_player.IsDead = false;
                 }
             }
 
