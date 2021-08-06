@@ -22,7 +22,17 @@ namespace Jolt
                 {
                     base.Enter();
 
+                    _player.ResetGravity();
+                    _gravityActive = false;
                     _stateMachine.PreDashState.ResetAmountOfDashes();
+                }
+
+                public override void Exit()
+                {
+                    base.Exit();
+
+                    _player.ResetGravity();
+                    _gravityActive = true;
                 }
 
                 protected override bool StateChangeCheck()

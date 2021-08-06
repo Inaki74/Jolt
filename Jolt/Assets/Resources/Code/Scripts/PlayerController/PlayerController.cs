@@ -10,6 +10,7 @@ namespace Jolt
         [RequireComponent(typeof(BoxCollider2D))]
         public class PlayerController : MonoBehaviour, IPlayerController
         {
+            private Player p;
             private Collider2D _collider;
 
             private const float _skinWidth = 0.025f;
@@ -31,6 +32,7 @@ namespace Jolt
             private void GetComponents()
             {
                 _collider = GetComponent<BoxCollider2D>();
+                p = GetComponent<Player>();
             }
 
             private void SetRaycastPositions()

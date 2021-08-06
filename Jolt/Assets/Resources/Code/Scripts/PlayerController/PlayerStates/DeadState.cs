@@ -27,6 +27,7 @@ namespace Jolt
                     base.Enter();
 
                     _player.SetGravityScale(0f);
+                    _player.Velocity = Vector2.zero;
                     //_player.SetRigidbodyVelocityX(0f);
                     //_player.SetRigidbodyVelocityY(0f);
                     _player.SetActivePhysicsCollider(false);

@@ -75,7 +75,7 @@ namespace Jolt
 
                     if (!ForceApplied)
                     {
-                        _player.MoveY(1f, _playerData.JumpForce);
+                        _player.Velocity = new Vector2(_player.Velocity.x, _playerData.JumpForce);
                         //_player.SetMovementByImpulse(Vector2.up, _playerData.JumpForce);
                         ForceApplied = true;
                     }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2706889093683432254}
   - component: {fileID: 8514505490734353108}
   - component: {fileID: 7966002090684543718}
-  m_Layer: 8
+  m_Layer: 1
   m_Name: pf_Rubber_Terrain
   m_TagString: Rubber
   m_Icon: {fileID: 0}

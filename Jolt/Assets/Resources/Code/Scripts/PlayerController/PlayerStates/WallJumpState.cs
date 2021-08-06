@@ -26,6 +26,7 @@ namespace Jolt
                     base.Enter();
 
                     _forceApplied = false;
+                    _canMove = false;
                     _player.SetGravityScale(_playerData.WallJumpGravity);
                     _player.SetDrag(_playerData.WallJumpDrag);
                 }
@@ -35,6 +36,7 @@ namespace Jolt
                     base.Exit();
 
                     JumpDirection = Vector2.zero;
+                    _canMove = true;
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                     _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
                 }
@@ -78,6 +80,7 @@ namespace Jolt
                     if (!_forceApplied)
                     {
                         //_player.SetRigidbodyVelocityY(0f);
+                        _player.Velocity = new Vector2(_player.Velocity.x, 0f);
                         WallJump();
                         _forceApplied = true;
                     }
@@ -97,6 +100,8 @@ namespace Jolt
                     Vector2 impulseDirection = new Vector2(horizontalForce, verticalForce);
                     Vector2 side = new Vector2(JumpDirection.x, Mathf.Abs(JumpDirection.x));
                     impulseDirection = impulseDirection * side * speed;
+
+                    _player.Velocity = impulseDirection;
 
                     //_player.MoveX(impulseDirection.x);
                     //_player.MoveY(impulseDirection.y);

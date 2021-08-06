@@ -17,6 +17,7 @@ namespace Jolt
                 private bool _isTouchingWallLeft;
                 private bool _isTouchingWallRight;
                 private float _freefallDeformedScaleX;
+                private bool a = false;
 
                 public AirborneState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -25,12 +26,15 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
+                    a = false;
                     _freefallDeformedScaleX = 1f;
                 }
 
                 public override void Exit()
                 {
                     base.Exit();
+                    Debug.Log("AAAA");
+                    a = true;
                     _player.SetScale(Vector2.one);
                 }
 
@@ -78,6 +82,11 @@ namespace Jolt
                 protected override void PlayerControlAction()
                 {
                     base.PlayerControlAction();
+
+                    if (a)
+                    {
+                        Debug.Log("PPPPPPPPP");
+                    }
 
                     Freefall();
 

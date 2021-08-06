@@ -4072,21 +4072,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -10
       objectReference: {fileID: 0}
-    - target: {fileID: 6122876467401712360, guid: 39f789127ab8841a38ad7906c092c9d8,
-        type: 3}
-      propertyPath: _verticalRayCount
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6122876467401712360, guid: 39f789127ab8841a38ad7906c092c9d8,
-        type: 3}
-      propertyPath: _horizontalRayCount
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6122876467401712360, guid: 39f789127ab8841a38ad7906c092c9d8,
-        type: 3}
-      propertyPath: _whatIsGround.m_Bits
-      value: 256
-      objectReference: {fileID: 0}
     - target: {fileID: 6646537136439598612, guid: 39f789127ab8841a38ad7906c092c9d8,
         type: 3}
       propertyPath: m_RootOrder

@@ -12,6 +12,8 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.magenta;
 
+                protected bool _gravityActive = true;
+                protected bool _canMove = true;
                 protected Vector2 _moveInput;
                 protected bool _jumpPressed;
                 protected bool _jumpHeld;
@@ -60,8 +62,16 @@ namespace Jolt
                 {
                     base.PlayerControlAction();
 
-                    _player.Velocity = new Vector2(_playerData.MovementSpeed * _moveInput.x, _player.Velocity.y);
-                    _player.Gravity();
+                    if (_canMove)
+                    {
+                        _player.Velocity = new Vector2(_playerData.MovementSpeed * _moveInput.x, _player.Velocity.y);
+                    }
+
+                    if (_gravityActive)
+                    {
+                        _player.Gravity();
+                    }
+
                     //_player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
 

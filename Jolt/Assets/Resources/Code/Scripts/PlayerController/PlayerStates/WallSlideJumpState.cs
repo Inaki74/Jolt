@@ -21,6 +21,7 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
+                    ForceApplied = false;
                     _player.SetGravityScale(_playerData.JumpGravity);
                     _player.SetDrag(_playerData.JumpDrag);
                 }
@@ -29,7 +30,6 @@ namespace Jolt
                 {
                     base.Exit();
 
-                    ForceApplied = false;
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                     _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
                 }
@@ -63,6 +63,7 @@ namespace Jolt
                     base.PlayerControlAction();
                     if (!ForceApplied)
                     {
+                        _player.Velocity = new Vector2(_player.Velocity.x, _playerData.JumpForce);
                         //_player.SetRigidbodyVelocityY(_playerData.JumpForce);
                         //_player.SetMovementByImpulse(Vector2.up, _playerData.JumpForce);
                         ForceApplied = true;

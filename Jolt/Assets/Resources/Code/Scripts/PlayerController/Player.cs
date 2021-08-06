@@ -143,18 +143,16 @@ namespace Jolt
                 PlayerController.MoveY(direction, velocity);
             }
 
-            public void Dash(Vector3 startPos, Vector3 finalPos, float velocity)
+            public void Dash(float velocity)
             {
-                SetDashVectors(startPos, finalPos);
-
                 _auxVector2 = _dashFinish - _auxVector3;
                 _dashFinish = _auxVector2;
                 _auxVector2.Set(_dashFinish.normalized.x, _dashFinish.normalized.y);
-                //Rb.velocity = _auxVector2 * velocity;
-                //Rb.velocity = Vector2.ClampMagnitude(Rb.velocity, velocity);
+                Velocity = _auxVector2 * velocity;
+                Velocity = Vector2.ClampMagnitude(Velocity, velocity);
             }
 
-            private void SetDashVectors(Vector3 startPos, Vector3 finalPos)
+            public void SetDashVectors(Vector3 startPos, Vector3 finalPos)
             {
                 Vector3 direction = (finalPos - startPos).normalized;
 
@@ -224,8 +222,7 @@ namespace Jolt
 
             public bool CheckIsFreeFalling()
             {
-                //return Rb.velocity.y < 0f;
-                return false;
+                return Velocity.y < 0f;
             }
 
             public bool CheckIsTouchingWallLeft()

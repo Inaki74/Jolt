@@ -19,6 +19,7 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
+                    _player.Velocity = new Vector2(0f, _player.Velocity.y);
                     //_player.SetRigidbodyVelocityX(0f);
                 }
 

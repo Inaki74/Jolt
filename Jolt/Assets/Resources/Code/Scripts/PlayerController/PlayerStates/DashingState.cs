@@ -37,6 +37,7 @@ namespace Jolt
                     base.Exit();
 
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
+                    _player.Velocity = Vector2.zero;
                     //_player.SetRigidbodyVelocityX(0f);
                     //_player.SetRigidbodyVelocityY(0f);
                 }
@@ -99,7 +100,7 @@ namespace Jolt
 
                     if (_playOnce)
                     {
-                        //_player.SetDashMovement(_playerData.DashSpeed);
+                        _player.Dash(_playerData.DashSpeed);
 
                         _playOnce = false;
                     }
@@ -108,6 +109,11 @@ namespace Jolt
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
+                }
+
+                public override string ToString()
+                {
+                    return "DashingState";
                 }
             }
         }
