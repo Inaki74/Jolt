@@ -53,17 +53,17 @@ namespace Jolt
                         //TODO
                         if (_isTouchingWall)
                         {
-                            _stateMachine.ChangeState(_stateMachine.WallSlideJumpState);
+                            _stateMachine.ScheduleStateChange(_stateMachine.WallSlideJumpState);
                             return false;
                         }
 
-                        _stateMachine.ChangeState(_stateMachine.JumpState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.JumpState);
                         return false;
                     }
 
                     if (!_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.CoyoteJumpState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.CoyoteJumpState);
                         return false;
                     }
 

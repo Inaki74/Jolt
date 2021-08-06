@@ -28,7 +28,7 @@ namespace Jolt
                     // No movement -> idle state
                     if (!_isMoving)
                     {
-                        _stateMachine.ChangeState(_stateMachine.IdleState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.IdleState);
                         return false;
                     }
 

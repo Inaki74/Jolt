@@ -35,7 +35,7 @@ namespace Jolt
                     // Theres movement -> MoveState
                     if (_moveInput.x != 0)
                     {
-                        _stateMachine.ChangeState(_stateMachine.MoveState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.MoveState);
                         return false;
                     }
 

@@ -45,13 +45,13 @@ namespace Jolt
 
                     if (ForceApplied && !_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.WallSlideFloatingState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallSlideFloatingState);
                         return false;
                     }
 
                     if (ForceApplied && _isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.IdleState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.IdleState);
                         return false;
                     }
 

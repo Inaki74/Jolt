@@ -51,7 +51,7 @@ namespace Jolt
 
                     if (_isStartingDash && _canDash)
                     {
-                        _stateMachine.ChangeState(_stateMachine.PreDashState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.PreDashState);
                         return false;
                     }
 

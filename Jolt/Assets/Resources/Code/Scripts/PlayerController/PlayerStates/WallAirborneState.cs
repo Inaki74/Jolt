@@ -46,14 +46,14 @@ namespace Jolt
 
                     if (_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.IdleState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.IdleState);
                         return false;
                     }
 
                     if ((_isTouchingWallLeft && isMovingLeft) ||
                         (_isTouchingWallRight && isMovingRight))
                     {
-                        _stateMachine.ChangeState(_stateMachine.WallSlideState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallSlideState);
                         return false;
                     }
 

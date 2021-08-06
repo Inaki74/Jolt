@@ -61,11 +61,11 @@ namespace Jolt
                         {
                             if (_jumpHeld)
                             {
-                                _stateMachine.ChangeState(_stateMachine.FloatingState);
+                                _stateMachine.ScheduleStateChange(_stateMachine.FloatingState);
                                 return false;
                             }
 
-                            _stateMachine.ChangeState(_stateMachine.AirborneState);
+                            _stateMachine.ScheduleStateChange(_stateMachine.AirborneState);
                             return false;
                         }
                     }

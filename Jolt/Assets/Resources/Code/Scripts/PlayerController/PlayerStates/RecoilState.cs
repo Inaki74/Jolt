@@ -35,12 +35,12 @@ namespace Jolt
                     {
                         if (_isMoving)
                         {
-                            _stateMachine.ChangeState(_stateMachine.MoveState);
+                            _stateMachine.ScheduleStateChange(_stateMachine.MoveState);
                             return false;
                         }
                         else
                         {
-                            _stateMachine.ChangeState(_stateMachine.IdleState);
+                            _stateMachine.ScheduleStateChange(_stateMachine.IdleState);
                             return false;
                         }
                     }

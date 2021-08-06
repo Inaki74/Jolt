@@ -59,7 +59,7 @@ namespace Jolt
                     
                     if (_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.IdleState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.IdleState);
                         return false;
                     }
 
@@ -68,11 +68,11 @@ namespace Jolt
                         if((_isTouchingWallLeft && isMovingLeft) ||
                             (_isTouchingWallRight && isMovingRight))
                         {
-                            _stateMachine.ChangeState(_stateMachine.WallSlideState);
+                            _stateMachine.ScheduleStateChange(_stateMachine.WallSlideState);
                             return false;
                         }
 
-                        _stateMachine.ChangeState(_stateMachine.WallAirborneState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallAirborneState);
                         return false;
                     }
 

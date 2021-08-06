@@ -47,7 +47,7 @@ namespace Jolt
 
                     if (_jumpPressed)
                     {
-                        _stateMachine.ChangeState(_stateMachine.WallJumpState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallJumpState);
                         return false;
                     }
 
@@ -63,7 +63,7 @@ namespace Jolt
 
                     if (!isTouchingWall)
                     {
-                        _stateMachine.ChangeState(_stateMachine.CoyoteWallJumpState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.CoyoteWallJumpState);
                         return false;
                     }
 

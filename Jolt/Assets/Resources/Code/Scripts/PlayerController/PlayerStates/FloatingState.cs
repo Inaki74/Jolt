@@ -48,13 +48,13 @@ namespace Jolt
 
                     if (!_jumpHeld || _reachedPeak)
                     {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.AirborneState);
                         return false;
                     }
 
                     if (_isTouchingWall)
                     {
-                        _stateMachine.ChangeState(_stateMachine.WallSlideFloatingState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallSlideFloatingState);
                         return false;
                     }
 

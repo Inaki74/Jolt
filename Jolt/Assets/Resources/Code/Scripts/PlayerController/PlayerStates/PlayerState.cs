@@ -50,6 +50,8 @@ namespace Jolt
                     StateChangeCheck();
                     PlayerControlAction();
                     _player.Move(_player.Velocity);
+
+                    _stateMachine.ChangeState();
                 }
 
                 public virtual void PhysicsUpdate()

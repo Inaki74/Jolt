@@ -47,17 +47,17 @@ namespace Jolt
 
                     if (_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.IdleState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.IdleState);
                         return false;
                     }
                     else if (Mathf.Abs(_player.GetCurrentVelocity().x) < 0.2f)
                     {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.AirborneState);
                         return false;
                     }
                     else if (_isStartingDash && _stateMachine.PreDashState.CanDash())
                     {
-                        _stateMachine.ChangeState(_stateMachine.PreDashState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.PreDashState);
                         return false;
                     }
 

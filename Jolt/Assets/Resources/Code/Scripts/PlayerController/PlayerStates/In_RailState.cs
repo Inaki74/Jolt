@@ -80,7 +80,7 @@ namespace Jolt
 
                     if (_exiting)
                     {
-                        _stateMachine.ChangeState(_stateMachine.ExitRailState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.ExitRailState);
                         return false;
                     }
 

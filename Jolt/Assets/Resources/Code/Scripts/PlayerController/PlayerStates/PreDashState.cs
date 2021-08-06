@@ -58,7 +58,7 @@ namespace Jolt
                     if (!_isDashStarted)
                     {
                         // transition to dashing
-                        _stateMachine.ChangeState(_stateMachine.DashingState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.DashingState);
                         return false;
                     }
 

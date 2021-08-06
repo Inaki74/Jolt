@@ -58,12 +58,12 @@ namespace Jolt
 
                     if (_isTouchingNode)
                     {
-                        _stateMachine.ChangeState(_stateMachine.InNodeState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.InNodeState);
                         return false;
                     }
                     else if (_isTouchingRail)
                     {
-                        _stateMachine.ChangeState(_stateMachine.InRailState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.InRailState);
                         return false;
                     }
 
@@ -73,18 +73,18 @@ namespace Jolt
                         {
                             if (_moveInput.x != 0)
                             {
-                                _stateMachine.ChangeState(_stateMachine.MoveState);
+                                _stateMachine.ScheduleStateChange(_stateMachine.MoveState);
                                 return false;
                             }
                             else
                             {
-                                _stateMachine.ChangeState(_stateMachine.IdleState);
+                                _stateMachine.ScheduleStateChange(_stateMachine.IdleState);
                                 return false;
                             }
                         }
                         else
                         {
-                            _stateMachine.ChangeState(_stateMachine.AirborneState);
+                            _stateMachine.ScheduleStateChange(_stateMachine.AirborneState);
                             return false;
                         }
                     }

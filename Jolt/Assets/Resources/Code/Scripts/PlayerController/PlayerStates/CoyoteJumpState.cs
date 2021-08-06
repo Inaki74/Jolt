@@ -43,13 +43,13 @@ namespace Jolt
 
                     if (_jumpPressed)
                     {
-                        _stateMachine.ChangeState(_stateMachine.JumpState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.JumpState);
                         return false;
                     }
 
                     if (timeout)
                     {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.AirborneState);
                         return false;
                     }
 

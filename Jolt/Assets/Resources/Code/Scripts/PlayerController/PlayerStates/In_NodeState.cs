@@ -35,7 +35,7 @@ namespace Jolt
 
                     if (_isStartingDash)
                     {
-                        _stateMachine.ChangeState(_stateMachine.ExitNodeState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.ExitNodeState);
                         return false;
                     }
 

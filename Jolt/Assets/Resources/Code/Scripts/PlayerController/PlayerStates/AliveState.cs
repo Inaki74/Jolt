@@ -31,7 +31,7 @@ namespace Jolt
 
                     if (!_isAlive)
                     {
-                        _stateMachine.ChangeState(_stateMachine.DeadState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.DeadState);
                         return false;
                     }
 
