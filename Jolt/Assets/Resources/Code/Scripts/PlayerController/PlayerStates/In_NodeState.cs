@@ -17,6 +17,13 @@ namespace Jolt
                 {
                 }
 
+                public override void Enter()
+                {
+                    base.Enter();
+
+                    _stateMachine.DashingState.LastNode = _player.GetNodeInfo().GetComponent<Node>();
+                }
+
                 public override void Exit()
                 {
                     //base.Exit();

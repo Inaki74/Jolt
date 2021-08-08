@@ -16,7 +16,7 @@ namespace Jolt
             public bool IsTouchingNode { get; private set; }
             public bool IsTouchingRail { get; private set; }
             public RailController FirstRail { get; private set; }
-            public Collider2D NodeInfo { get; private set; }
+            public Collider2D NodeInfo { get; private set; } = null;
 
             private Player _player;
 
@@ -61,7 +61,7 @@ namespace Jolt
             {
                 if (collision.tag == "Node")
                 {
-                    IsTouchingNode = false;
+                    //IsTouchingNode = false;
                 }
 
                 if (collision.tag == "Rail Entrance" || collision.tag == "Rail Exit")
@@ -72,10 +72,9 @@ namespace Jolt
 
             private void TriggerExit(Collider2D collision, PlayerState state)
             {
-                if (collision.tag == "Node" && state.ToString() == "DashingState")
+                if (collision.tag == "Node")
                 {
                     IsTouchingNode = false;
-                    collision.GetComponent<SpriteRenderer>().color = Color.grey;
                 }
 
                 if (collision.tag == "Rail Entrance" || collision.tag == "Rail Exit")
@@ -91,11 +90,15 @@ namespace Jolt
 
             private void TriggerEnterNode(Collider2D collision, PlayerState state)
             {
-                if (collision.tag == "Node" && state.ToString() == "DashingState")
+                if (collision.tag == "Node")
                 {
                     IsTouchingNode = true;
                     NodeInfo = collision;
-                    collision.GetComponent<SpriteRenderer>().color = Color.cyan;
+
+                    if (state.ToString() == "DashingState")
+                    {
+                        
+                    }
                 }
             }
 
