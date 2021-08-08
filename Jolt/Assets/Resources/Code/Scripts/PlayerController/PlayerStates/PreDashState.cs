@@ -13,6 +13,7 @@ namespace Jolt
                 protected override Color AssociatedColor => Color.gray;
 
                 private bool _isDashStarted;
+                private bool _isTouchingNode;
                 private float _currentTime;
                 private int _amountOfDashes;
 
@@ -50,9 +51,17 @@ namespace Jolt
 
                     _currentTime = Time.time;
                     _isDashStarted = _player.InputManager.DashBegin && (_currentTime - _enterTime < _playerData.PreDashTimeOut);
+                    _isTouchingNode = _player.CheckIsTouchingNode();
 
                     _player.SetDashVectors(_player.InputManager.InitialDashPoint, _player.InputManager.FinalDashPoint);
                     _player.SetArrowRendering();
+
+
+                    if (_isTouchingNode)
+                    {
+                        _stateMachine.ScheduleStateChange(_stateMachine.InNodeState);
+                        return false;
+                    }
 
                     //Cant be Cancelled, go to dashing when stopped pressing or after timeout
                     if (!_isDashStarted)
@@ -78,6 +87,11 @@ namespace Jolt
                 public void DecreaseAmountOfDashes()
                 {
                     _amountOfDashes--;
+                }
+
+                public override string ToString()
+                {
+                    return "PreDashString";
                 }
             }
         }

@@ -14,6 +14,8 @@ namespace Jolt
 
                 public Node LastNode { private get; set; } = new Node();
 
+                private bool _isNotLastNode;
+                private bool _wasInNode;
                 private bool _isGrounded;
                 private Vector2 _moveInput;
                 private float _currentTime;
@@ -32,6 +34,9 @@ namespace Jolt
 
                     _playOnce = true;
                     _player.SetGravityScale(0f);
+                    _wasInNode = _player.CheckIsTouchingNode();
+                    //_player.SetActivePhysicsCollider(false);
+                    //_player.SetDashCollider(true);
                 }
 
                 public override void Exit()
@@ -40,6 +45,8 @@ namespace Jolt
 
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                     _player.Velocity = Vector2.zero;
+                    //_player.SetActivePhysicsCollider(true);
+                    //_player.SetDashCollider(false);
                     //_player.SetRigidbodyVelocityX(0f);
                     //_player.SetRigidbodyVelocityY(0f);
                 }
@@ -59,22 +66,13 @@ namespace Jolt
                     _isTouchingRail = _player.CheckIsTouchingRail();
 
 
-                    bool isNotLastNode = false;
-                    Collider2D lastNodeCollider = _player.GetNodeInfo();
-
-                    if (lastNodeCollider != null)
-                    {
-                        Node currentNode = _player.GetNodeInfo().GetComponent<Node>();
-
-                        isNotLastNode = currentNode.GetInstanceID() != LastNode.GetInstanceID();
-                    }
-
-                    if (_isTouchingNode && isNotLastNode)
+                    if (CheckIsAdmittableToGetIntoNode())
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.InNodeState);
                         return false;
                     }
-                    else if (_isTouchingRail)
+
+                    if (_isTouchingRail)
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.InRailState);
                         return false;
@@ -132,6 +130,30 @@ namespace Jolt
                 public void ResetLastnode()
                 {
                     LastNode = new Node();
+                }
+
+                private bool CheckIsAdmittableToGetIntoNode()
+                {
+                    _isNotLastNode = false;
+                    Collider2D lastNodeCollider = _player.GetNodeInfo();
+
+                    if (lastNodeCollider != null)
+                    {
+                        Node currentNode = _player.GetNodeInfo().GetComponent<Node>();
+
+                        _isNotLastNode = currentNode.GetInstanceID() != LastNode.GetInstanceID();
+                    }
+
+                    if (_wasInNode)
+                    {
+                        if (!_isTouchingNode)
+                        {
+                            _stateMachine.DashingState.ResetLastnode();
+                            _wasInNode = false;
+                        }
+                    }
+
+                    return _isTouchingNode && _isNotLastNode && !_wasInNode;
                 }
             }
         }

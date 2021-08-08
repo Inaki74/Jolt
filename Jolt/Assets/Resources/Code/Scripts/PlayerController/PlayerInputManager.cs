@@ -25,8 +25,21 @@ namespace Jolt
             private Vector2 _movementVector;
             public Vector2 MovementVector { get => _movementVector; set => _movementVector = value; }
 
+            private const int _dashBufferAmount = 2;
             private bool _dashBegin;
-            public bool DashBegin { get => _dashBegin; set => _dashBegin = value; }
+            private Queue<bool> _dashQueue = new Queue<bool>(_dashBufferAmount);
+            public bool DashBegin
+            {
+                get
+                {
+                    if(_dashQueue.Count != 0)
+                    {
+                        return _dashQueue.Dequeue();
+                    }
+
+                    return false;
+                }
+            }
 
             private Vector3 _initialDashPoint;
             public Vector3 InitialDashPoint { get => _initialDashPoint; set => _initialDashPoint = value; }
@@ -87,6 +100,12 @@ namespace Jolt
                 _playerInputController.ManageMovement(ref _movementVector);
 
                 _playerInputController.ManageDash(ref _dashBegin, ref _finalDashPoint);
+
+                if (_dashBegin && _dashQueue.Count < _dashBufferAmount)
+                {
+                    _dashQueue.Enqueue(_dashBegin);
+                }
+                
 
                 _playerInputController.ManageJump(ref _jumpPressed, ref _jumpHeld);
             }

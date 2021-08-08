@@ -28,6 +28,7 @@ namespace Jolt
             public IPlayerController PlayerController { get; private set; }
             public SpriteRenderer Sr { get; private set; }
             public BoxCollider2D Bc { get; private set; }
+            public CircleCollider2D DashCollider { get; private set; }
 
             [SerializeField]
             private GameObject _deathParticles;
@@ -94,11 +95,14 @@ namespace Jolt
                 PlayerController = GetComponent<PlayerController>();
                 Sr = GetComponent<SpriteRenderer>();
                 Bc = GetComponent<BoxCollider2D>();
+                DashCollider = GetComponent<CircleCollider2D>();
                 InputManager = GetComponent<PlayerInputManager>();
                 _playerCollisions = GetComponent<PlayerCollisions>();
 
                 StateMachine = new PlayerStateMachine(this, _playerData);
                 _playerArrowRendering = new PlayerArrowRendering(GetComponent<LineRenderer>());
+
+                //DashCollider.enabled = false;
             }
 
             private void SetRigidbody()
@@ -206,6 +210,11 @@ namespace Jolt
             public void SetActivePhysicsCollider(bool set)
             {
                 Bc.enabled = set;
+            }
+
+            public void SetDashCollider(bool set)
+            {
+                DashCollider.enabled = set;
             }
 
             public void SetActiveSpriteRenderer(bool set)

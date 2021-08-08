@@ -16,13 +16,13 @@ namespace Jolt
             _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
+        private void OnTriggerStay2D(Collider2D collision)
         {
-            if(other.tag == "Player")
+            if (collision.tag == "Player")
             {
-                Player player = other.GetComponent<Player>();
-
-                if(player.StateMachine.GetState() == "DashingState")
+                Player player = collision.GetComponent<Player>();
+                
+                if (player.StateMachine.GetState() == "In_NodeState" && !_spriteRenderer.color.Equals(Color.cyan))
                 {
                     _spriteRenderer.color = Color.cyan;
                 }

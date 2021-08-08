@@ -25,6 +25,7 @@ namespace Jolt.PlayerController
         void InstantiateDeathParticles();
         void ResetPosition();
         void SetActivePhysicsCollider(bool set);
+        void SetDashCollider(bool set);
         void SetActiveSpriteRenderer(bool set);
         void SetArrowRendering();
         void SetGravityScale(float gravity);

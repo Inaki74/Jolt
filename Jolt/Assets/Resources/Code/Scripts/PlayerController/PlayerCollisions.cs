@@ -40,6 +40,24 @@ namespace Jolt
                 TriggerExit(collision, _player.StateMachine.CurrentState);
             }
 
+            private void OnCollisionEnter2D(Collision2D collision)
+            {
+                Debug.Log("aaaa");
+
+                if (collision.gameObject.tag == "Rubber")
+                {
+                    _player.IsDead = true;
+                }
+            }
+
+            private void OnCollisionExit2D(Collision2D collision)
+            {
+                if (collision.gameObject.tag == "Rubber")
+                {
+                    _player.IsDead = false;
+                }
+            }
+
             private void TriggerEnter(Collider2D collision, PlayerState state)
             {
                 TriggerEnterNode(collision, state);
@@ -53,7 +71,7 @@ namespace Jolt
 
                 if (collision.gameObject.tag == "Rubber")
                 {
-                    _player.IsDead = true;
+                   // _player.IsDead = true;
                 }
             }
 
