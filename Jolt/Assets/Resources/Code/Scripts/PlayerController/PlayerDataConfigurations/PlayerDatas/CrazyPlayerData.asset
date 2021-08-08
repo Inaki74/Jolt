@@ -30,20 +30,18 @@ MonoBehaviour:
   _lastCheckpoint: {x: 4, y: 0}
   _recoilTimer: 0.2
   _freeFallGravity: 6
+  _freeFallMaxFallSpeed: -60
   _maxDeformedScale: 0.75
   _scaleReductionModifier: 0.02
   _jumpForce: 12
   _jumpGravity: 4
-  _jumpDrag: 0
   _jumpCoyoteTiming: 0.075
   _floatGravity: 2
-  _floatDrag: 0
-  _wallSlideGravity: 0.5
-  _wallSlideDrag: 1
+  _wallSlideGravity: 1.5
   _inverseMultiplierOfFallSpeed: -3
+  _wallSlideMaxFallSpeed: -18
   _wallJumpDuration: 0.15
   _wallJumpGravity: 3
-  _wallJumpDrag: 1
   _wallJumpForceHorizontal: 13
   _wallJumpForceVerticalRatioWithHorizontal: 1
   _wallJumpCoyoteTiming: 0.05

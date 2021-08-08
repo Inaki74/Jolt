@@ -40,6 +40,8 @@ namespace Jolt
             [SerializeField] private float _universalGravityScale;
             private float _gravityScale;
 
+            [SerializeField] private float _maxFallSpeed;
+
             private Vector2 _velocity;
             public Vector2 Velocity { get { return _velocity; } set { _velocity = value; } }
 
@@ -108,6 +110,7 @@ namespace Jolt
             private void SetRigidbody()
             {
                 _gravityScale = _playerData.PlayerPhysicsData.StandardGravity;
+                _maxFallSpeed = _playerData.PlayerPhysicsData.StandardMaxFallSpeed;
                 //Rb.drag = _playerData.PlayerPhysicsData.StandardLinearDrag;
             }
 
@@ -130,7 +133,14 @@ namespace Jolt
             #region Set Functions
             public void Gravity()
             {
-                _velocity.y += Time.deltaTime * GRAVITY * _gravityScale * _universalGravityScale;
+                if(_velocity.y >= _maxFallSpeed)
+                {
+                    _velocity.y += Time.deltaTime * GRAVITY * _gravityScale * _universalGravityScale;
+                }
+                else
+                {
+                    _velocity.y = _maxFallSpeed;
+                }
             }
 
             public void Move(Vector2 vector)
@@ -197,9 +207,9 @@ namespace Jolt
                 _velocity.y = 0f;
             }
 
-            public void SetDrag(float drag)
+            public void SetMaxFallSpeed(float newFallSpeed)
             {
-                //Rb.drag = drag;
+                _maxFallSpeed = newFallSpeed;
             }
 
             public void SetScale(Vector2 scale)

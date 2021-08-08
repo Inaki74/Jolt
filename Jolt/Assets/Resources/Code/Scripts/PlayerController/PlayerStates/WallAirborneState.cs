@@ -76,6 +76,8 @@ namespace Jolt
                 {
                     if (_moveInput.y < 0f)
                     {
+                        _player.SetMaxFallSpeed(_playerData.FreeFallMaxFallSpeed);
+
                         if (_freefallDeformedScaleX > _playerData.MaxDeformedScale)
                         {
                             _freefallDeformedScaleX -= -_player.Velocity.y * Time.deltaTime * _playerData.ScaleReductionModifier;
@@ -91,6 +93,7 @@ namespace Jolt
                         _freefallDeformedScaleX = 1f;
                         _player.SetScale(Vector2.one);
                         _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
+                        _player.SetMaxFallSpeed(_playerData.PlayerPhysicsData.StandardMaxFallSpeed);
                     }
                 }
             }

@@ -43,28 +43,26 @@ namespace Jolt
 
             [Header("Airborne State")]
             [SerializeField] private float _freeFallGravity;
+            [SerializeField] private float _freeFallMaxFallSpeed;
             [SerializeField] private float _maxDeformedScale;
             [SerializeField] private float _scaleReductionModifier;
 
             [Header("Jumping State")]
             [SerializeField] private float _jumpForce;
             [SerializeField] private float _jumpGravity;
-            [SerializeField] private float _jumpDrag;
             [SerializeField] private float _jumpCoyoteTiming;
 
             [Header("Floating State")]
             [SerializeField] private float _floatGravity;
-            [SerializeField] private float _floatDrag;
 
             [Header("Wall Slide State")]
             [SerializeField] private float _wallSlideGravity;
-            [SerializeField] private float _wallSlideDrag;
             [SerializeField] private float _inverseMultiplierOfFallSpeed;
+            [SerializeField] private float _wallSlideMaxFallSpeed;
 
             [Header("Wall Jump State")]
             [SerializeField] private float _wallJumpDuration;
             [SerializeField] private float _wallJumpGravity;
-            [SerializeField] private float _wallJumpDrag;
             [SerializeField] private float _wallJumpForceHorizontal;
             [SerializeField] private float _wallJumpForceVerticalRatioWithHorizontal;
             [SerializeField] private float _wallJumpCoyoteTiming;
@@ -107,25 +105,17 @@ namespace Jolt
 
             public float JumpGravity { get { return _jumpGravity; } }
 
-            public float JumpDrag { get { return _jumpDrag; } }
-
             public float JumpCoyoteTiming { get { return _jumpCoyoteTiming; } }
 
             public float FloatGravity { get { return _floatGravity; } }
 
-            public float FloatDrag { get { return _floatDrag; } }
-
             public float WallSlideGravity { get { return _wallSlideGravity; } }
-
-            public float WallSlideDrag { get { return _wallSlideDrag; } }
 
             public float InverseMultiplierOfFallSpeed { get { return _inverseMultiplierOfFallSpeed; } }
 
             public float WallJumpDuration { get { return _wallJumpDuration; } }
 
             public float WallJumpGravity { get { return _wallJumpGravity; } }
-
-            public float WallJumpDrag { get { return _wallJumpDrag; } }
 
             public float WallJumpForceHorizontal { get { return _wallJumpForceHorizontal; } }
 
@@ -134,6 +124,10 @@ namespace Jolt
             public float WallJumpCoyoteTiming { get { return _wallJumpCoyoteTiming; } }
 
             public float ScaleReductionModifier { get { return _scaleReductionModifier; } }
+
+            public float FreeFallMaxFallSpeed => _freeFallMaxFallSpeed;
+
+            public float WallSlideMaxFallSpeed => _wallSlideMaxFallSpeed;
         }
     }
 }

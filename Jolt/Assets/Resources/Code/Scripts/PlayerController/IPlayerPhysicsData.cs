@@ -3,6 +3,6 @@
     public interface IPlayerPhysicsData
     {
         float StandardGravity { get; }
-        float StandardLinearDrag { get; }
+        float StandardMaxFallSpeed { get; }
     }
 }

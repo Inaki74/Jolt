@@ -28,7 +28,6 @@ namespace Jolt
                     _forceApplied = false;
                     _canMove = false;
                     _player.SetGravityScale(_playerData.WallJumpGravity);
-                    _player.SetDrag(_playerData.WallJumpDrag);
                 }
 
                 public override void Exit()
@@ -38,7 +37,6 @@ namespace Jolt
                     JumpDirection = Vector2.zero;
                     _canMove = true;
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
-                    _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
                 }
 
                 protected override bool StateChangeCheck()

@@ -11,10 +11,11 @@ namespace Jolt
         {
             [SerializeField] private float _standardGravity;
 
-            [SerializeField] private float _standardLinearDrag;
+            [SerializeField] private float _standardMaxFallSpeed;
+
 
             public float StandardGravity { get { return _standardGravity; } }
-            public float StandardLinearDrag { get { return _standardLinearDrag; } }
+            public float StandardMaxFallSpeed { get { return _standardMaxFallSpeed; } }
         }
     }
 }

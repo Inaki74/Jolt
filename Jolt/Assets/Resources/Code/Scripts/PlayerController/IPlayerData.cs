@@ -21,19 +21,17 @@ namespace Jolt.PlayerController
         Vector2 LastCheckpoint { get; }
         float RecoilTimer { get;  }
         float FreeFallGravity { get; }
+        float FreeFallMaxFallSpeed { get; }
         float MaxDeformedScale { get; }
         float ScaleReductionModifier { get; }
         float JumpForce { get; }
         float JumpGravity { get; }
-        float JumpDrag { get; }
         float JumpCoyoteTiming { get; }
         float FloatGravity { get; }
-        float FloatDrag { get; }
         float WallSlideGravity { get; }
-        float WallSlideDrag { get; }
+        float WallSlideMaxFallSpeed { get; }
         float WallJumpDuration { get; }
         float WallJumpGravity { get; }
-        float WallJumpDrag { get; }
         float WallJumpForceHorizontal { get; }
         float WallJumpForceVerticalRatioWithHorizontal { get; }
         float WallJumpCoyoteTiming { get; }

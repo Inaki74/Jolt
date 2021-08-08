@@ -17,7 +17,6 @@ namespace Jolt
                 private bool _isTouchingWallLeft;
                 private bool _isTouchingWallRight;
                 private float _freefallDeformedScaleX;
-                private bool a = false;
 
                 public AirborneState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -26,15 +25,12 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
-                    a = false;
                     _freefallDeformedScaleX = 1f;
                 }
 
                 public override void Exit()
                 {
                     base.Exit();
-                    Debug.Log("AAAA");
-                    a = true;
                     _player.SetScale(Vector2.one);
                 }
 
@@ -83,11 +79,6 @@ namespace Jolt
                 {
                     base.PlayerControlAction();
 
-                    if (a)
-                    {
-                        Debug.Log("PPPPPPPPP");
-                    }
-
                     Freefall();
 
                     // TODO: WTF is this.
@@ -120,6 +111,8 @@ namespace Jolt
                 {
                     if (_moveInput.y < 0f)
                     {
+                        _player.SetMaxFallSpeed(_playerData.FreeFallMaxFallSpeed);
+
                         if (_freefallDeformedScaleX > _playerData.MaxDeformedScale)
                         {
                             _freefallDeformedScaleX -= -_player.Velocity.y * Time.deltaTime * _playerData.ScaleReductionModifier;
@@ -135,6 +128,7 @@ namespace Jolt
                         _freefallDeformedScaleX = 1f;
                         _player.SetScale(Vector2.one);
                         _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
+                        _player.SetMaxFallSpeed(_playerData.PlayerPhysicsData.StandardMaxFallSpeed);
                     }
                 }
             }

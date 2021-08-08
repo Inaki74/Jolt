@@ -22,7 +22,6 @@ namespace Jolt
                 {
                     base.Enter();
                     _player.SetGravityScale(_playerData.FloatGravity);
-                    _player.SetDrag(_playerData.FloatDrag);
                 }
 
                 public override void Exit()
@@ -30,7 +29,6 @@ namespace Jolt
                     base.Exit();
 
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
-                    _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
                 }
 
                 protected override bool StateChangeCheck()

@@ -20,8 +20,9 @@ namespace Jolt
                 {
                     base.Enter();
                     //_player.SetRigidbodyVelocityY(_playerData.InverseMultiplierOfFallSpeed);
+                    _player.Velocity = Vector2.zero;
                     _player.SetGravityScale(_playerData.WallSlideGravity);
-                    _player.SetDrag(_playerData.WallSlideDrag);
+                    _player.SetMaxFallSpeed(_playerData.WallSlideMaxFallSpeed);
                 }
 
                 public override void Exit()
@@ -29,7 +30,7 @@ namespace Jolt
                     base.Exit();
 
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
-                    _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
+                    _player.SetMaxFallSpeed(_playerData.PlayerPhysicsData.StandardMaxFallSpeed);
                 }
 
                 protected override bool StateChangeCheck()

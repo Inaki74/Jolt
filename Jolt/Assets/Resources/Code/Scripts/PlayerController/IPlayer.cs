@@ -29,7 +29,7 @@ namespace Jolt.PlayerController
         void SetActiveSpriteRenderer(bool set);
         void SetArrowRendering();
         void SetGravityScale(float gravity);
-        void SetDrag(float drag);
+        void SetMaxFallSpeed(float newFallSpeed);
         void SetPosition(Vector2 position);
         void SetScale(Vector2 scale);
         void Gravity();
