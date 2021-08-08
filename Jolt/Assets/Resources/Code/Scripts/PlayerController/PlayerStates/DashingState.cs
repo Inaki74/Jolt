@@ -12,6 +12,8 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.cyan;
 
+                public Node LastNode { private get; set; } = new Node();
+
                 private bool _isGrounded;
                 private Vector2 _moveInput;
                 private float _currentTime;
@@ -56,7 +58,18 @@ namespace Jolt
                     _isTouchingNode = _player.CheckIsTouchingNode();
                     _isTouchingRail = _player.CheckIsTouchingRail();
 
-                    if (_isTouchingNode)
+
+                    bool isNotLastNode = false;
+                    Collider2D lastNodeCollider = _player.GetNodeInfo();
+
+                    if (lastNodeCollider != null)
+                    {
+                        Node currentNode = _player.GetNodeInfo().GetComponent<Node>();
+
+                        isNotLastNode = currentNode.GetInstanceID() != LastNode.GetInstanceID();
+                    }
+
+                    if (_isTouchingNode && isNotLastNode)
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.InNodeState);
                         return false;
@@ -114,6 +127,11 @@ namespace Jolt
                 public override string ToString()
                 {
                     return "DashingState";
+                }
+
+                public void ResetLastnode()
+                {
+                    LastNode = new Node();
                 }
             }
         }

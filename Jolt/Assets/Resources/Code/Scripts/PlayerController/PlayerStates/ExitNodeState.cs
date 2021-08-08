@@ -35,6 +35,7 @@ namespace Jolt
                 {
                     base.Exit();
 
+                    //_stateMachine.DashingState.LastNode = new Node();
                     _player.DeactivateArrowRendering();
                     Time.timeScale = 1f;
                 }
