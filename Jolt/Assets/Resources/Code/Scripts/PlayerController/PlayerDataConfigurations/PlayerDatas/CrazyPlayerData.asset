@@ -37,7 +37,9 @@ MonoBehaviour:
   _jumpGravity: 4
   _jumpCoyoteTiming: 0.075
   _floatGravity: 2
-  _wallSlideGravity: 1.5
+  _startingWallSlideGravity: 1.5
+  _finalWallSlideGravity: 4
+  _timeToReachFinalGravity: 1
   _inverseMultiplierOfFallSpeed: -3
   _wallSlideMaxFallSpeed: -17
   _wallJumpDuration: 0.15

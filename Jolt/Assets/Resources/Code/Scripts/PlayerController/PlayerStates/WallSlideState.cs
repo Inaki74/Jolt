@@ -12,16 +12,28 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.blue;
 
+                private float _currentFallingGravityScale = 0f;
+                private bool _hasClinged = false;
+
                 public WallSlideState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
+                    _currentFallingGravityScale = _playerData.StartingWallSlideGravity;
                 }
 
                 public override void Enter()
                 {
                     base.Enter();
+
                     //_player.SetRigidbodyVelocityY(_playerData.InverseMultiplierOfFallSpeed);
-                    _player.Velocity = Vector2.zero;
-                    _player.SetGravityScale(_playerData.WallSlideGravity);
+
+                    if (!_hasClinged)
+                    {
+                        _player.Velocity = new Vector2(0f, _playerData.StartingFallSpeed);
+                        _hasClinged = true;
+                    }
+                    
+
+                    _player.SetGravityScale(_currentFallingGravityScale);
                     _player.SetMaxFallSpeed(_playerData.WallSlideMaxFallSpeed);
                 }
 
@@ -64,11 +76,32 @@ namespace Jolt
                 protected override void PlayerControlAction()
                 {
                     base.PlayerControlAction();
+
+                    if(_currentFallingGravityScale < _playerData.FinalWallSlideGravity)
+                    {
+                        _currentFallingGravityScale += Time.deltaTime * (_playerData.FinalWallSlideGravity - _playerData.StartingWallSlideGravity) / _playerData.TimeToReachFinalGravity;
+                    }
+                    else
+                    {
+                        _currentFallingGravityScale = _playerData.FinalWallSlideGravity;
+                    }
+
+                    _player.SetGravityScale(_currentFallingGravityScale);
                 }
 
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
+                }
+
+                public void ResetFallingGravityScale()
+                {
+                    _currentFallingGravityScale = _playerData.StartingWallSlideGravity;
+                }
+
+                public void ResetHasClinged()
+                {
+                    _hasClinged = false;
                 }
             }
         }

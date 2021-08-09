@@ -28,6 +28,8 @@ namespace Jolt
                     _forceApplied = false;
                     _canMove = false;
                     _player.SetGravityScale(_playerData.WallJumpGravity);
+                    _stateMachine.WallSlideState.ResetFallingGravityScale();
+                    _stateMachine.WallSlideState.ResetHasClinged();
                 }
 
                 public override void Exit()
