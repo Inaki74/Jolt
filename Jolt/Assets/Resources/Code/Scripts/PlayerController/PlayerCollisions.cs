@@ -42,8 +42,6 @@ namespace Jolt
 
             private void OnCollisionEnter2D(Collision2D collision)
             {
-                Debug.Log("aaaa");
-
                 if (collision.gameObject.tag == "Rubber")
                 {
                     _player.IsDead = true;

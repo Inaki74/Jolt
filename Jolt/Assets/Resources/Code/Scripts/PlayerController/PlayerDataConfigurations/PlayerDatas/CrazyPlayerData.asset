@@ -39,7 +39,7 @@ MonoBehaviour:
   _floatGravity: 2
   _wallSlideGravity: 1.5
   _inverseMultiplierOfFallSpeed: -3
-  _wallSlideMaxFallSpeed: -18
+  _wallSlideMaxFallSpeed: -17
   _wallJumpDuration: 0.15
   _wallJumpGravity: 3
   _wallJumpForceHorizontal: 13

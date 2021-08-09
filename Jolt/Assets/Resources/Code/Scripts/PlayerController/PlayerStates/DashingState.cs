@@ -12,7 +12,7 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.cyan;
 
-                public Node LastNode { private get; set; } = new Node();
+                public Node LastNode { private get; set; } = null;
 
                 private bool _isNotLastNode;
                 private bool _wasInNode;
@@ -129,7 +129,7 @@ namespace Jolt
 
                 public void ResetLastnode()
                 {
-                    LastNode = new Node();
+                    LastNode = null;
                 }
 
                 private bool CheckIsAdmittableToGetIntoNode()
@@ -137,11 +137,16 @@ namespace Jolt
                     _isNotLastNode = false;
                     Collider2D lastNodeCollider = _player.GetNodeInfo();
 
-                    if (lastNodeCollider != null)
+                    if (lastNodeCollider != null && LastNode != null)
                     {
                         Node currentNode = _player.GetNodeInfo().GetComponent<Node>();
 
                         _isNotLastNode = currentNode.GetInstanceID() != LastNode.GetInstanceID();
+                    }
+
+                    if (LastNode == null)
+                    {
+                        _isNotLastNode = true;
                     }
 
                     if (_wasInNode)
