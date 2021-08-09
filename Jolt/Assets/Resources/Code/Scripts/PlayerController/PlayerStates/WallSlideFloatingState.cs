@@ -13,6 +13,7 @@ namespace Jolt
                 protected override Color AssociatedColor => Color.gray;
 
                 private bool _reachedPeak;
+                private float _gravitySet = 0f;
 
                 public WallSlideFloatingState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -21,13 +22,21 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
-                    _player.SetGravityScale(_playerData.FloatGravity);
+                    if (_gravitySet != 0f)
+                    {
+                        _player.SetGravityScale(_gravitySet);
+                    }
+                    else
+                    {
+                        _player.SetGravityScale(_playerData.FloatGravity);
+                    }
                 }
 
                 public override void Exit()
                 {
                     base.Exit();
 
+                    _gravitySet = 0f;
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                 }
 
@@ -75,6 +84,11 @@ namespace Jolt
                     base.PhysicsUpdate();
                 }
 
+                public void SetGravityScale(float newScale)
+                {
+                    _gravitySet = newScale;
+                }
+
                 private bool CheckFloatingStateChange()
                 {
                     _jumpHeld = _player.InputManager.JumpHeld;
@@ -91,6 +105,7 @@ namespace Jolt
 
                     return true;
                 }
+
             }
         }
     }

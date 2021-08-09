@@ -14,6 +14,7 @@ namespace Jolt
 
                 private bool _reachedPeak;
                 private bool _isTouchingWall;
+                
 
                 public FloatingState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -52,6 +53,7 @@ namespace Jolt
 
                     if (_isTouchingWall)
                     {
+                        _stateMachine.WallSlideFloatingState.SetGravityScale(_playerData.FloatingGravityScaleIntoWall);
                         _stateMachine.ScheduleStateChange(_stateMachine.WallSlideFloatingState);
                         return false;
                     }
@@ -63,6 +65,8 @@ namespace Jolt
                 {
                     base.PhysicsUpdate();
                 }
+
+                
             }
         }
     }

@@ -54,6 +54,7 @@ namespace Jolt
 
             [Header("Floating State")]
             [SerializeField] private float _floatGravity;
+            [SerializeField] private float _floatingGravityScaleIntoWall;
 
             [Header("Wall Slide State")]
             [SerializeField] private float _startingWallSlideGravity;
@@ -134,6 +135,8 @@ namespace Jolt
             public float FreeFallMaxFallSpeed => _freeFallMaxFallSpeed;
 
             public float WallSlideMaxFallSpeed => _wallSlideMaxFallSpeed;
+
+            public float FloatingGravityScaleIntoWall => _floatingGravityScaleIntoWall;
         }
     }
 }

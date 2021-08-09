@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerPhysicsOne
   m_EditorClassIdentifier: 
   _standardGravity: 4
-  _standardMaxFallSpeed: -25
+  _standardMaxFallSpeed: -20
