@@ -29,7 +29,7 @@ namespace Jolt
                 public override void Exit()
                 {
                     base.Exit();
-                    _player.SetScale(Vector2.one);
+                    _player.SetScale(_playerData.PlayerPhysicsData.StandardScale);
                 }
 
                 protected override bool StateChangeCheck()
@@ -91,7 +91,7 @@ namespace Jolt
                     else
                     {
                         _freefallDeformedScaleX = 1f;
-                        _player.SetScale(Vector2.one);
+                        _player.SetScale(_playerData.PlayerPhysicsData.StandardScale);
                         _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                         _player.SetMaxFallSpeed(_playerData.PlayerPhysicsData.StandardMaxFallSpeed);
                     }
