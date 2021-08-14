@@ -217,7 +217,9 @@ namespace Jolt
 
             public void SetScale(Vector2 scale)
             {
-                scale = new Vector2(scale.x * Mathf.Sign(transform.localScale.x), scale.y);
+                float facingDirection = Mathf.Sign(transform.localScale.x);
+
+                scale = new Vector2(scale.x * facingDirection, scale.y);
                 transform.localScale = scale;
             }
 
@@ -313,11 +315,20 @@ namespace Jolt
 
             public void CheckIfShouldFlip(float direction)
             {
-                if(transform.localScale.x != direction && direction != 0f)
+                bool shouldFaceRight = direction > 0f && !_isFacingRight;
+                bool shouldFaceLeft = direction < 0f && _isFacingRight;
+
+                if(shouldFaceLeft || shouldFaceRight)
                 {
-                    Vector2 flippedScale = new Vector2(direction, transform.localScale.y);
-                    transform.localScale = flippedScale;
+                    Flip();
                 }
+            }
+
+            private void Flip()
+            {
+                _isFacingRight = !_isFacingRight;
+                Vector2 flippedScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+                transform.localScale = flippedScale;
             }
         }
 
