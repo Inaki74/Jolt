@@ -21,7 +21,7 @@ MonoBehaviour:
   _dashTimeOut: 0.12
   _dashSpeed: 30
   _checkWallRadius: 0.05
-  _checkGroundRadius: 0.042
+  _checkGroundRadius: 0.05
   _whatIsGround:
     serializedVersion: 2
     m_Bits: 256
@@ -30,19 +30,21 @@ MonoBehaviour:
   _lastCheckpoint: {x: 4, y: 0}
   _recoilTimer: 0.2
   _freeFallGravity: 6
-  _maxDeformedScale: 0.6
+  _freeFallMaxFallSpeed: -40
+  _maxDeformedScale: 0.75
+  _scaleReductionModifier: 0.02
   _jumpForce: 12
   _jumpGravity: 4
-  _jumpDrag: 0
   _jumpCoyoteTiming: 0.075
-  _floatGravity: 2
-  _floatDrag: 0
-  _wallSlideGravity: 0.5
-  _wallSlideDrag: 1
-  _inverseMultiplierOfFallSpeed: -3
+  _floatGravity: 4
+  _floatingGravityScaleIntoWall: 3.5
+  _startingWallSlideGravity: 0.5
+  _finalWallSlideGravity: 4
+  _timeToReachFinalGravity: 2
+  _startingFallSpeed: -1
+  _wallSlideMaxFallSpeed: -15
   _wallJumpDuration: 0.15
-  _wallJumpGravity: 3
-  _wallJumpDrag: 1
-  _wallJumpForceHorizontal: 13
-  _wallJumpForceVerticalRatioWithHorizontal: 1.3
-  _wallJumpCoyoteTiming: 0.075
+  _wallJumpGravity: 4
+  _wallJumpForceHorizontal: 8
+  _wallJumpForceVerticalRatioWithHorizontal: 2
+  _wallJumpCoyoteTiming: 0.05

@@ -29,12 +29,12 @@ namespace Jolt
                     base.Enter();
 
                     ExitVector.Normalize();
-                    _player.SetMovementByImpulse(ExitVector, ExitSpeed);
+                    //_player.SetMovementByImpulse(ExitVector, ExitSpeed);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -47,33 +47,32 @@ namespace Jolt
 
                     if (_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.IdleState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.IdleState);
                         return false;
                     }
                     else if (Mathf.Abs(_player.GetCurrentVelocity().x) < 0.2f)
                     {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.AirborneState);
                         return false;
                     }
                     else if (_isStartingDash && _stateMachine.PreDashState.CanDash())
                     {
-                        _stateMachine.ChangeState(_stateMachine.PreDashState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.PreDashState);
                         return false;
                     }
 
                     return true;
                 }
 
-                public override void PhysicsUpdate()
+                protected override void PlayerControlAction()
                 {
-                    base.PhysicsUpdate();
-
+                    base.PlayerControlAction();
                     //Exit right
                     if (ExitVector.x > 0)
                     {
                         if (_player.GetCurrentVelocity().x < _playerData.MovementSpeed || _moveInput.x < 0)
                         {
-                            _player.SetMovementXByForce(_moveInput, _playerData.MovementSpeed + ExitSpeed);
+                            //_player.SetMovementXByForce(_moveInput, _playerData.MovementSpeed + ExitSpeed);
                         }
                     }
                     //Exit left
@@ -81,9 +80,14 @@ namespace Jolt
                     {
                         if (_player.GetCurrentVelocity().x > -_playerData.MovementSpeed || _moveInput.x > 0)
                         {
-                            _player.SetMovementXByForce(_moveInput, _playerData.MovementSpeed + ExitSpeed);
+                            //_player.SetMovementXByForce(_moveInput, _playerData.MovementSpeed + ExitSpeed);
                         }
                     }
+                }
+
+                public override void PhysicsUpdate()
+                {
+                    base.PhysicsUpdate();
                 }
 
                 public override string ToString()

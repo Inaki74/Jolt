@@ -23,6 +23,7 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
+                    //_player.SetRigidbodyVelocityX(0f);
                 }
 
                 public override void Exit()
@@ -30,9 +31,9 @@ namespace Jolt
                     base.Exit();
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -46,13 +47,7 @@ namespace Jolt
 
                     if (_jumpPressed)
                     {
-                        _stateMachine.ChangeState(_stateMachine.WallJumpState);
-                        return false;
-                    }
-
-                    if (!isTouchingWall)
-                    {
-                        _stateMachine.ChangeState(_stateMachine.CoyoteWallJumpState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallJumpState);
                         return false;
                     }
 
@@ -66,19 +61,18 @@ namespace Jolt
                         _stateMachine.WallJumpState.JumpDirection = Vector2.left;
                     }
 
+                    if (!isTouchingWall)
+                    {
+                        _stateMachine.ScheduleStateChange(_stateMachine.CoyoteWallJumpState);
+                        return false;
+                    }
+
                     return true;
                 }
 
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
-                }
-
-                protected override void PhysicsFirstStep()
-                {
-                    base.PhysicsFirstStep();
-
-                    _player.SetRigidbodyVelocityX(0f);
                 }
 
             }

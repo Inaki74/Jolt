@@ -23,6 +23,7 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
+                    _player.SetGravityScale(_playerData.JumpGravity);
                 }
 
                 public override void Exit()
@@ -31,12 +32,11 @@ namespace Jolt
 
                     ForceApplied = false;
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
-                    _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -50,41 +50,33 @@ namespace Jolt
                         if (_isTouchingWall)
                         {
                             _stateMachine.WallSlideJumpState.ForceApplied = true;
-                            _stateMachine.ChangeState(_stateMachine.WallSlideJumpState);
+                            _stateMachine.ScheduleStateChange(_stateMachine.WallSlideJumpState);
                             return false;
                         }
 
                         if (_isGrounded)
                         {
-                            _stateMachine.ChangeState(_stateMachine.IdleState);
+                            _stateMachine.ScheduleStateChange(_stateMachine.IdleState);
                             return false;
                         }
 
-                        _stateMachine.ChangeState(_stateMachine.FloatingState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.FloatingState);
                         return false;
                     }
 
                     return true;
                 }
 
-                public override void PhysicsUpdate()
+                protected override void PlayerControlAction()
                 {
-                    base.PhysicsUpdate();
+                    base.PlayerControlAction();
 
                     if (!ForceApplied)
                     {
-                        _player.SetRigidbodyVelocityY(_playerData.JumpForce);
+                        _player.Velocity = new Vector2(_player.Velocity.x, _playerData.JumpForce);
                         //_player.SetMovementByImpulse(Vector2.up, _playerData.JumpForce);
                         ForceApplied = true;
                     }
-                }
-
-                protected override void PhysicsFirstStep()
-                {
-                    base.PhysicsFirstStep();
-
-                    _player.SetGravityScale(_playerData.JumpGravity);
-                    _player.SetDrag(_playerData.JumpDrag);
                 }
             }
         }

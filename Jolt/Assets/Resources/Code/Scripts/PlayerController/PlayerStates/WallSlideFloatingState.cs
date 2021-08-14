@@ -13,6 +13,7 @@ namespace Jolt
                 protected override Color AssociatedColor => Color.gray;
 
                 private bool _reachedPeak;
+                private float _gravitySet = 0f;
 
                 public WallSlideFloatingState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -21,24 +22,32 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
+                    if (_gravitySet != 0f)
+                    {
+                        _player.SetGravityScale(_gravitySet);
+                    }
+                    else
+                    {
+                        _player.SetGravityScale(_playerData.FloatGravity);
+                    }
                 }
 
                 public override void Exit()
                 {
                     base.Exit();
 
+                    _gravitySet = 0f;
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
-                    _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
                     if (!CheckFloatingStateChange())
                     {
                         return false;
                     }
 
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -54,15 +63,20 @@ namespace Jolt
                         if((_isTouchingWallLeft && isMovingLeft) ||
                             (_isTouchingWallRight && isMovingRight))
                         {
-                            _stateMachine.ChangeState(_stateMachine.WallSlideState);
+                            _stateMachine.ScheduleStateChange(_stateMachine.WallSlideState);
                             return false;
                         }
 
-                        _stateMachine.ChangeState(_stateMachine.WallAirborneState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallAirborneState);
                         return false;
                     }
 
                     return true;
+                }
+
+                protected override void PlayerControlAction()
+                {
+                    base.PlayerControlAction();
                 }
 
                 public override void PhysicsUpdate()
@@ -70,11 +84,9 @@ namespace Jolt
                     base.PhysicsUpdate();
                 }
 
-                protected override void PhysicsFirstStep()
+                public void SetGravityScale(float newScale)
                 {
-                    base.PhysicsFirstStep();
-                    _player.SetGravityScale(_playerData.FloatGravity);
-                    _player.SetDrag(_playerData.FloatDrag);
+                    _gravitySet = newScale;
                 }
 
                 private bool CheckFloatingStateChange()
@@ -87,12 +99,13 @@ namespace Jolt
 
                     if (_jumpHeld && !isTouchingWall)
                     {
-                        _stateMachine.ChangeState(_stateMachine.FloatingState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.FloatingState);
                         return false;
                     }
 
                     return true;
                 }
+
             }
         }
     }

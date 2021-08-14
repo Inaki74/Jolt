@@ -10,12 +10,13 @@ namespace Jolt
         using PlayerStates;
 
         [RequireComponent(typeof(Player))]
+        [RequireComponent(typeof(Rigidbody2D))]
         public class PlayerCollisions : MonoBehaviour
         {
             public bool IsTouchingNode { get; private set; }
             public bool IsTouchingRail { get; private set; }
             public RailController FirstRail { get; private set; }
-            public Collider2D NodeInfo { get; private set; }
+            public Collider2D NodeInfo { get; private set; } = null;
 
             private Player _player;
 
@@ -41,12 +42,18 @@ namespace Jolt
 
             private void OnCollisionEnter2D(Collision2D collision)
             {
-                CollisionEnter(collision, _player.StateMachine.CurrentState);
+                if (collision.gameObject.tag == "Rubber")
+                {
+                    _player.IsDead = true;
+                }
             }
 
             private void OnCollisionExit2D(Collision2D collision)
             {
-                CollisionExit(collision, _player.StateMachine.CurrentState);
+                if (collision.gameObject.tag == "Rubber")
+                {
+                    _player.IsDead = false;
+                }
             }
 
             private void TriggerEnter(Collider2D collision, PlayerState state)
@@ -59,13 +66,18 @@ namespace Jolt
                 {
                     //_player.checkpoint = collision.transform.position;
                 }
+
+                if (collision.gameObject.tag == "Rubber")
+                {
+                   // _player.IsDead = true;
+                }
             }
 
             private void TriggerStay(Collider2D collision, PlayerState state)
             {
                 if (collision.tag == "Node")
                 {
-                    IsTouchingNode = false;
+                    //IsTouchingNode = false;
                 }
 
                 if (collision.tag == "Rail Entrance" || collision.tag == "Rail Exit")
@@ -76,10 +88,9 @@ namespace Jolt
 
             private void TriggerExit(Collider2D collision, PlayerState state)
             {
-                if (collision.tag == "Node" && state.ToString() == "DashingState")
+                if (collision.tag == "Node")
                 {
                     IsTouchingNode = false;
-                    collision.GetComponent<SpriteRenderer>().color = Color.grey;
                 }
 
                 if (collision.tag == "Rail Entrance" || collision.tag == "Rail Exit")
@@ -93,29 +104,17 @@ namespace Jolt
                 }
             }
 
-            private void CollisionEnter(Collision2D collision, PlayerState state)
-            {
-                if (collision.gameObject.tag == "Rubber")
-                {
-                    _player.IsDead = true;
-                }
-            }
-
-            private void CollisionExit(Collision2D collision, PlayerState state)
-            {
-                if (collision.gameObject.tag == "Rubber")
-                {
-                    //_player.IsDead = false;
-                }
-            }
-
             private void TriggerEnterNode(Collider2D collision, PlayerState state)
             {
-                if (collision.tag == "Node" && state.ToString() == "DashingState")
+                if (collision.tag == "Node")
                 {
                     IsTouchingNode = true;
                     NodeInfo = collision;
-                    collision.GetComponent<SpriteRenderer>().color = Color.cyan;
+
+                    if (state.ToString() == "DashingState")
+                    {
+                        
+                    }
                 }
             }
 

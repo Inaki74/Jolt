@@ -13,7 +13,6 @@ namespace Jolt
                 protected override Color AssociatedColor => Color.gray;
 
                 public bool ForceApplied { private get; set; }
-                private bool _isGrounded;
 
                 public WallSlideJumpState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -22,20 +21,20 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
+                    ForceApplied = false;
+                    _player.SetGravityScale(_playerData.JumpGravity);
                 }
 
                 public override void Exit()
                 {
                     base.Exit();
 
-                    ForceApplied = false;
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
-                    _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -44,36 +43,34 @@ namespace Jolt
 
                     if (ForceApplied && !_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.WallSlideFloatingState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallSlideFloatingState);
                         return false;
                     }
 
                     if (ForceApplied && _isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.IdleState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.IdleState);
                         return false;
                     }
 
                     return true;
                 }
 
-                public override void PhysicsUpdate()
+                protected override void PlayerControlAction()
                 {
-                    base.PhysicsUpdate();
+                    base.PlayerControlAction();
                     if (!ForceApplied)
                     {
-                        _player.SetRigidbodyVelocityY(_playerData.JumpForce);
+                        _player.Velocity = new Vector2(_player.Velocity.x, _playerData.JumpForce);
+                        //_player.SetRigidbodyVelocityY(_playerData.JumpForce);
                         //_player.SetMovementByImpulse(Vector2.up, _playerData.JumpForce);
                         ForceApplied = true;
                     }
                 }
 
-                protected override void PhysicsFirstStep()
+                public override void PhysicsUpdate()
                 {
-                    base.PhysicsFirstStep();
-
-                    _player.SetGravityScale(_playerData.JumpGravity);
-                    _player.SetDrag(_playerData.JumpDrag);
+                    base.PhysicsUpdate();
                 }
             }
         }

@@ -25,18 +25,18 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
-                    _freefallDeformedScaleX = 1f;
+                    _freefallDeformedScaleX = _playerData.PlayerPhysicsData.StandardScale.x;
                 }
 
                 public override void Exit()
                 {
                     base.Exit();
-                    _player.SetScale(Vector2.one);
+                    _player.SetScale(_playerData.PlayerPhysicsData.StandardScale);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -55,7 +55,7 @@ namespace Jolt
                     
                     if (_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.IdleState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.IdleState);
                         return false;
                     }
 
@@ -64,20 +64,20 @@ namespace Jolt
                         if((_isTouchingWallLeft && isMovingLeft) ||
                             (_isTouchingWallRight && isMovingRight))
                         {
-                            _stateMachine.ChangeState(_stateMachine.WallSlideState);
+                            _stateMachine.ScheduleStateChange(_stateMachine.WallSlideState);
                             return false;
                         }
 
-                        _stateMachine.ChangeState(_stateMachine.WallAirborneState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallAirborneState);
                         return false;
                     }
 
                     return true;
                 }
 
-                public override void PhysicsUpdate()
+                protected override void PlayerControlAction()
                 {
-                    base.PhysicsUpdate();
+                    base.PlayerControlAction();
 
                     Freefall();
 
@@ -102,13 +102,20 @@ namespace Jolt
                     //}
                 }
 
+                public override void PhysicsUpdate()
+                {
+                    base.PhysicsUpdate();
+                }
+
                 private void Freefall()
                 {
                     if (_moveInput.y < 0f)
                     {
+                        _player.SetMaxFallSpeed(_playerData.FreeFallMaxFallSpeed);
+
                         if (_freefallDeformedScaleX > _playerData.MaxDeformedScale)
                         {
-                            _freefallDeformedScaleX -= 0.01f;
+                            _freefallDeformedScaleX -= -_player.Velocity.y * Time.deltaTime * _playerData.ScaleReductionModifier;
                         }
 
                         Vector2 newScale = new Vector2(_freefallDeformedScaleX, 1f);
@@ -118,9 +125,10 @@ namespace Jolt
                     }
                     else
                     {
-                        _freefallDeformedScaleX = 1f;
-                        _player.SetScale(Vector2.one);
+                        _freefallDeformedScaleX = _playerData.PlayerPhysicsData.StandardScale.x;
+                        _player.SetScale(_playerData.PlayerPhysicsData.StandardScale);
                         _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
+                        _player.SetMaxFallSpeed(_playerData.PlayerPhysicsData.StandardMaxFallSpeed);
                     }
                 }
             }

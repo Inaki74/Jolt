@@ -22,12 +22,24 @@ namespace Jolt
                 {
                     base.Enter();
 
+                    _player.ResetGravity();
+                    _gravityActive = false;
                     _stateMachine.PreDashState.ResetAmountOfDashes();
+                    _stateMachine.WallSlideState.ResetFallingGravityScale();
+                    _stateMachine.WallSlideState.ResetHasClinged();
                 }
 
-                public override bool LogicUpdate()
+                public override void Exit()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    base.Exit();
+
+                    _player.ResetGravity();
+                    _gravityActive = true;
+                }
+
+                protected override bool StateChangeCheck()
+                {
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -43,17 +55,17 @@ namespace Jolt
                         //TODO
                         if (_isTouchingWall)
                         {
-                            _stateMachine.ChangeState(_stateMachine.WallSlideJumpState);
+                            _stateMachine.ScheduleStateChange(_stateMachine.WallSlideJumpState);
                             return false;
                         }
 
-                        _stateMachine.ChangeState(_stateMachine.JumpState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.JumpState);
                         return false;
                     }
 
                     if (!_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.CoyoteJumpState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.CoyoteJumpState);
                         return false;
                     }
 

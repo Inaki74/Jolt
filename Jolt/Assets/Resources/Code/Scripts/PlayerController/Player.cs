@@ -7,9 +7,8 @@ namespace Jolt
 {
     namespace PlayerController
     {
-        [RequireComponent(typeof(Rigidbody2D))]
-        [RequireComponent(typeof(SpriteRenderer))]
-        [RequireComponent(typeof(CircleCollider2D))]
+        [RequireComponent(typeof(PlayerController))]
+        [RequireComponent(typeof(BoxCollider2D))]
         [RequireComponent(typeof(PlayerInputManager))]
         [RequireComponent(typeof(PlayerCollisions))]
         [RequireComponent(typeof(LineRenderer))]
@@ -22,19 +21,33 @@ namespace Jolt
 
             private PlayerCollisions _playerCollisions;
             private PlayerArrowRendering _playerArrowRendering;
+            [SerializeField] private PlayerAnimations _playerAnimations;
+
+            [SerializeField]
+            private SpriteRenderer _sr;
 
             public IPlayerStateMachine StateMachine { get; private set; }
             public IPlayerInputManager InputManager { get; private set; }
-
-            public Rigidbody2D Rb { get; private set; }
-            public SpriteRenderer Sr { get; private set; }
-            public CircleCollider2D Cc { get; private set; }
+            public IPlayerController PlayerController { get; private set; }
+            public SpriteRenderer Sr { get => _sr; private set => _sr = value; }
+            public BoxCollider2D Bc { get; private set; }
+            public CircleCollider2D DashCollider { get; private set; }
 
             [SerializeField]
             private GameObject _deathParticles;
             #endregion
 
             #region Auxiliary Variables
+            private const float GRAVITY = -9.8f;
+
+            [SerializeField] private float _universalGravityScale;
+            private float _gravityScale;
+
+            [SerializeField] private float _maxFallSpeed;
+
+            private Vector2 _velocity;
+            public Vector2 Velocity { get { return _velocity; } set { _velocity = value; } }
+
             //[SerializeField]
             //private Vector2 _checkpoint;
 
@@ -84,20 +97,23 @@ namespace Jolt
 
             private void GetComponents()
             {
-                Rb = GetComponent<Rigidbody2D>();
-                Sr = GetComponent<SpriteRenderer>();
-                Cc = GetComponent<CircleCollider2D>();
+                PlayerController = GetComponent<PlayerController>();
+                Bc = GetComponent<BoxCollider2D>();
+                DashCollider = GetComponent<CircleCollider2D>();
                 InputManager = GetComponent<PlayerInputManager>();
                 _playerCollisions = GetComponent<PlayerCollisions>();
 
                 StateMachine = new PlayerStateMachine(this, _playerData);
                 _playerArrowRendering = new PlayerArrowRendering(GetComponent<LineRenderer>());
+
+                //DashCollider.enabled = false;
             }
 
             private void SetRigidbody()
             {
-                Rb.gravityScale = _playerData.PlayerPhysicsData.StandardGravity;
-                Rb.drag = _playerData.PlayerPhysicsData.StandardLinearDrag;
+                _gravityScale = _playerData.PlayerPhysicsData.StandardGravity;
+                _maxFallSpeed = _playerData.PlayerPhysicsData.StandardMaxFallSpeed;
+                //Rb.drag = _playerData.PlayerPhysicsData.StandardLinearDrag;
             }
 
             private void OnDrawGizmos()
@@ -116,51 +132,40 @@ namespace Jolt
             }
             #endregion
 
-            #region Set Functions
-            public void MoveTowardsVector(Vector2 vector, float velocity)
+            public void Gravity()
             {
-                //Debug.Log("Transform: (" + transform.position.x + " , " + transform.position.y + ") , Point: (" + v.x + " , " + v.y + ")");
-                _auxVector2.Set(vector.x, vector.y);
-                transform.position = Vector2.MoveTowards(transform.position, _auxVector2, velocity * Time.deltaTime);
+                if(_velocity.y >= _maxFallSpeed)
+                {
+                    _velocity.y += Time.deltaTime * GRAVITY * _gravityScale * _universalGravityScale;
+                }
+                else
+                {
+                    _velocity.y = _maxFallSpeed;
+                }
             }
 
-            public void SetRigidbodyVelocityX(float velocity)
+            public void Move(Vector2 vector)
             {
-                _auxVector2.Set(velocity, Rb.velocity.y);
-                Rb.velocity = _auxVector2;
+                PlayerController.Move(vector);
             }
 
-            public void SetRigidbodyVelocityY(float velocity)
+            public void MoveX(float direction, float velocity)
             {
-                _auxVector2.Set(Rb.velocity.x, velocity);
-                Rb.velocity = _auxVector2;
+                PlayerController.MoveX(direction, velocity);
             }
 
-            public void SetMovementXByForce(Vector2 direction, float speed)
+            public void MoveY(float direction, float velocity)
             {
-                _auxVector2.Set(direction.x * speed, 0);
-                Rb.AddForce(_auxVector2, ForceMode2D.Force);
+                PlayerController.MoveY(direction, velocity);
             }
 
-            public void SetMovementYByForce(Vector2 direction, float speed)
-            {
-                _auxVector2.Set(0f, direction.y * speed);
-                Rb.AddForce(_auxVector2, ForceMode2D.Force);
-            }
-
-            public void SetMovementByImpulse(Vector2 direction, float speed)
-            {
-                _auxVector2.Set(direction.x * speed, direction.y * speed);
-                Rb.AddForce(_auxVector2, ForceMode2D.Impulse);
-            }
-
-            public void SetDashMovement(float velocity)
+            public void Dash(float velocity)
             {
                 _auxVector2 = _dashFinish - _auxVector3;
                 _dashFinish = _auxVector2;
                 _auxVector2.Set(_dashFinish.normalized.x, _dashFinish.normalized.y);
-                Rb.velocity = _auxVector2 * velocity;
-                Rb.velocity = Vector2.ClampMagnitude(Rb.velocity, velocity);
+                Velocity = _auxVector2 * velocity;
+                Velocity = Vector2.ClampMagnitude(Velocity, velocity);
             }
 
             public void SetDashVectors(Vector3 startPos, Vector3 finalPos)
@@ -190,12 +195,22 @@ namespace Jolt
 
             public void SetGravityScale(float gravity)
             {
-                Rb.gravityScale = gravity;
+                _gravityScale = gravity;
             }
 
-            public void SetDrag(float drag)
+            public void SetVelocity(Vector2 velocity)
             {
-                Rb.drag = drag;
+                _velocity = velocity;
+            }
+
+            public void ResetGravity()
+            {
+                _velocity.y = 0f;
+            }
+
+            public void SetMaxFallSpeed(float newFallSpeed)
+            {
+                _maxFallSpeed = newFallSpeed;
             }
 
             public void SetScale(Vector2 scale)
@@ -205,16 +220,19 @@ namespace Jolt
 
             public void SetActivePhysicsCollider(bool set)
             {
-                Cc.enabled = set;
+                Bc.enabled = set;
+            }
+
+            public void SetDashCollider(bool set)
+            {
+                DashCollider.enabled = set;
             }
 
             public void SetActiveSpriteRenderer(bool set)
             {
                 Sr.enabled = set;
             }
-            #endregion
 
-            #region Check Functions
             public bool CheckIsGrounded()
             {
                 return Physics2D.OverlapCircle(_groundCheckOne.position, _playerData.CheckGroundRadius, _playerData.WhatIsGround)
@@ -223,7 +241,7 @@ namespace Jolt
 
             public bool CheckIsFreeFalling()
             {
-                return Rb.velocity.y < 0f;
+                return Velocity.y < 0f;
             }
 
             public bool CheckIsTouchingWallLeft()
@@ -252,9 +270,7 @@ namespace Jolt
                 return (Vector2)transform.position == point;
             }
 
-            #endregion
 
-            #region Get Functions
             public Collider2D GetNodeInfo()
             {
                 return _playerCollisions.NodeInfo;
@@ -267,11 +283,10 @@ namespace Jolt
 
             public Vector2 GetCurrentVelocity()
             {
-                return Rb.velocity;
+                //return Rb.velocity;
+                return Vector2.zero;
             }
-            #endregion
 
-            #region Other Functions
             public void DeactivateArrowRendering()
             {
                 _playerArrowRendering.DerenderArrow();
@@ -291,10 +306,6 @@ namespace Jolt
                 Instantiate(_deathParticles, transform.position, Quaternion.identity);
             }
 
-            
-
-
-            #endregion
         }
 
     }

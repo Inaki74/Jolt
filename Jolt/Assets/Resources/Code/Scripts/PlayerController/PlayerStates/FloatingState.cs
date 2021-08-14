@@ -14,6 +14,7 @@ namespace Jolt
 
                 private bool _reachedPeak;
                 private bool _isTouchingWall;
+                
 
                 public FloatingState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -24,7 +25,6 @@ namespace Jolt
                     base.Enter();
 
                     _player.SetGravityScale(_playerData.FloatGravity);
-                    _player.SetDrag(_playerData.FloatDrag);
                 }
 
                 public override void Exit()
@@ -32,12 +32,11 @@ namespace Jolt
                     base.Exit();
 
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
-                    _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -48,13 +47,14 @@ namespace Jolt
 
                     if (!_jumpHeld || _reachedPeak)
                     {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.AirborneState);
                         return false;
                     }
 
                     if (_isTouchingWall)
                     {
-                        _stateMachine.ChangeState(_stateMachine.WallSlideFloatingState);
+                        _stateMachine.WallSlideFloatingState.SetGravityScale(_playerData.FloatingGravityScaleIntoWall);
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallSlideFloatingState);
                         return false;
                     }
 
@@ -66,13 +66,7 @@ namespace Jolt
                     base.PhysicsUpdate();
                 }
 
-                protected override void PhysicsFirstStep()
-                {
-                    base.PhysicsFirstStep();
-
-                    _player.SetGravityScale(_playerData.FloatGravity);
-                    _player.SetDrag(_playerData.FloatDrag);
-                }
+                
             }
         }
     }

@@ -12,6 +12,8 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.magenta;
 
+                protected bool _gravityActive = true;
+                protected bool _canMove = true;
                 protected Vector2 _moveInput;
                 protected bool _jumpPressed;
                 protected bool _jumpHeld;
@@ -32,9 +34,9 @@ namespace Jolt
                     base.Exit();
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -49,18 +51,33 @@ namespace Jolt
 
                     if (_isStartingDash && _canDash)
                     {
-                        _stateMachine.ChangeState(_stateMachine.PreDashState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.PreDashState);
                         return false;
                     }
 
                     return true;
                 }
 
+                protected override void PlayerControlAction()
+                {
+                    base.PlayerControlAction();
+
+                    if (_canMove)
+                    {
+                        _player.Velocity = new Vector2(_playerData.MovementSpeed * _moveInput.x, _player.Velocity.y);
+                    }
+
+                    if (_gravityActive)
+                    {
+                        _player.Gravity();
+                    }
+
+                    //_player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
+                }
+
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
-
-                    _player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
             }
         }

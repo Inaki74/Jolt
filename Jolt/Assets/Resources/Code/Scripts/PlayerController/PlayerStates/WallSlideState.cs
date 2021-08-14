@@ -12,13 +12,29 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.blue;
 
+                private float _currentFallingGravityScale = 0f;
+                private bool _hasClinged = false;
+
                 public WallSlideState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
+                    _currentFallingGravityScale = _playerData.StartingWallSlideGravity;
                 }
 
                 public override void Enter()
                 {
                     base.Enter();
+
+                    //_player.SetRigidbodyVelocityY(_playerData.InverseMultiplierOfFallSpeed);
+
+                    if (!_hasClinged)
+                    {
+                        _player.Velocity = new Vector2(0f, _playerData.StartingFallSpeed);
+                        _hasClinged = true;
+                    }
+                    
+
+                    _player.SetGravityScale(_currentFallingGravityScale);
+                    _player.SetMaxFallSpeed(_playerData.WallSlideMaxFallSpeed);
                 }
 
                 public override void Exit()
@@ -26,12 +42,12 @@ namespace Jolt
                     base.Exit();
 
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
-                    _player.SetDrag(_playerData.PlayerPhysicsData.StandardLinearDrag);
+                    _player.SetMaxFallSpeed(_playerData.PlayerPhysicsData.StandardMaxFallSpeed);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -43,18 +59,34 @@ namespace Jolt
 
                     if (_isGrounded)
                     {
-                        _stateMachine.ChangeState(_stateMachine.IdleState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.IdleState);
                         return false;
                     }
 
                     if ((_isTouchingWallLeft && !isMovingLeft) ||
                         (_isTouchingWallRight && !isMovingRight))
                     {
-                        _stateMachine.ChangeState(_stateMachine.WallAirborneState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallAirborneState);
                         return false;
                     }
 
                     return true;
+                }
+
+                protected override void PlayerControlAction()
+                {
+                    base.PlayerControlAction();
+
+                    if(_currentFallingGravityScale < _playerData.FinalWallSlideGravity)
+                    {
+                        _currentFallingGravityScale += Time.deltaTime * (_playerData.FinalWallSlideGravity - _playerData.StartingWallSlideGravity) / _playerData.TimeToReachFinalGravity;
+                    }
+                    else
+                    {
+                        _currentFallingGravityScale = _playerData.FinalWallSlideGravity;
+                    }
+
+                    _player.SetGravityScale(_currentFallingGravityScale);
                 }
 
                 public override void PhysicsUpdate()
@@ -62,13 +94,14 @@ namespace Jolt
                     base.PhysicsUpdate();
                 }
 
-                protected override void PhysicsFirstStep()
+                public void ResetFallingGravityScale()
                 {
-                    base.PhysicsFirstStep();
+                    _currentFallingGravityScale = _playerData.StartingWallSlideGravity;
+                }
 
-                    _player.SetRigidbodyVelocityY(_playerData.InverseMultiplierOfFallSpeed);
-                    _player.SetGravityScale(_playerData.WallSlideGravity);
-                    _player.SetDrag(_playerData.WallSlideDrag);
+                public void ResetHasClinged()
+                {
+                    _hasClinged = false;
                 }
             }
         }

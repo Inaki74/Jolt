@@ -41,7 +41,7 @@ namespace Jolt
 
                     _testDeadState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.IdleState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.IdleState);
                 }
 
                 [Test]
@@ -86,7 +86,7 @@ namespace Jolt
 
                     _testMoveState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.DeadState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.DeadState);
                 }
 
                 [Test]
@@ -102,7 +102,7 @@ namespace Jolt
 
                     _testMoveState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.AirborneState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.AirborneState);
                 }
 
                 [Test]
@@ -118,7 +118,7 @@ namespace Jolt
 
                     _testMoveState.LogicUpdate();
 
-                    _statemachineMock.DidNotReceive().ChangeState(_statemachineMock.AirborneState);
+                    _statemachineMock.DidNotReceive().ScheduleStateChange(_statemachineMock.AirborneState);
                 }
 
                 [Test]
@@ -135,7 +135,7 @@ namespace Jolt
 
                     _testMoveState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.PreDashState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.PreDashState);
                 }
 
                 [Test]
@@ -152,7 +152,7 @@ namespace Jolt
 
                     _testMoveState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.PreDashState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.PreDashState);
                 }
 
                 [Test]
@@ -174,7 +174,7 @@ namespace Jolt
 
                     _testMoveState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.IdleState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.IdleState);
                 }
             }
 
@@ -205,7 +205,7 @@ namespace Jolt
 
                     _testIdleState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.DeadState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.DeadState);
                 }
 
                 [Test]
@@ -221,7 +221,7 @@ namespace Jolt
 
                     _testIdleState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.AirborneState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.AirborneState);
                 }
 
                 [Test]
@@ -237,7 +237,7 @@ namespace Jolt
 
                     _testIdleState.LogicUpdate();
 
-                    _statemachineMock.DidNotReceive().ChangeState(_statemachineMock.AirborneState);
+                    _statemachineMock.DidNotReceive().ScheduleStateChange(_statemachineMock.AirborneState);
                 }
 
                 [Test]
@@ -254,7 +254,7 @@ namespace Jolt
 
                     _testIdleState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.PreDashState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.PreDashState);
                 }
 
                 [Test]
@@ -271,7 +271,7 @@ namespace Jolt
 
                     _testIdleState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.PreDashState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.PreDashState);
                 }
 
                 [Test]
@@ -293,7 +293,7 @@ namespace Jolt
 
                     _testIdleState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.MoveState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.MoveState);
                 }
             }
 
@@ -324,7 +324,7 @@ namespace Jolt
 
                     _testRecoilState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.DeadState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.DeadState);
                 }
 
                 [Test]
@@ -340,7 +340,7 @@ namespace Jolt
 
                     _testRecoilState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.AirborneState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.AirborneState);
                 }
 
                 [Test]
@@ -356,7 +356,7 @@ namespace Jolt
 
                     _testRecoilState.LogicUpdate();
 
-                    _statemachineMock.DidNotReceive().ChangeState(_statemachineMock.AirborneState);
+                    _statemachineMock.DidNotReceive().ScheduleStateChange(_statemachineMock.AirborneState);
                 }
 
                 [Test]
@@ -372,7 +372,7 @@ namespace Jolt
 
                     _testRecoilState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.PreDashState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.PreDashState);
                 }
 
                 [Test]
@@ -388,7 +388,7 @@ namespace Jolt
 
                     _testRecoilState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.PreDashState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.PreDashState);
                 }
 
                 [Test]
@@ -411,7 +411,7 @@ namespace Jolt
 
                     _testRecoilState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.MoveState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.MoveState);
                 }
 
                 [Test]
@@ -428,7 +428,7 @@ namespace Jolt
 
                     _testRecoilState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.IdleState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.IdleState);
                 }
             }
 
@@ -459,7 +459,7 @@ namespace Jolt
 
                     _testAirborneState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.DeadState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.DeadState);
                 }
 
                 [Test]
@@ -478,7 +478,7 @@ namespace Jolt
 
                     _testAirborneState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.RecoilState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.RecoilState);
                 }
 
                 [Test]
@@ -494,7 +494,7 @@ namespace Jolt
 
                     _testAirborneState.LogicUpdate();
 
-                    _statemachineMock.Received().ChangeState(_statemachineMock.PreDashState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.PreDashState);
                 }
             }
 
@@ -513,7 +513,7 @@ namespace Jolt
 
                     dashingState.LogicUpdate();
 
-                    stateMachine.Received().ChangeState(stateMachine.DeadState);
+                    stateMachine.Received().ScheduleStateChange(stateMachine.DeadState);
                 }
 
                 [Test]
@@ -538,7 +538,7 @@ namespace Jolt
 
                     preDashState.LogicUpdate();
 
-                    stateMachine.Received().ChangeState(stateMachine.DeadState);
+                    stateMachine.Received().ScheduleStateChange(stateMachine.DeadState);
                 }
 
                 [Test]

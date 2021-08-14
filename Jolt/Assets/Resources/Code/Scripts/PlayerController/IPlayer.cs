@@ -6,10 +6,10 @@ namespace Jolt.PlayerController
     {
         IPlayerStateMachine StateMachine { get; }
         IPlayerInputManager InputManager { get; }
-        Rigidbody2D Rb { get; }
         SpriteRenderer Sr { get; }
-        CircleCollider2D Cc { get; }
+        BoxCollider2D Bc { get; }
         bool IsDead { get; set; }
+        Vector2 Velocity { get; set; }
 
         bool CheckHasReachedPoint(Vector2 point);
         bool CheckIsGrounded();
@@ -23,21 +23,22 @@ namespace Jolt.PlayerController
         Collider2D GetNodeInfo();
         RailController GetRailInfo();
         void InstantiateDeathParticles();
-        void MoveTowardsVector(Vector2 vector, float velocity);
         void ResetPosition();
         void SetActivePhysicsCollider(bool set);
+        void SetDashCollider(bool set);
         void SetActiveSpriteRenderer(bool set);
         void SetArrowRendering();
-        void SetDashMovement(float velocity);
-        void SetDashVectors(Vector3 startPos, Vector3 finalPos);
         void SetGravityScale(float gravity);
-        void SetDrag(float drag);
-        void SetMovementByImpulse(Vector2 direction, float speed);
-        void SetMovementXByForce(Vector2 direction, float speed);
-        void SetMovementYByForce(Vector2 direction, float speed);
+        void SetMaxFallSpeed(float newFallSpeed);
         void SetPosition(Vector2 position);
-        void SetRigidbodyVelocityX(float velocity);
-        void SetRigidbodyVelocityY(float velocity);
         void SetScale(Vector2 scale);
+        void Gravity();
+        void ResetGravity();
+        void SetVelocity(Vector2 velocity);
+        void SetDashVectors(Vector3 startPos, Vector3 finalPos);
+        void Dash(float velocity);
+        void Move(Vector2 vector);
+        void MoveX(float direction, float velocity);
+        void MoveY(float direction, float velocity);
     }
 }

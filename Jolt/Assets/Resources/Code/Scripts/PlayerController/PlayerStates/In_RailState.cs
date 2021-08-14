@@ -51,9 +51,9 @@ namespace Jolt
                     _stateMachine.ExitRailState.ExitSpeed = _speed;
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -76,20 +76,20 @@ namespace Jolt
                         _exiting = true;
                     }
 
-                    _player.MoveTowardsVector(_nextPath, _speed);
+                    //_player.MoveTowardsVector(_nextPath, _speed);
 
                     if (_exiting)
                     {
-                        _stateMachine.ChangeState(_stateMachine.ExitRailState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.ExitRailState);
                         return false;
                     }
 
                     return true;
                 }
 
-                public override void PhysicsUpdate()
+                protected override void PlayerControlAction()
                 {
-                    base.PhysicsUpdate();
+                    base.PlayerControlAction();
 
                     //Follows _speed according to points
                     //if (t < 1)
@@ -109,6 +109,11 @@ namespace Jolt
 
                     //    _exiting = true;
                     //}
+                }
+
+                public override void PhysicsUpdate()
+                {
+                    base.PhysicsUpdate();
                 }
 
                 public override string ToString()

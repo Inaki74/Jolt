@@ -28,9 +28,9 @@ namespace Jolt
                     base.Exit();
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -43,13 +43,13 @@ namespace Jolt
 
                     if (_jumpPressed)
                     {
-                        _stateMachine.ChangeState(_stateMachine.JumpState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.JumpState);
                         return false;
                     }
 
                     if (timeout)
                     {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.AirborneState);
                         return false;
                     }
 

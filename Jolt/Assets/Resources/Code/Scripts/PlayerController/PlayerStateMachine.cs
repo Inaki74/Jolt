@@ -35,6 +35,9 @@ namespace Jolt
             public WallSlideJumpState WallSlideJumpState { get; private set; }
             public WallAirborneState WallAirborneState { get; private set; }
 
+            private PlayerState _nextState;
+            private bool _stateChanged = false;
+
             public PlayerStateMachine(IPlayer player, IPlayerData playerData)
             {
                 MoveState = new MoveState(this, player, playerData);
@@ -66,11 +69,16 @@ namespace Jolt
                 TransitionState(startingState);
             }
 
-            public void ChangeState(PlayerState newState)
+            public void ChangeState()
             {
+                if (!_stateChanged)
+                {
+                    return;
+                }
+
                 CurrentState.Exit();
                 LastState = CurrentState.ToString();
-                TransitionState(newState);
+                TransitionState(_nextState);
             }
 
             public string GetState()
@@ -82,6 +90,19 @@ namespace Jolt
             {
                 CurrentState = newState;
                 newState.Enter();
+
+                _stateChanged = false;
+            }
+
+            public void ScheduleStateChange(PlayerState newState)
+            {
+                _stateChanged = true;
+                _nextState = newState;
+            }
+
+            public void ForceStateChange(PlayerState newState)
+            {
+                //TODO if needed
             }
         }
     }

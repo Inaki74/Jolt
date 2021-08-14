@@ -12,6 +12,10 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.cyan;
 
+                public Node LastNode { private get; set; } = null;
+
+                private bool _isNotLastNode;
+                private bool _wasInNode;
                 private bool _isGrounded;
                 private Vector2 _moveInput;
                 private float _currentTime;
@@ -30,6 +34,9 @@ namespace Jolt
 
                     _playOnce = true;
                     _player.SetGravityScale(0f);
+                    _wasInNode = _player.CheckIsTouchingNode();
+                    //_player.SetActivePhysicsCollider(false);
+                    //_player.SetDashCollider(true);
                 }
 
                 public override void Exit()
@@ -37,13 +44,16 @@ namespace Jolt
                     base.Exit();
 
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
-                    _player.SetRigidbodyVelocityX(0f);
-                    _player.SetRigidbodyVelocityY(0f);
+                    _player.Velocity = Vector2.zero;
+                    //_player.SetActivePhysicsCollider(true);
+                    //_player.SetDashCollider(false);
+                    //_player.SetRigidbodyVelocityX(0f);
+                    //_player.SetRigidbodyVelocityY(0f);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -55,14 +65,16 @@ namespace Jolt
                     _isTouchingNode = _player.CheckIsTouchingNode();
                     _isTouchingRail = _player.CheckIsTouchingRail();
 
-                    if (_isTouchingNode)
+
+                    if (CheckIsAdmittableToGetIntoNode())
                     {
-                        _stateMachine.ChangeState(_stateMachine.InNodeState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.InNodeState);
                         return false;
                     }
-                    else if (_isTouchingRail)
+
+                    if (_isTouchingRail)
                     {
-                        _stateMachine.ChangeState(_stateMachine.InRailState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.InRailState);
                         return false;
                     }
 
@@ -72,18 +84,18 @@ namespace Jolt
                         {
                             if (_moveInput.x != 0)
                             {
-                                _stateMachine.ChangeState(_stateMachine.MoveState);
+                                _stateMachine.ScheduleStateChange(_stateMachine.MoveState);
                                 return false;
                             }
                             else
                             {
-                                _stateMachine.ChangeState(_stateMachine.IdleState);
+                                _stateMachine.ScheduleStateChange(_stateMachine.IdleState);
                                 return false;
                             }
                         }
                         else
                         {
-                            _stateMachine.ChangeState(_stateMachine.AirborneState);
+                            _stateMachine.ScheduleStateChange(_stateMachine.AirborneState);
                             return false;
                         }
                     }
@@ -91,22 +103,62 @@ namespace Jolt
                     return true;
                 }
 
-                public override void PhysicsUpdate()
+                protected override void PlayerControlAction()
                 {
-                    base.PhysicsUpdate();
+                    base.PlayerControlAction();
+
                     _currentTime = Time.time;
 
                     if (_playOnce)
                     {
-                        _player.SetDashMovement(_playerData.DashSpeed);
+                        _player.Dash(_playerData.DashSpeed);
 
                         _playOnce = false;
                     }
                 }
 
+                public override void PhysicsUpdate()
+                {
+                    base.PhysicsUpdate();
+                }
+
                 public override string ToString()
                 {
                     return "DashingState";
+                }
+
+                public void ResetLastnode()
+                {
+                    LastNode = null;
+                }
+
+                private bool CheckIsAdmittableToGetIntoNode()
+                {
+                    _isNotLastNode = false;
+                    Collider2D lastNodeCollider = _player.GetNodeInfo();
+
+                    if (lastNodeCollider != null && LastNode != null)
+                    {
+                        Node currentNode = _player.GetNodeInfo().GetComponent<Node>();
+
+                        _isNotLastNode = currentNode.GetInstanceID() != LastNode.GetInstanceID();
+                    }
+
+                    if (LastNode == null)
+                    {
+                        _isNotLastNode = true;
+                    }
+
+                    if (_wasInNode)
+                    {
+                        if (!_isTouchingNode)
+                        {
+                            _stateMachine.DashingState.ResetLastnode();
+                            _wasInNode = false;
+                        }
+                    }
+
+                    return _isTouchingNode && _isNotLastNode && !_wasInNode;
                 }
             }
         }

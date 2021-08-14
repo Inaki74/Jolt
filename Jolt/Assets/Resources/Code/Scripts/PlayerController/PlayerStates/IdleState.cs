@@ -19,11 +19,13 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
+                    _player.Velocity = new Vector2(0f, _player.Velocity.y);
+                    //_player.SetRigidbodyVelocityX(0f);
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -33,17 +35,11 @@ namespace Jolt
                     // Theres movement -> MoveState
                     if (_moveInput.x != 0)
                     {
-                        _stateMachine.ChangeState(_stateMachine.MoveState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.MoveState);
                         return false;
                     }
 
                     return true;
-                }
-
-                protected override void PhysicsFirstStep()
-                {
-                    base.PhysicsFirstStep();
-                    _player.SetRigidbodyVelocityX(0f);
                 }
             }
         }

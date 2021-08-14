@@ -35,13 +35,14 @@ namespace Jolt
                 {
                     base.Exit();
 
+                    //_stateMachine.DashingState.LastNode = new Node();
                     _player.DeactivateArrowRendering();
                     Time.timeScale = 1f;
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -58,18 +59,25 @@ namespace Jolt
                     if (!_isDashStarted)
                     {
                         // transition to dashing
-                        _stateMachine.ChangeState(_stateMachine.DashingState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.DashingState);
                         return false;
                     }
 
                     return true;
                 }
 
+                protected override void PlayerControlAction()
+                {
+                    base.PlayerControlAction();
+
+                    _player.SetPosition(_player.GetNodeInfo().transform.position);
+                }
+
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
 
-                    _player.SetPosition(_player.GetNodeInfo().transform.position);
+                    
                 }
 
                 public override string ToString()

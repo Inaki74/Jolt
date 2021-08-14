@@ -32,9 +32,9 @@ namespace Jolt
                     base.Exit();
                 }
 
-                public override bool LogicUpdate()
+                protected override bool StateChangeCheck()
                 {
-                    bool continueExecution = base.LogicUpdate();
+                    bool continueExecution = base.StateChangeCheck();
 
                     if (!continueExecution)
                     {
@@ -50,28 +50,27 @@ namespace Jolt
 
                     if (_jumpPressed)
                     {
-                        _stateMachine.ChangeState(_stateMachine.WallJumpState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallJumpState);
                         return false;
                     }
 
                     if (timeout)
                     {
-                        _stateMachine.ChangeState(_stateMachine.AirborneState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.AirborneState);
                         return false;
                     }
 
                     return true;
                 }
 
+                protected override void PlayerControlAction()
+                {
+                    base.PlayerControlAction();
+                }
+
                 public override void PhysicsUpdate()
                 {
                     base.PhysicsUpdate();
-                }
-
-                protected override void PhysicsFirstStep()
-                {
-                    base.PhysicsFirstStep();
-                    
                 }
             }
         }
