@@ -16,6 +16,20 @@ namespace Jolt
                 {
                 }
 
+                public override void Enter()
+                {
+                    base.Enter();
+                    Debug.Log("Enter Move");
+                    _player.SetAnimationBool(PlayerAnimations.Constants.MOVE_BOOL, true);
+                }
+
+                public override void Exit()
+                {
+                    base.Exit();
+                    Debug.Log("Exit Move");
+                    _player.SetAnimationBool(PlayerAnimations.Constants.MOVE_BOOL, false);
+                }
+
                 protected override bool StateChangeCheck()
                 {
                     bool continueExecution = base.StateChangeCheck();

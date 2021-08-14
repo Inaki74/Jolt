@@ -324,6 +324,11 @@ namespace Jolt
                 }
             }
 
+            public void SetAnimationBool(string name, bool value)
+            {
+                _playerAnimations.SetAnimationBool(name, value);
+            }
+
             private void Flip()
             {
                 _isFacingRight = !_isFacingRight;
