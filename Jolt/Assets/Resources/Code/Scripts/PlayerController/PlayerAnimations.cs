@@ -38,6 +38,7 @@ namespace Jolt
             {
                 public const string GROUNDED_BOOL = "isGrounded";
                 public const string MOVE_BOOL = "isMoving";
+                public const string DUCK_BOOL = "isDucking";
             }
         }
     }

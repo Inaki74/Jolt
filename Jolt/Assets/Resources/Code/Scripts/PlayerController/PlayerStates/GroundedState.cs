@@ -36,6 +36,7 @@ namespace Jolt
 
                     _player.ResetGravity();
                     _gravityActive = true;
+                    _player.SetAnimationBool(PlayerAnimations.Constants.DUCK_BOOL, false);
                 }
 
                 protected override bool StateChangeCheck()
@@ -50,6 +51,7 @@ namespace Jolt
                     _isGrounded = _player.CheckIsGrounded();
                     _isMoving = _moveInput.x != 0;
                     _isTouchingWall = _player.CheckIsTouchingWallLeft() || _player.CheckIsTouchingWallRight();
+                    
 
                     if (_jumpPressed)
                     {

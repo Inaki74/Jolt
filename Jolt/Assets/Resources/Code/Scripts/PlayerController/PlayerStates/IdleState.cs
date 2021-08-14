@@ -12,6 +12,8 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.yellow;
 
+                private bool _isDucking;
+
                 public IdleState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
                 }
@@ -32,12 +34,16 @@ namespace Jolt
                         return false;
                     }
 
+                    _isDucking = _moveInput.y < 0f;
+
                     // Theres movement -> MoveState
                     if (_moveInput.x != 0)
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.MoveState);
                         return false;
                     }
+
+                    _player.SetAnimationBool(PlayerAnimations.Constants.DUCK_BOOL, _isDucking);
 
                     return true;
                 }
