@@ -8,7 +8,6 @@ namespace Jolt
     namespace PlayerController
     {
         [RequireComponent(typeof(PlayerController))]
-        [RequireComponent(typeof(SpriteRenderer))]
         [RequireComponent(typeof(BoxCollider2D))]
         [RequireComponent(typeof(PlayerInputManager))]
         [RequireComponent(typeof(PlayerCollisions))]
@@ -22,11 +21,15 @@ namespace Jolt
 
             private PlayerCollisions _playerCollisions;
             private PlayerArrowRendering _playerArrowRendering;
+            [SerializeField] private PlayerAnimations _playerAnimations;
+
+            [SerializeField]
+            private SpriteRenderer _sr;
 
             public IPlayerStateMachine StateMachine { get; private set; }
             public IPlayerInputManager InputManager { get; private set; }
             public IPlayerController PlayerController { get; private set; }
-            public SpriteRenderer Sr { get; private set; }
+            public SpriteRenderer Sr { get => _sr; private set => _sr = value; }
             public BoxCollider2D Bc { get; private set; }
             public CircleCollider2D DashCollider { get; private set; }
 
@@ -95,7 +98,6 @@ namespace Jolt
             private void GetComponents()
             {
                 PlayerController = GetComponent<PlayerController>();
-                Sr = GetComponent<SpriteRenderer>();
                 Bc = GetComponent<BoxCollider2D>();
                 DashCollider = GetComponent<CircleCollider2D>();
                 InputManager = GetComponent<PlayerInputManager>();
@@ -130,7 +132,6 @@ namespace Jolt
             }
             #endregion
 
-            #region Set Functions
             public void Gravity()
             {
                 if(_velocity.y >= _maxFallSpeed)
@@ -231,9 +232,7 @@ namespace Jolt
             {
                 Sr.enabled = set;
             }
-            #endregion
 
-            #region Check Functions
             public bool CheckIsGrounded()
             {
                 return Physics2D.OverlapCircle(_groundCheckOne.position, _playerData.CheckGroundRadius, _playerData.WhatIsGround)
@@ -271,9 +270,7 @@ namespace Jolt
                 return (Vector2)transform.position == point;
             }
 
-            #endregion
 
-            #region Get Functions
             public Collider2D GetNodeInfo()
             {
                 return _playerCollisions.NodeInfo;
@@ -289,9 +286,7 @@ namespace Jolt
                 //return Rb.velocity;
                 return Vector2.zero;
             }
-            #endregion
 
-            #region Other Functions
             public void DeactivateArrowRendering()
             {
                 _playerArrowRendering.DerenderArrow();
@@ -311,10 +306,6 @@ namespace Jolt
                 Instantiate(_deathParticles, transform.position, Quaternion.identity);
             }
 
-            
-
-
-            #endregion
         }
 
     }

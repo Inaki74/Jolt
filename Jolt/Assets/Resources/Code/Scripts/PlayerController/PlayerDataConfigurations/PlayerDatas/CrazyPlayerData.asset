@@ -31,7 +31,7 @@ MonoBehaviour:
   _recoilTimer: 0.2
   _freeFallGravity: 6
   _freeFallMaxFallSpeed: -40
-  _maxDeformedScale: 0.5
+  _maxDeformedScale: 0.75
   _scaleReductionModifier: 0.02
   _jumpForce: 12
   _jumpGravity: 4

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9997b13cb4c414b9d0152de0e1e8cd, type: 3}
   m_Name: PlayerPhysicsOne
   m_EditorClassIdentifier: 
-  _standardScale: {x: 0.5, y: 1}
+  _standardScale: {x: 1, y: 1}
   _standardGravity: 4
   _standardMaxFallSpeed: -20
