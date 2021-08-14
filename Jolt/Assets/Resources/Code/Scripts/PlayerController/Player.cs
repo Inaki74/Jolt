@@ -15,7 +15,6 @@ namespace Jolt
 
         public class Player : MonoBehaviour, IPlayer
         {
-            #region Components
             [SerializeField]
             private PlayerData _playerData;
 
@@ -35,7 +34,8 @@ namespace Jolt
 
             [SerializeField]
             private GameObject _deathParticles;
-            #endregion
+
+            [SerializeField] private Transform _playerSet;
 
             #region Auxiliary Variables
             private const float GRAVITY = -9.8f;
@@ -71,6 +71,8 @@ namespace Jolt
 
             private Vector2 _auxVector2;
             private Vector3 _auxVector3;
+
+            private bool _isFacingRight = true;
 
             public bool IsDead { get; set; } = false;
 
@@ -215,6 +217,7 @@ namespace Jolt
 
             public void SetScale(Vector2 scale)
             {
+                scale = new Vector2(scale.x * Mathf.Sign(transform.localScale.x), scale.y);
                 transform.localScale = scale;
             }
 
@@ -306,6 +309,16 @@ namespace Jolt
                 Instantiate(_deathParticles, transform.position, Quaternion.identity);
             }
 
+
+
+            public void CheckIfShouldFlip(float direction)
+            {
+                if(transform.localScale.x != direction && direction != 0f)
+                {
+                    Vector2 flippedScale = new Vector2(direction, transform.localScale.y);
+                    transform.localScale = flippedScale;
+                }
+            }
         }
 
     }

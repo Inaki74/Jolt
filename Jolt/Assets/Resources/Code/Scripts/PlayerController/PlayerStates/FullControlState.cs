@@ -49,6 +49,8 @@ namespace Jolt
                     _isStartingDash = _player.InputManager.DashBegin;
                     _canDash = _stateMachine.PreDashState.CanDash();
 
+                    _player.CheckIfShouldFlip(_moveInput.x);
+
                     if (_isStartingDash && _canDash)
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.PreDashState);
@@ -71,6 +73,8 @@ namespace Jolt
                     {
                         _player.Gravity();
                     }
+
+                    
 
                     //_player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
