@@ -23,7 +23,9 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
+
                     _player.SetGravityScale(_playerData.JumpGravity);
+                    _player.SetAnimationBool(PlayerAnimations.Constants.RISING_BOOL, true);
                 }
 
                 public override void Exit()

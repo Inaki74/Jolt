@@ -28,6 +28,7 @@ namespace Jolt
                     _stateMachine.WallSlideState.ResetFallingGravityScale();
                     _stateMachine.WallSlideState.ResetHasClinged();
                     _player.SetAnimationBool(PlayerAnimations.Constants.GROUNDED_BOOL, true);
+                    _player.SetAnimationBool(PlayerAnimations.Constants.FALLING_BOOL, false);
                 }
 
                 public override void Exit()
