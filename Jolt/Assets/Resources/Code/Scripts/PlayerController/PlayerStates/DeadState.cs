@@ -26,6 +26,8 @@ namespace Jolt
                 {
                     base.Enter();
 
+                    _player.Sr.color = AssociatedColor;
+
                     _player.SetGravityScale(0f);
                     _player.Velocity = Vector2.zero;
                     //_player.SetRigidbodyVelocityX(0f);
@@ -37,6 +39,8 @@ namespace Jolt
                 public override void Exit()
                 {
                     base.Exit();
+
+                    _player.Sr.color = Color.white;
 
                     _player.IsDead = false;
                     _player.ResetPosition();
