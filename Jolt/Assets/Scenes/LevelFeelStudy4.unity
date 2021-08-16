@@ -46207,7 +46207,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1792936041}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.71, y: -0.76, z: 0}
+  m_LocalPosition: {x: -14.77, y: -2.34, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1912122340}
@@ -47655,7 +47655,7 @@ MonoBehaviour:
   _sr: {fileID: 809477328}
   _deathParticles: {fileID: 5644277276428357573, guid: 8f177f596a4184daca7c6a284581968f,
     type: 3}
-  _playerSet: {fileID: 1792936042}
+  _playerSet: {fileID: 0}
   _universalGravityScale: 1
   _maxFallSpeed: -10
   _mainCamera: {fileID: 1246009751}
@@ -47692,7 +47692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a2db6cdfcb1f481599acaa018fadb85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _controlScheme: 0
+  _controlScheme: 1
 --- !u!4 &1912162052 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2706889093683432254, guid: e5e0efd9238654f2e93122f49337076d,

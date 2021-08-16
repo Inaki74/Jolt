@@ -302,7 +302,7 @@ namespace Jolt
                 // Instantiate particles
                 // Move player to last _checkpoint (but here we will have only one _checkpoint, so skip)
                 //transform.position = _checkpoint;
-                transform.position = Vector2.zero;
+                transform.position = _playerData.LastCheckpoint;
                 // Reset objects (but here they are immutable so skip)
             }
 
