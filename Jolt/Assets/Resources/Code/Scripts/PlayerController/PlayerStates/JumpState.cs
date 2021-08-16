@@ -11,6 +11,7 @@ namespace Jolt
             public class JumpState : FullControlState
             {
                 protected override Color AssociatedColor => Color.green;
+                protected override string AnimString => PlayerAnimations.Constants.RISE_BOOL;
 
                 public bool ForceApplied { private get; set; }
                 private bool _isGrounded;

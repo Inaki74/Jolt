@@ -11,6 +11,7 @@ namespace Jolt
             public class PreDashState : AliveState, ICanDash
             {
                 protected override Color AssociatedColor => Color.gray;
+                protected override string AnimString => PlayerAnimations.Constants.PREDASH_BOOL;
 
                 private bool _isDashStarted;
                 private bool _isTouchingNode;

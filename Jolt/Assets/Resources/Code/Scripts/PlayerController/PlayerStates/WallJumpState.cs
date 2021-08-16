@@ -11,6 +11,7 @@ namespace Jolt
             public class WallJumpState : FullControlState
             {
                 protected override Color AssociatedColor => Color.green;
+                protected override string AnimString => PlayerAnimations.Constants.WALLJUMP_BOOL;
 
                 private bool _forceApplied;
                 private float _currentTime;

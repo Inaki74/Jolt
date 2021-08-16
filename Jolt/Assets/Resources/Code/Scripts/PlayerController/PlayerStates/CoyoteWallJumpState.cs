@@ -11,6 +11,7 @@ namespace Jolt
             public class CoyoteWallJumpState : FullControlState
             {
                 protected override Color AssociatedColor => Color.magenta;
+                protected override string AnimString => PlayerAnimations.Constants.WALLRISE_BOOL;
 
                 public Vector2 WallSide { private get; set; }
 

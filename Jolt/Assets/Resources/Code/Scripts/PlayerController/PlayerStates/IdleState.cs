@@ -11,6 +11,7 @@ namespace Jolt
             public class IdleState : GroundedState
             {
                 protected override Color AssociatedColor => Color.yellow;
+                protected override string AnimString => PlayerAnimations.Constants.IDLE_BOOL;
 
                 private bool _isDucking;
                 private bool _isLookingUp;
@@ -24,6 +25,14 @@ namespace Jolt
                     base.Enter();
                     _player.Velocity = new Vector2(0f, _player.Velocity.y);
                     //_player.SetRigidbodyVelocityX(0f);
+                }
+
+                public override void Exit()
+                {
+                    base.Exit();
+
+                    _player.SetAnimationBool(PlayerAnimations.Constants.DUCK_BOOL, false);
+                    _player.SetAnimationBool(PlayerAnimations.Constants.LOOKUP_BOOL, false);
                 }
 
                 protected override bool StateChangeCheck()
@@ -44,6 +53,9 @@ namespace Jolt
                         _stateMachine.ScheduleStateChange(_stateMachine.MoveState);
                         return false;
                     }
+
+                    _player.SetAnimationBool(PlayerAnimations.Constants.DUCK_BOOL, _isDucking);
+                    _player.SetAnimationBool(PlayerAnimations.Constants.LOOKUP_BOOL, _isLookingUp);
 
                     return true;
                 }

@@ -11,6 +11,7 @@ namespace Jolt
         public class PlayerStateMachine : IPlayerStateMachine
         {
             public PlayerState CurrentState { get; private set; }
+            public PlayerState NextState { get; private set; }
 
             public string LastState { get; private set; }
 
@@ -35,7 +36,6 @@ namespace Jolt
             public WallSlideJumpState WallSlideJumpState { get; private set; }
             public WallAirborneState WallAirborneState { get; private set; }
 
-            private PlayerState _nextState;
             private bool _stateChanged = false;
 
             public PlayerStateMachine(IPlayer player, IPlayerData playerData)
@@ -78,7 +78,7 @@ namespace Jolt
 
                 CurrentState.Exit();
                 LastState = CurrentState.ToString();
-                TransitionState(_nextState);
+                TransitionState(NextState);
             }
 
             public string GetState()
@@ -97,7 +97,7 @@ namespace Jolt
             public void ScheduleStateChange(PlayerState newState)
             {
                 _stateChanged = true;
-                _nextState = newState;
+                NextState = newState;
             }
 
             public void ForceStateChange(PlayerState newState)

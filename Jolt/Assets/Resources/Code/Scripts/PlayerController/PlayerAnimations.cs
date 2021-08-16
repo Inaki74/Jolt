@@ -34,14 +34,25 @@ namespace Jolt
                 _animator.SetBool(name, value);
             }
 
+            public bool GetAnimationBool(string name)
+            {
+                return _animator.GetBool(name);
+            }
+
             public static class Constants
             {
-                public const string GROUNDED_BOOL = "isGrounded";
-                public const string MOVE_BOOL = "isMoving";
-                public const string DUCK_BOOL = "isDucking";
-                public const string FALLING_BOOL = "IsFalling";
-                public const string LOOKINGUP_BOOL = "isLookingUp";
-                public const string TOUCHINGWALL_BOOL = "isTouchingWall";
+                public const string IDLE_BOOL = "idle";
+                public const string DUCK_BOOL = "duck";
+                public const string LOOKUP_BOOL = "lookup";
+                public const string WALK_BOOL = "walk";
+                public const string FALL_BOOL = "fall";
+                public const string RISE_BOOL = "rise";
+                public const string WALLFALL_BOOL = "wallfall";
+                public const string WALLRISE_BOOL = "wallrise";
+                public const string WALLJUMP_BOOL = "walljump";
+                public const string PREDASH_BOOL = "predash";
+                public const string DASH_BOOL = "dash";
+                public const string POSTDASH_BOOL = "postdash";
             }
         }
     }

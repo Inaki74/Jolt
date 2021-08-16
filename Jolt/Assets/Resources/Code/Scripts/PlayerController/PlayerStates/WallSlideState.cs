@@ -11,6 +11,8 @@ namespace Jolt
             public class WallSlideState : OnWallState
             {
                 protected override Color AssociatedColor => Color.blue;
+                protected override string AnimString => PlayerAnimations.Constants.WALLFALL_BOOL;
+                protected override bool _flippable => false;
 
                 private float _currentFallingGravityScale = 0f;
                 private bool _hasClinged = false;
@@ -32,7 +34,6 @@ namespace Jolt
                         _hasClinged = true;
                     }
                     
-
                     _player.SetGravityScale(_currentFallingGravityScale);
                     _player.SetMaxFallSpeed(_playerData.WallSlideMaxFallSpeed);
                 }

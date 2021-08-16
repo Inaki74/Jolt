@@ -14,6 +14,7 @@ namespace Jolt
                 protected IPlayer _player;
                 protected IPlayerData _playerData;
                 protected virtual Color AssociatedColor => Color.black;
+                protected virtual string AnimString => "";
 
                 protected float _enterTime;
 
@@ -29,10 +30,19 @@ namespace Jolt
                     //Debug.Log(this);
                     //_player.Sr.color = AssociatedColor;
                     _enterTime = Time.time;
+
+                    if (!string.IsNullOrEmpty(AnimString) && !_player.GetAnimationBool(AnimString))
+                    {
+                        _player.SetAnimationBool(AnimString, true);
+                    }
                 }
 
                 public virtual void Exit()
                 {
+                    if ((!string.IsNullOrEmpty(AnimString) || !string.IsNullOrEmpty(_stateMachine.NextState.AnimString)) && _stateMachine.NextState.AnimString != AnimString)
+                    {
+                        _player.SetAnimationBool(AnimString, false);
+                    }
                 }
 
                 protected virtual bool StateChangeCheck()

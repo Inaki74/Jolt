@@ -17,6 +17,7 @@ namespace Jolt
                 private bool _isTouchingWallLeft;
                 private bool _isTouchingWallRight;
                 private float _freefallDeformedScaleX;
+                private bool _isFalling;
 
                 public AirborneState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -26,6 +27,10 @@ namespace Jolt
                 {
                     base.Enter();
 
+                    _isFalling = _player.Velocity.y < 0f;
+
+                    SetAnimation();
+
                     _freefallDeformedScaleX = _playerData.PlayerPhysicsData.StandardScale.x;
                 }
 
@@ -34,6 +39,9 @@ namespace Jolt
                     base.Exit();
 
                     _player.SetScale(_playerData.PlayerPhysicsData.StandardScale);
+
+                    _player.SetAnimationBool(PlayerAnimations.Constants.RISE_BOOL, false);
+                    _player.SetAnimationBool(PlayerAnimations.Constants.FALL_BOOL, false);
                 }
 
                 protected override bool StateChangeCheck()
@@ -47,6 +55,7 @@ namespace Jolt
 
                     _isMoving = _moveInput.x != 0;
                     _isGrounded = _player.CheckIsGrounded();
+                    _isFalling = _player.Velocity.y < 0f;
                     _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
                     _isTouchingWallRight = _player.CheckIsTouchingWallRight();
                     bool isTouchingWall = _isTouchingWallLeft || _isTouchingWallRight;
@@ -73,6 +82,8 @@ namespace Jolt
                         _stateMachine.ScheduleStateChange(_stateMachine.WallAirborneState);
                         return false;
                     }
+
+                    SetAnimation();
 
                     return true;
                 }
@@ -132,6 +143,12 @@ namespace Jolt
                         _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                         _player.SetMaxFallSpeed(_playerData.PlayerPhysicsData.StandardMaxFallSpeed);
                     }
+                }
+
+                private void SetAnimation()
+                {
+                    _player.SetAnimationBool(PlayerAnimations.Constants.RISE_BOOL, !_isFalling);
+                    _player.SetAnimationBool(PlayerAnimations.Constants.FALL_BOOL, _isFalling);
                 }
             }
         }

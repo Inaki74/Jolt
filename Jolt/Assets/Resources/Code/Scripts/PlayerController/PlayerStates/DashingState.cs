@@ -11,6 +11,7 @@ namespace Jolt
             public class DashingState : AliveState
             {
                 protected override Color AssociatedColor => Color.cyan;
+                protected override string AnimString => PlayerAnimations.Constants.DASH_BOOL;
 
                 public Node LastNode { private get; set; } = null;
 

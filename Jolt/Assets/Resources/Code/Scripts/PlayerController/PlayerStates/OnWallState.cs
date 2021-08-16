@@ -15,6 +15,9 @@ namespace Jolt
                 protected bool _isGrounded;
                 protected bool _isTouchingWallLeft;
                 protected bool _isTouchingWallRight;
+                protected override bool _flippable => false;
+
+                protected bool _enteredTouchingRightWall;
 
                 public OnWallState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -24,11 +27,15 @@ namespace Jolt
                 {
                     base.Enter();
                     //_player.SetRigidbodyVelocityX(0f);
+
+                    _player.Flip();
                 }
 
                 public override void Exit()
                 {
                     base.Exit();
+
+                    //_player.Flip();
                 }
 
                 protected override bool StateChangeCheck()

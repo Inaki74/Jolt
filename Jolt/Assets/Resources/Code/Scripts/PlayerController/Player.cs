@@ -311,8 +311,6 @@ namespace Jolt
                 Instantiate(_deathParticles, transform.position, Quaternion.identity);
             }
 
-
-
             public void CheckIfShouldFlip(float direction)
             {
                 bool shouldFaceRight = direction > 0f && !_isFacingRight;
@@ -329,7 +327,12 @@ namespace Jolt
                 _playerAnimations.SetAnimationBool(name, value);
             }
 
-            private void Flip()
+            public bool GetAnimationBool(string name)
+            {
+                return _playerAnimations.GetAnimationBool(name);
+            }
+
+            public void Flip()
             {
                 _isFacingRight = !_isFacingRight;
                 Vector2 flippedScale = new Vector2(-transform.localScale.x, transform.localScale.y);

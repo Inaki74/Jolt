@@ -11,6 +11,7 @@ namespace Jolt
             public class MoveState : GroundedState
             {
                 protected override Color AssociatedColor => Color.white;
+                protected override string AnimString => PlayerAnimations.Constants.WALK_BOOL;
 
                 public MoveState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
