@@ -13,6 +13,7 @@ namespace Jolt
                 protected override Color AssociatedColor => Color.yellow;
 
                 private bool _isDucking;
+                private bool _isLookingUp;
 
                 public IdleState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -35,6 +36,7 @@ namespace Jolt
                     }
 
                     _isDucking = _moveInput.y < 0f;
+                    _isLookingUp = _moveInput.y > 0f;
 
                     // Theres movement -> MoveState
                     if (_moveInput.x != 0)
@@ -44,6 +46,7 @@ namespace Jolt
                     }
 
                     _player.SetAnimationBool(PlayerAnimations.Constants.DUCK_BOOL, _isDucking);
+                    _player.SetAnimationBool(PlayerAnimations.Constants.LOOKINGUP_BOOL, _isLookingUp);
 
                     return true;
                 }
