@@ -25,7 +25,7 @@ namespace Jolt
                     base.Enter();
 
                     _player.SetGravityScale(_playerData.JumpGravity);
-                    _player.SetAnimationBool(PlayerAnimations.Constants.RISING_BOOL, true);
+                    _player.SetAnimationBool(PlayerAnimations.Constants.FALLING_BOOL, false);
                 }
 
                 public override void Exit()

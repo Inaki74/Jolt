@@ -39,7 +39,6 @@ namespace Jolt
                 public const string GROUNDED_BOOL = "isGrounded";
                 public const string MOVE_BOOL = "isMoving";
                 public const string DUCK_BOOL = "isDucking";
-                public const string RISING_BOOL = "isRising";
                 public const string FALLING_BOOL = "IsFalling";
                 public const string LOOKINGUP_BOOL = "isLookingUp";
             }

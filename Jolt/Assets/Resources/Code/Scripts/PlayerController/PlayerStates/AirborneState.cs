@@ -78,7 +78,6 @@ namespace Jolt
 
                     if (_isFalling)
                     {
-                        _player.SetAnimationBool(PlayerAnimations.Constants.RISING_BOOL, false);
                         _player.SetAnimationBool(PlayerAnimations.Constants.FALLING_BOOL, true);
                     }
 
