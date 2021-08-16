@@ -41,6 +41,7 @@ namespace Jolt
                 public const string DUCK_BOOL = "isDucking";
                 public const string FALLING_BOOL = "IsFalling";
                 public const string LOOKINGUP_BOOL = "isLookingUp";
+                public const string TOUCHINGWALL_BOOL = "isTouchingWall";
             }
         }
     }
