@@ -50,7 +50,6 @@ namespace Jolt
                     if (timeout)
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.AirborneState);
-                        _player.SetAnimationBool(PlayerAnimations.Constants.GROUNDED_BOOL, false);
                         return false;
                     }
 

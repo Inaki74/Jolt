@@ -45,9 +45,6 @@ namespace Jolt
                         return false;
                     }
 
-                    _player.SetAnimationBool(PlayerAnimations.Constants.DUCK_BOOL, _isDucking);
-                    _player.SetAnimationBool(PlayerAnimations.Constants.LOOKINGUP_BOOL, _isLookingUp);
-
                     return true;
                 }
             }

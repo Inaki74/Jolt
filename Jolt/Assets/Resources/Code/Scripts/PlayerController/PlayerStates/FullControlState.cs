@@ -54,7 +54,6 @@ namespace Jolt
                     if (_isStartingDash && _canDash)
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.PreDashState);
-                        _player.SetAnimationBool(PlayerAnimations.Constants.GROUNDED_BOOL, false);
                         return false;
                     }
 

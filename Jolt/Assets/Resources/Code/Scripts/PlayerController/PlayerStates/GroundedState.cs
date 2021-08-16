@@ -27,8 +27,6 @@ namespace Jolt
                     _stateMachine.PreDashState.ResetAmountOfDashes();
                     _stateMachine.WallSlideState.ResetFallingGravityScale();
                     _stateMachine.WallSlideState.ResetHasClinged();
-                    _player.SetAnimationBool(PlayerAnimations.Constants.GROUNDED_BOOL, true);
-                    _player.SetAnimationBool(PlayerAnimations.Constants.FALLING_BOOL, false);
                 }
 
                 public override void Exit()
@@ -37,7 +35,6 @@ namespace Jolt
 
                     _player.ResetGravity();
                     _gravityActive = true;
-                    _player.SetAnimationBool(PlayerAnimations.Constants.DUCK_BOOL, false);
                 }
 
                 protected override bool StateChangeCheck()
@@ -60,12 +57,10 @@ namespace Jolt
                         if (_isTouchingWall)
                         {
                             _stateMachine.ScheduleStateChange(_stateMachine.WallSlideJumpState);
-                            _player.SetAnimationBool(PlayerAnimations.Constants.GROUNDED_BOOL, false);
                             return false;
                         }
 
                         _stateMachine.ScheduleStateChange(_stateMachine.JumpState);
-                        _player.SetAnimationBool(PlayerAnimations.Constants.GROUNDED_BOOL, false);
                         return false;
                     }
 

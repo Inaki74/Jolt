@@ -17,7 +17,6 @@ namespace Jolt
                 private bool _isTouchingWallLeft;
                 private bool _isTouchingWallRight;
                 private float _freefallDeformedScaleX;
-                private bool _isFalling;
 
                 public AirborneState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -48,7 +47,6 @@ namespace Jolt
 
                     _isMoving = _moveInput.x != 0;
                     _isGrounded = _player.CheckIsGrounded();
-                    _isFalling = _player.Velocity.y < 0f;
                     _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
                     _isTouchingWallRight = _player.CheckIsTouchingWallRight();
                     bool isTouchingWall = _isTouchingWallLeft || _isTouchingWallRight;
@@ -74,11 +72,6 @@ namespace Jolt
 
                         _stateMachine.ScheduleStateChange(_stateMachine.WallAirborneState);
                         return false;
-                    }
-
-                    if (_isFalling)
-                    {
-                        _player.SetAnimationBool(PlayerAnimations.Constants.FALLING_BOOL, true);
                     }
 
                     return true;

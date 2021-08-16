@@ -24,7 +24,6 @@ namespace Jolt
                 {
                     base.Enter();
                     //_player.SetRigidbodyVelocityX(0f);
-                    _player.SetAnimationBool(PlayerAnimations.Constants.TOUCHINGWALL_BOOL, true);
                 }
 
                 public override void Exit()
@@ -48,7 +47,6 @@ namespace Jolt
 
                     if (_jumpPressed)
                     {
-                        _player.SetAnimationBool(PlayerAnimations.Constants.TOUCHINGWALL_BOOL, false);
                         _stateMachine.ScheduleStateChange(_stateMachine.WallJumpState);
                         return false;
                     }
@@ -65,7 +63,6 @@ namespace Jolt
 
                     if (!isTouchingWall)
                     {
-                        _player.SetAnimationBool(PlayerAnimations.Constants.TOUCHINGWALL_BOOL, false);
                         _stateMachine.ScheduleStateChange(_stateMachine.CoyoteWallJumpState);
                         return false;
                     }

@@ -13,7 +13,6 @@ namespace Jolt
                 protected override Color AssociatedColor => Color.black;
 
                 private float _freefallDeformedScaleX;
-                private bool _isFalling;
 
                 public bool ForceApplied { private get; set; }
 
@@ -41,8 +40,6 @@ namespace Jolt
                     {
                         return false;
                     }
-
-                    _isFalling = _player.Velocity.y < 0f;
                     bool isMovingRight = _moveInput.x > 0f;
                     bool isMovingLeft = _moveInput.x < 0f;
 
@@ -57,11 +54,6 @@ namespace Jolt
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.WallSlideState);
                         return false;
-                    }
-
-                    if (_isFalling)
-                    {
-                        _player.SetAnimationBool(PlayerAnimations.Constants.FALLING_BOOL, true);
                     }
 
                     return true;
