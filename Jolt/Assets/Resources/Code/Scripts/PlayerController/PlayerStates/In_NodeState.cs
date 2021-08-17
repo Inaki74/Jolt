@@ -22,11 +22,15 @@ namespace Jolt
                     base.Enter();
 
                     _stateMachine.DashingState.LastNode = _player.GetNodeInfo().GetComponent<Node>();
+
+                    _player.Sr.color = AssociatedColor;
                 }
 
                 public override void Exit()
                 {
                     //base.Exit();
+
+                    _player.Sr.color = Color.white;
                 }
 
                 protected override bool StateChangeCheck()

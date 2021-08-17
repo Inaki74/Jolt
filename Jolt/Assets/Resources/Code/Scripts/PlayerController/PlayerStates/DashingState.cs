@@ -23,7 +23,7 @@ namespace Jolt
                 private bool _isTouchingNode;
                 private bool _isTouchingRail;
 
-                private bool _isDashStarted;
+                private bool _flippedY;
                 private int _amountOfDashes;
 
                 private bool _playOnce;
@@ -37,10 +37,21 @@ namespace Jolt
                 {
                     base.Enter();
 
+
+                    _moveInput = _player.InputManager.MovementVector;
                     _playOnce = true;
                     _player.SetGravityScale(0f);
                     _wasInNode = _player.CheckIsTouchingNode();
                     DecreaseAmountOfDashes();
+
+                    _player.SetAnimationInt(PlayerAnimations.Constants.DASHX_INT, (int)_moveInput.x);
+                    _player.SetAnimationInt(PlayerAnimations.Constants.DASHY_INT, (int)_moveInput.y);
+
+                    if(_moveInput.y < 0)
+                    {
+                        _flippedY = true;
+                        _player.FlipY();
+                    }
                     //_player.SetActivePhysicsCollider(false);
                     //_player.SetDashCollider(true);
                 }
@@ -51,6 +62,15 @@ namespace Jolt
 
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                     _player.Velocity = Vector2.zero;
+
+                    _player.SetAnimationInt(PlayerAnimations.Constants.DASHX_INT, 0);
+                    _player.SetAnimationInt(PlayerAnimations.Constants.DASHY_INT, 0);
+
+                    if (_flippedY)
+                    {
+                        _flippedY = false;
+                        _player.FlipY();
+                    }
                     //_player.SetActivePhysicsCollider(true);
                     //_player.SetDashCollider(false);
                     //_player.SetRigidbodyVelocityX(0f);
@@ -67,9 +87,11 @@ namespace Jolt
                     }
 
                     _isGrounded = _player.CheckIsGrounded();
-                    _moveInput = _player.InputManager.MovementVector;
+                    //_moveInput = _player.InputManager.MovementVector;
+
                     _isTouchingNode = _player.CheckIsTouchingNode();
                     _isTouchingRail = _player.CheckIsTouchingRail();
+                    bool isTouchingWall = _player.CheckIsTouchingWallLeft() || _player.CheckIsTouchingWallRight();
 
                     if (CheckIsAdmittableToGetIntoNode())
                     {
@@ -80,6 +102,12 @@ namespace Jolt
                     if (_isTouchingRail)
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.InRailState);
+                        return false;
+                    }
+
+                    if (isTouchingWall && _moveInput.x != 0f)
+                    {
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallSlideState);
                         return false;
                     }
 

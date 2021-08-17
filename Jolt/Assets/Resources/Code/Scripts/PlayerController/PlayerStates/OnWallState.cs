@@ -13,8 +13,6 @@ namespace Jolt
                 protected override Color AssociatedColor => Color.magenta;
 
                 protected bool _isGrounded;
-                protected bool _isTouchingWallLeft;
-                protected bool _isTouchingWallRight;
                 public override bool Flippable => false;
 
                 protected bool _enteredTouchingRightWall;

@@ -29,6 +29,16 @@ namespace Jolt
                 _sr.flipX = !_sr.flipX;
             }
 
+            public void FlipY()
+            {
+                _sr.flipY = !_sr.flipY;
+            }
+
+            public void SetAnimationInt(string name, int value)
+            {
+                _animator.SetInteger(name, value);
+            }
+
             public void SetAnimationBool(string name, bool value)
             {
                 _animator.SetBool(name, value);
@@ -50,9 +60,9 @@ namespace Jolt
                 public const string WALLFALL_BOOL = "wallfall";
                 public const string WALLRISE_BOOL = "wallrise";
                 public const string WALLJUMP_BOOL = "walljump";
-                public const string PREDASH_BOOL = "predash";
                 public const string DASH_BOOL = "dash";
-                public const string POSTDASH_BOOL = "postdash";
+                public const string DASHX_INT = "dashX";
+                public const string DASHY_INT = "dashY";
             }
         }
     }

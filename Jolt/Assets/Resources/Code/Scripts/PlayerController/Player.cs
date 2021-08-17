@@ -342,6 +342,16 @@ namespace Jolt
                 // transform.localScale = flippedScale;
                 _playerAnimations.Flip();
             }
+
+            public void FlipY()
+            {
+                _playerAnimations.FlipY();
+            }
+
+            public void SetAnimationInt(string name, int value)
+            {
+                _playerAnimations.SetAnimationInt(name, value);
+            }
         }
 
     }

@@ -42,8 +42,10 @@ namespace Jolt.PlayerController
         void MoveX(float direction, float velocity);
         void MoveY(float direction, float velocity);
         void CheckIfShouldFlip(float direction);
+        void SetAnimationInt(string name, int value);
         void SetAnimationBool(string name, bool value);
         bool GetAnimationBool(string name);
         void Flip();
+        void FlipY();
     }
 }

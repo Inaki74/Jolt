@@ -19,6 +19,8 @@ namespace Jolt
                 protected bool _jumpHeld;
                 protected bool _isStartingDash;
                 protected bool _canDash;
+                protected bool _isTouchingWallLeft;
+                protected bool _isTouchingWallRight;
 
                 public FullControlState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -48,13 +50,15 @@ namespace Jolt
                     _jumpHeld = _player.InputManager.JumpHeld;
                     _isStartingDash = _player.InputManager.DashBegin;
                     _canDash = _stateMachine.DashingState.CanDash();
+                    _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
+                    _isTouchingWallRight = _player.CheckIsTouchingWallRight();
 
                     if (Flippable)
                     {
                         _player.CheckIfShouldFlip(_moveInput.x);
                     }
 
-                    if (_isStartingDash && _canDash)
+                    if (_isStartingDash && _canDash && !(_isTouchingWallLeft && _moveInput.x < 0f) && !(_isTouchingWallRight && _moveInput.x > 0f))
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.DashingState);
                         return false;
