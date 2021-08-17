@@ -19,7 +19,7 @@ namespace Jolt
                 {
                     base.Enter();
                     
-                    _stateMachine.PreDashState.ResetAmountOfDashes();
+                    _stateMachine.DashingState.ResetAmountOfDashes();
                     _player.SetGravityScale(0f);
                 }
 

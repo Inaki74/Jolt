@@ -24,7 +24,7 @@ namespace Jolt
 
                     _player.ResetGravity();
                     _gravityActive = false;
-                    _stateMachine.PreDashState.ResetAmountOfDashes();
+                    _stateMachine.DashingState.ResetAmountOfDashes();
                     _stateMachine.WallSlideState.ResetFallingGravityScale();
                     _stateMachine.WallSlideState.ResetHasClinged();
                 }

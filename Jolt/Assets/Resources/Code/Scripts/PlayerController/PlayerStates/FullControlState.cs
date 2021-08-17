@@ -47,7 +47,7 @@ namespace Jolt
                     _jumpPressed = _player.InputManager.JumpPressed;
                     _jumpHeld = _player.InputManager.JumpHeld;
                     _isStartingDash = _player.InputManager.DashBegin;
-                    _canDash = _stateMachine.PreDashState.CanDash();
+                    _canDash = _stateMachine.DashingState.CanDash();
 
                     if (Flippable)
                     {
@@ -56,7 +56,7 @@ namespace Jolt
 
                     if (_isStartingDash && _canDash)
                     {
-                        _stateMachine.ScheduleStateChange(_stateMachine.PreDashState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.DashingState);
                         return false;
                     }
 

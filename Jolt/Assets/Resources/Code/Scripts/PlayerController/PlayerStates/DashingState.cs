@@ -8,7 +8,7 @@ namespace Jolt
     {
         namespace PlayerStates
         {
-            public class DashingState : AliveState
+            public class DashingState : AliveState, ICanDash
             {
                 protected override Color AssociatedColor => Color.cyan;
                 protected override string AnimString => PlayerAnimations.Constants.DASH_BOOL;
@@ -23,10 +23,14 @@ namespace Jolt
                 private bool _isTouchingNode;
                 private bool _isTouchingRail;
 
+                private bool _isDashStarted;
+                private int _amountOfDashes;
+
                 private bool _playOnce;
 
                 public DashingState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
+                    ResetAmountOfDashes();
                 }
 
                 public override void Enter()
@@ -36,6 +40,7 @@ namespace Jolt
                     _playOnce = true;
                     _player.SetGravityScale(0f);
                     _wasInNode = _player.CheckIsTouchingNode();
+                    DecreaseAmountOfDashes();
                     //_player.SetActivePhysicsCollider(false);
                     //_player.SetDashCollider(true);
                 }
@@ -65,7 +70,6 @@ namespace Jolt
                     _moveInput = _player.InputManager.MovementVector;
                     _isTouchingNode = _player.CheckIsTouchingNode();
                     _isTouchingRail = _player.CheckIsTouchingRail();
-
 
                     if (CheckIsAdmittableToGetIntoNode())
                     {
@@ -112,6 +116,7 @@ namespace Jolt
 
                     if (_playOnce)
                     {
+                        _player.SetDashVectors(_player.InputManager.InitialDashPoint, _player.InputManager.FinalDashPoint);
                         _player.Dash(_playerData.DashSpeed);
 
                         _playOnce = false;
@@ -131,6 +136,21 @@ namespace Jolt
                 public void ResetLastnode()
                 {
                     LastNode = null;
+                }
+
+                public bool CanDash()
+                {
+                    return _amountOfDashes > 0;
+                }
+
+                public void ResetAmountOfDashes()
+                {
+                    _amountOfDashes = _playerData.AmountOfDashes;
+                }
+
+                public void DecreaseAmountOfDashes()
+                {
+                    _amountOfDashes--;
                 }
 
                 private bool CheckIsAdmittableToGetIntoNode()

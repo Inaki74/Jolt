@@ -27,7 +27,7 @@ namespace Jolt
                     _enterTime = Time.time;
                     _isDashStarted = true;
                     Time.timeScale = _playerData.TimeSlow;
-                    _stateMachine.PreDashState.DecreaseAmountOfDashes();
+                    _stateMachine.DashingState.DecreaseAmountOfDashes();
                     //Time.fixedDeltaTime = 0.1f * 0.02f; Works but doubles the CPU usage. Use RigidBodies with interpolate instead
                 }
 

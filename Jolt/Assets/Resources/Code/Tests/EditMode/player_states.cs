@@ -130,12 +130,12 @@ namespace Jolt
                     _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
                     _playerInputManagerMock.DashBegin.Returns(true);
                     _playerDataMock.AmountOfDashes.Returns(2);
-                    var returnsPreDash = new PreDashState(_statemachineMock, _playerMock, _playerDataMock);
-                    _statemachineMock.PreDashState.Returns(returnsPreDash);
+                    var returnsPreDash = new DashingState(_statemachineMock, _playerMock, _playerDataMock);
+                    _statemachineMock.DashingState.Returns(returnsPreDash);
 
                     _testMoveState.LogicUpdate();
 
-                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.PreDashState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.DashingState);
                 }
 
                 [Test]
@@ -147,12 +147,12 @@ namespace Jolt
                     _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
                     _playerInputManagerMock.DashBegin.Returns(true);
                     _playerDataMock.AmountOfDashes.Returns(2);
-                    var returnsPreDash = new PreDashState(_statemachineMock, _playerMock, _playerDataMock);
-                    _statemachineMock.PreDashState.Returns(returnsPreDash);
+                    var returnsPreDash = new DashingState(_statemachineMock, _playerMock, _playerDataMock);
+                    _statemachineMock.DashingState.Returns(returnsPreDash);
 
                     _testMoveState.LogicUpdate();
 
-                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.PreDashState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.DashingState);
                 }
 
                 [Test]
@@ -249,12 +249,12 @@ namespace Jolt
                     _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
                     _playerInputManagerMock.DashBegin.Returns(true);
                     _playerDataMock.AmountOfDashes.Returns(2);
-                    var returnsPreDash = new PreDashState(_statemachineMock, _playerMock, _playerDataMock);
-                    _statemachineMock.PreDashState.Returns(returnsPreDash);
+                    var returnsPreDash = new DashingState(_statemachineMock, _playerMock, _playerDataMock);
+                    _statemachineMock.DashingState.Returns(returnsPreDash);
 
                     _testIdleState.LogicUpdate();
 
-                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.PreDashState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.DashingState);
                 }
 
                 [Test]
@@ -266,12 +266,12 @@ namespace Jolt
                     _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
                     _playerInputManagerMock.DashBegin.Returns(true);
                     _playerDataMock.AmountOfDashes.Returns(2);
-                    var returnsPreDash = new PreDashState(_statemachineMock, _playerMock, _playerDataMock);
-                    _statemachineMock.PreDashState.Returns(returnsPreDash);
+                    var returnsPreDash = new DashingState(_statemachineMock, _playerMock, _playerDataMock);
+                    _statemachineMock.DashingState.Returns(returnsPreDash);
 
                     _testIdleState.LogicUpdate();
 
-                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.PreDashState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.DashingState);
                 }
 
                 [Test]
@@ -367,12 +367,12 @@ namespace Jolt
                     _playerMock.InputManager.Returns(_playerInputManagerMock);
                     _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
                     _playerInputManagerMock.DashBegin.Returns(true);
-                    var returnsPreDash = new PreDashState(_statemachineMock, _playerMock, _playerDataMock);
-                    _statemachineMock.PreDashState.Returns(returnsPreDash);
+                    var returnsPreDash = new DashingState(_statemachineMock, _playerMock, _playerDataMock);
+                    _statemachineMock.DashingState.Returns(returnsPreDash);
 
                     _testRecoilState.LogicUpdate();
 
-                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.PreDashState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.DashingState);
                 }
 
                 [Test]
@@ -383,12 +383,12 @@ namespace Jolt
                     _playerMock.InputManager.Returns(_playerInputManagerMock);
                     _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
                     _playerInputManagerMock.DashBegin.Returns(true);
-                    var returnsPreDash = new PreDashState(_statemachineMock, _playerMock, _playerDataMock);
-                    _statemachineMock.PreDashState.Returns(returnsPreDash);
+                    var returnsPreDash = new DashingState(_statemachineMock, _playerMock, _playerDataMock);
+                    _statemachineMock.DashingState.Returns(returnsPreDash);
 
                     _testRecoilState.LogicUpdate();
 
-                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.PreDashState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.DashingState);
                 }
 
                 [Test]
@@ -470,10 +470,10 @@ namespace Jolt
                     _playerDataMock.AmountOfDashes.Returns(2);
                     _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
                     _playerInputManagerMock.DashBegin.Returns(false);
-                    ICanDash preStateCanDash = Substitute.For<PreDashState>(_statemachineMock, _playerMock, _playerDataMock);
+                    ICanDash preStateCanDash = Substitute.For<DashingState>(_statemachineMock, _playerMock, _playerDataMock);
                     preStateCanDash.CanDash().Returns(true);
                     var recoilStateReturns = new RecoilState(_statemachineMock, _playerMock, _playerDataMock);
-                    _statemachineMock.PreDashState.Returns(preStateCanDash);
+                    _statemachineMock.DashingState.Returns(preStateCanDash);
                     _statemachineMock.RecoilState.Returns(recoilStateReturns);
 
                     _testAirborneState.LogicUpdate();
@@ -489,12 +489,12 @@ namespace Jolt
                     _playerDataMock.AmountOfDashes.Returns(2);
                     _playerInputManagerMock.MovementVector.Returns(Vector2.zero);
                     _playerInputManagerMock.DashBegin.Returns(true);
-                    var preDashStateReturns = new PreDashState(_statemachineMock, _playerMock, _playerDataMock);
-                    _statemachineMock.PreDashState.Returns(preDashStateReturns);
+                    var preDashStateReturns = new DashingState(_statemachineMock, _playerMock, _playerDataMock);
+                    _statemachineMock.DashingState.Returns(preDashStateReturns);
 
                     _testAirborneState.LogicUpdate();
 
-                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.PreDashState);
+                    _statemachineMock.Received().ScheduleStateChange(_statemachineMock.DashingState);
                 }
             }
 
@@ -512,31 +512,6 @@ namespace Jolt
                     DashingState dashingState = new DashingState(stateMachine, player, playerData);
 
                     dashingState.LogicUpdate();
-
-                    stateMachine.Received().ScheduleStateChange(stateMachine.DeadState);
-                }
-
-                [Test]
-                public void other()
-                {
-
-                }
-            }
-
-            public class pre_dash_state
-            {
-                [Test]
-                public void alive_state_goes_to_dead_state_if_player_dies()
-                {
-                    IPlayer player = Substitute.For<IPlayer>();
-                    player.IsDead.Returns(true);
-                    IPlayerData playerData = Substitute.For<IPlayerData>();
-                    IPlayerStateMachine stateMachine = Substitute.For<IPlayerStateMachine>();
-                    var deadStateReturns = new DeadState(stateMachine, player, playerData);
-                    stateMachine.DeadState.Returns(deadStateReturns);
-                    PreDashState preDashState = new PreDashState(stateMachine, player, playerData);
-
-                    preDashState.LogicUpdate();
 
                     stateMachine.Received().ScheduleStateChange(stateMachine.DeadState);
                 }

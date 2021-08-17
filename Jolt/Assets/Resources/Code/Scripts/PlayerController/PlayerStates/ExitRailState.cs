@@ -55,9 +55,9 @@ namespace Jolt
                         _stateMachine.ScheduleStateChange(_stateMachine.AirborneState);
                         return false;
                     }
-                    else if (_isStartingDash && _stateMachine.PreDashState.CanDash())
+                    else if (_isStartingDash && _stateMachine.DashingState.CanDash())
                     {
-                        _stateMachine.ScheduleStateChange(_stateMachine.PreDashState);
+                        _stateMachine.ScheduleStateChange(_stateMachine.DashingState);
                         return false;
                     }
 
