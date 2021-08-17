@@ -53,12 +53,15 @@ namespace Jolt
                     _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
                     _isTouchingWallRight = _player.CheckIsTouchingWallRight();
 
+                    bool onLeftWallAndMovingTowardsIt = _isTouchingWallLeft && _moveInput.x < 0f;
+                    bool onRightWallAndMovingTowardsIt = _isTouchingWallRight && _moveInput.x > 0f;
+
                     if (Flippable)
                     {
                         _player.CheckIfShouldFlip(_moveInput.x);
                     }
 
-                    if (_isStartingDash && _canDash && !(_isTouchingWallLeft && _moveInput.x < 0f) && !(_isTouchingWallRight && _moveInput.x > 0f))
+                    if (_isStartingDash && _canDash && !onLeftWallAndMovingTowardsIt && !onRightWallAndMovingTowardsIt)
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.DashingState);
                         return false;
@@ -80,8 +83,6 @@ namespace Jolt
                     {
                         _player.Gravity();
                     }
-
-                    
 
                     //_player.SetRigidbodyVelocityX(_playerData.MovementSpeed * _moveInput.x);
                 }
