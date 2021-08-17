@@ -11,6 +11,7 @@ namespace Jolt
             public class WallSlideJumpState : OnWallState
             {
                 protected override Color AssociatedColor => Color.gray;
+                protected override string AnimString => PlayerAnimations.Constants.WALLRISE_BOOL;
 
                 public bool ForceApplied { private get; set; }
 

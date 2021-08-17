@@ -11,8 +11,11 @@ namespace Jolt
             public class WallAirborneState : OnWallState
             {
                 protected override Color AssociatedColor => Color.black;
+                protected override string AnimString => "";
+
 
                 private float _freefallDeformedScaleX;
+                private bool _isFalling;
 
                 public bool ForceApplied { private get; set; }
 
@@ -23,13 +26,22 @@ namespace Jolt
                 public override void Enter()
                 {
                     base.Enter();
+
+                    _isFalling = _player.Velocity.y < 0f;
+
+                    SetAnimation();
+
                     _freefallDeformedScaleX = 1;
                 }
 
                 public override void Exit()
                 {
                     base.Exit();
+
                     _player.SetScale(_playerData.PlayerPhysicsData.StandardScale);
+
+                    _player.SetAnimationBool(PlayerAnimations.Constants.RISE_BOOL, false);
+                    _player.SetAnimationBool(PlayerAnimations.Constants.FALL_BOOL, false);
                 }
 
                 protected override bool StateChangeCheck()
@@ -41,6 +53,7 @@ namespace Jolt
                         return false;
                     }
 
+                    _isFalling = _player.Velocity.y < 0f;
                     bool isMovingRight = _moveInput.x > 0f;
                     bool isMovingLeft = _moveInput.x < 0f;
 
@@ -56,6 +69,8 @@ namespace Jolt
                         _stateMachine.ScheduleStateChange(_stateMachine.WallSlideState);
                         return false;
                     }
+
+                    SetAnimation();
 
                     return true;
                 }
@@ -95,6 +110,12 @@ namespace Jolt
                         _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                         _player.SetMaxFallSpeed(_playerData.PlayerPhysicsData.StandardMaxFallSpeed);
                     }
+                }
+
+                private void SetAnimation()
+                {
+                    _player.SetAnimationBool(PlayerAnimations.Constants.RISE_BOOL, !_isFalling);
+                    _player.SetAnimationBool(PlayerAnimations.Constants.FALL_BOOL, _isFalling);
                 }
             }
         }

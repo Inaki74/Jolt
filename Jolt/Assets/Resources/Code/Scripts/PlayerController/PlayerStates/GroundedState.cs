@@ -24,7 +24,7 @@ namespace Jolt
 
                     _player.ResetGravity();
                     _gravityActive = false;
-                    _stateMachine.PreDashState.ResetAmountOfDashes();
+                    _stateMachine.DashingState.ResetAmountOfDashes();
                     _stateMachine.WallSlideState.ResetFallingGravityScale();
                     _stateMachine.WallSlideState.ResetHasClinged();
                 }
@@ -49,6 +49,7 @@ namespace Jolt
                     _isGrounded = _player.CheckIsGrounded();
                     _isMoving = _moveInput.x != 0;
                     _isTouchingWall = _player.CheckIsTouchingWallLeft() || _player.CheckIsTouchingWallRight();
+                    
 
                     if (_jumpPressed)
                     {

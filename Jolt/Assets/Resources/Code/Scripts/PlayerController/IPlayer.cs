@@ -9,6 +9,7 @@ namespace Jolt.PlayerController
         SpriteRenderer Sr { get; }
         BoxCollider2D Bc { get; }
         bool IsDead { get; set; }
+        bool WallFlipped { get; set; }
         Vector2 Velocity { get; set; }
 
         bool CheckHasReachedPoint(Vector2 point);
@@ -40,5 +41,11 @@ namespace Jolt.PlayerController
         void Move(Vector2 vector);
         void MoveX(float direction, float velocity);
         void MoveY(float direction, float velocity);
+        void CheckIfShouldFlip(float direction);
+        void SetAnimationInt(string name, int value);
+        void SetAnimationBool(string name, bool value);
+        bool GetAnimationBool(string name);
+        void Flip();
+        void FlipY();
     }
 }

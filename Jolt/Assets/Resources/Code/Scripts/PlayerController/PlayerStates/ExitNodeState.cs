@@ -26,8 +26,6 @@ namespace Jolt
 
                     _enterTime = Time.time;
                     _isDashStarted = true;
-                    Time.timeScale = _playerData.TimeSlow;
-                    _stateMachine.PreDashState.DecreaseAmountOfDashes();
                     //Time.fixedDeltaTime = 0.1f * 0.02f; Works but doubles the CPU usage. Use RigidBodies with interpolate instead
                 }
 
@@ -36,7 +34,8 @@ namespace Jolt
                     base.Exit();
 
                     //_stateMachine.DashingState.LastNode = new Node();
-                    _player.DeactivateArrowRendering();
+                    _stateMachine.DashingState.ResetAmountOfDashes();
+                    //_stateMachine.DashingState.DecreaseAmountOfDashes();
                     Time.timeScale = 1f;
                 }
 
@@ -51,9 +50,6 @@ namespace Jolt
 
                     _currentTime = Time.time;
                     _isDashStarted = _player.InputManager.DashBegin && (_currentTime - _enterTime < _playerData.PreDashTimeOut);
-
-                    _player.SetDashVectors(_player.InputManager.InitialDashPoint, _player.InputManager.FinalDashPoint);
-                    _player.SetArrowRendering();
 
                     //Cant be Cancelled, go to dashing when stopped pressing or after timeout
                     if (!_isDashStarted)

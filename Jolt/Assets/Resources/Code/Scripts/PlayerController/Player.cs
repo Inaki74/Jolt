@@ -15,7 +15,6 @@ namespace Jolt
 
         public class Player : MonoBehaviour, IPlayer
         {
-            #region Components
             [SerializeField]
             private PlayerData _playerData;
 
@@ -35,7 +34,8 @@ namespace Jolt
 
             [SerializeField]
             private GameObject _deathParticles;
-            #endregion
+
+            [SerializeField] private Transform _playerSet;
 
             #region Auxiliary Variables
             private const float GRAVITY = -9.8f;
@@ -72,6 +72,11 @@ namespace Jolt
             private Vector2 _auxVector2;
             private Vector3 _auxVector3;
 
+            private bool _isFacingRight = true;
+
+            private bool _wallFlipped = false;
+
+            public bool WallFlipped { get => _wallFlipped; set => _wallFlipped = value; }
             public bool IsDead { get; set; } = false;
 
             #endregion
@@ -215,6 +220,9 @@ namespace Jolt
 
             public void SetScale(Vector2 scale)
             {
+                float facingDirection = Mathf.Sign(transform.localScale.x);
+
+                scale = new Vector2(scale.x * facingDirection, scale.y);
                 transform.localScale = scale;
             }
 
@@ -297,7 +305,7 @@ namespace Jolt
                 // Instantiate particles
                 // Move player to last _checkpoint (but here we will have only one _checkpoint, so skip)
                 //transform.position = _checkpoint;
-                transform.position = Vector2.zero;
+                transform.position = _playerData.LastCheckpoint;
                 // Reset objects (but here they are immutable so skip)
             }
 
@@ -306,6 +314,44 @@ namespace Jolt
                 Instantiate(_deathParticles, transform.position, Quaternion.identity);
             }
 
+            public void CheckIfShouldFlip(float direction)
+            {
+                bool shouldFaceRight = direction > 0f && !_isFacingRight;
+                bool shouldFaceLeft = direction < 0f && _isFacingRight;
+
+                if(shouldFaceLeft || shouldFaceRight)
+                {
+                    Flip();
+                }
+            }
+
+            public void SetAnimationBool(string name, bool value)
+            {
+                _playerAnimations.SetAnimationBool(name, value);
+            }
+
+            public bool GetAnimationBool(string name)
+            {
+                return _playerAnimations.GetAnimationBool(name);
+            }
+
+            public void Flip()
+            {
+                _isFacingRight = !_isFacingRight;
+                Vector2 flippedScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+                // transform.localScale = flippedScale;
+                _playerAnimations.Flip();
+            }
+
+            public void FlipY()
+            {
+                _playerAnimations.FlipY();
+            }
+
+            public void SetAnimationInt(string name, int value)
+            {
+                _playerAnimations.SetAnimationInt(name, value);
+            }
         }
 
     }

@@ -11,6 +11,8 @@ namespace Jolt
             public class WallJumpState : FullControlState
             {
                 protected override Color AssociatedColor => Color.green;
+                protected override string AnimString => PlayerAnimations.Constants.WALLJUMP_BOOL;
+                public override bool Flippable => false;
 
                 private bool _forceApplied;
                 private float _currentTime;
@@ -28,6 +30,7 @@ namespace Jolt
                     _forceApplied = false;
                     _canMove = false;
                     _player.SetGravityScale(_playerData.WallJumpGravity);
+                    _player.WallFlipped = false;
                     _stateMachine.WallSlideState.ResetFallingGravityScale();
                     _stateMachine.WallSlideState.ResetHasClinged();
                 }

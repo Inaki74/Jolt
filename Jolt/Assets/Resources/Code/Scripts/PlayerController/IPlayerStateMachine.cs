@@ -5,12 +5,12 @@ namespace Jolt.PlayerController
     public interface IPlayerStateMachine
     {
         PlayerState CurrentState { get; }
+        PlayerState NextState { get; }
         string LastState { get; }
         MoveState MoveState { get; }
         IdleState IdleState { get; }
         AirborneState AirborneState { get; }
         RecoilState RecoilState { get; }
-        PreDashState PreDashState { get; }
         DashingState DashingState { get; }
         In_NodeState InNodeState { get; }
         ExitNodeState ExitNodeState { get; }

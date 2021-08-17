@@ -13,8 +13,9 @@ namespace Jolt
                 protected override Color AssociatedColor => Color.magenta;
 
                 protected bool _isGrounded;
-                protected bool _isTouchingWallLeft;
-                protected bool _isTouchingWallRight;
+                public override bool Flippable => false;
+
+                protected bool _enteredTouchingRightWall;
 
                 public OnWallState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -24,11 +25,24 @@ namespace Jolt
                 {
                     base.Enter();
                     //_player.SetRigidbodyVelocityX(0f);
+
+                    if (!_player.WallFlipped)
+                    {
+                        _player.Flip();
+                        _player.WallFlipped = true;
+                    }
                 }
 
                 public override void Exit()
                 {
                     base.Exit();
+
+                    if (_player.WallFlipped && _stateMachine.NextState.Flippable)
+                    {
+                        Debug.Log("AA");
+                        _player.Flip();
+                        _player.WallFlipped = false;
+                    }
                 }
 
                 protected override bool StateChangeCheck()

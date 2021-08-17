@@ -11,6 +11,7 @@ namespace Jolt
             public class FloatingState : FullControlState
             {
                 protected override Color AssociatedColor => Color.green;
+                protected override string AnimString => PlayerAnimations.Constants.RISE_BOOL;
 
                 private bool _reachedPeak;
                 private bool _isTouchingWall;

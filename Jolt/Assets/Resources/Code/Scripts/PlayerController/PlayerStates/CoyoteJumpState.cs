@@ -11,6 +11,7 @@ namespace Jolt
             public class CoyoteJumpState : FullControlState
             {
                 protected override Color AssociatedColor => Color.magenta;
+                protected override string AnimString => PlayerAnimations.Constants.FALL_BOOL;
 
                 private float _currentTime;
 
