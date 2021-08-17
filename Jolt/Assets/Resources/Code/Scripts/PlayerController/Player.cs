@@ -74,6 +74,9 @@ namespace Jolt
 
             private bool _isFacingRight = true;
 
+            private bool _wallFlipped = false;
+
+            public bool WallFlipped { get => _wallFlipped; set => _wallFlipped = value; }
             public bool IsDead { get; set; } = false;
 
             #endregion
@@ -336,7 +339,8 @@ namespace Jolt
             {
                 _isFacingRight = !_isFacingRight;
                 Vector2 flippedScale = new Vector2(-transform.localScale.x, transform.localScale.y);
-                transform.localScale = flippedScale;
+                // transform.localScale = flippedScale;
+                _playerAnimations.Flip();
             }
         }
 

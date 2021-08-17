@@ -9,6 +9,7 @@ namespace Jolt.PlayerController
         SpriteRenderer Sr { get; }
         BoxCollider2D Bc { get; }
         bool IsDead { get; set; }
+        bool WallFlipped { get; set; }
         Vector2 Velocity { get; set; }
 
         bool CheckHasReachedPoint(Vector2 point);

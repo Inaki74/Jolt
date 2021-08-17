@@ -12,7 +12,6 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.gray;
                 protected override string AnimString => PlayerAnimations.Constants.WALLRISE_BOOL;
-                protected override bool _flippable => false;
 
                 private bool _reachedPeak;
                 private float _gravitySet = 0f;

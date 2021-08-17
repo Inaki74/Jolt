@@ -11,6 +11,8 @@ namespace Jolt
             public class WallAirborneState : OnWallState
             {
                 protected override Color AssociatedColor => Color.black;
+                protected override string AnimString => "";
+
 
                 private float _freefallDeformedScaleX;
                 private bool _isFalling;

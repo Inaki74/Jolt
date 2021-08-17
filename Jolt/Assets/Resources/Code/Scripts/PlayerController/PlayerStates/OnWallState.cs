@@ -15,7 +15,7 @@ namespace Jolt
                 protected bool _isGrounded;
                 protected bool _isTouchingWallLeft;
                 protected bool _isTouchingWallRight;
-                protected override bool _flippable => false;
+                public override bool Flippable => false;
 
                 protected bool _enteredTouchingRightWall;
 
@@ -28,14 +28,23 @@ namespace Jolt
                     base.Enter();
                     //_player.SetRigidbodyVelocityX(0f);
 
-                    _player.Flip();
+                    if (!_player.WallFlipped)
+                    {
+                        _player.Flip();
+                        _player.WallFlipped = true;
+                    }
                 }
 
                 public override void Exit()
                 {
                     base.Exit();
 
-                    //_player.Flip();
+                    if (_player.WallFlipped && _stateMachine.NextState.Flippable)
+                    {
+                        Debug.Log("AA");
+                        _player.Flip();
+                        _player.WallFlipped = false;
+                    }
                 }
 
                 protected override bool StateChangeCheck()

@@ -12,7 +12,6 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.blue;
                 protected override string AnimString => PlayerAnimations.Constants.WALLFALL_BOOL;
-                protected override bool _flippable => false;
 
                 private float _currentFallingGravityScale = 0f;
                 private bool _hasClinged = false;

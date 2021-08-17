@@ -15,6 +15,7 @@ namespace Jolt
                 protected IPlayerData _playerData;
                 protected virtual Color AssociatedColor => Color.black;
                 protected virtual string AnimString => "";
+                public virtual bool Flippable { get; set; } = true;
 
                 protected float _enterTime;
 
@@ -39,9 +40,12 @@ namespace Jolt
 
                 public virtual void Exit()
                 {
-                    if ((!string.IsNullOrEmpty(AnimString) || !string.IsNullOrEmpty(_stateMachine.NextState.AnimString)) && _stateMachine.NextState.AnimString != AnimString)
+                    if (!string.IsNullOrEmpty(AnimString))
                     {
-                        _player.SetAnimationBool(AnimString, false);
+                        if(string.IsNullOrEmpty(_stateMachine.NextState.AnimString) || _stateMachine.NextState.AnimString != AnimString)
+                        {
+                            _player.SetAnimationBool(AnimString, false);
+                        }
                     }
                 }
 

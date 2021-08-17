@@ -19,7 +19,6 @@ namespace Jolt
                 protected bool _jumpHeld;
                 protected bool _isStartingDash;
                 protected bool _canDash;
-                protected virtual bool _flippable => true;
 
                 public FullControlState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -50,7 +49,7 @@ namespace Jolt
                     _isStartingDash = _player.InputManager.DashBegin;
                     _canDash = _stateMachine.PreDashState.CanDash();
 
-                    if (_flippable)
+                    if (Flippable)
                     {
                         _player.CheckIfShouldFlip(_moveInput.x);
                     }
