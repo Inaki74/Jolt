@@ -10,6 +10,7 @@ namespace Jolt.PlayerController
         BoxCollider2D Bc { get; }
         bool IsDead { get; set; }
         bool WallFlipped { get; set; }
+        bool IsFacingRight { get; set; }
         Vector2 Velocity { get; set; }
 
         bool CheckHasReachedPoint(Vector2 point);

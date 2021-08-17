@@ -16,6 +16,8 @@ namespace Jolt
                 public override bool Flippable => false;
 
                 protected bool _enteredTouchingRightWall;
+                protected bool _isTouchingWallLeft;
+                protected bool _isTouchingWallRight;
 
                 public OnWallState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -39,7 +41,6 @@ namespace Jolt
 
                     if (_player.WallFlipped && _stateMachine.NextState.Flippable)
                     {
-                        Debug.Log("AA");
                         _player.Flip();
                         _player.WallFlipped = false;
                     }

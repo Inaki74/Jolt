@@ -37,7 +37,7 @@ namespace Jolt
                         dashBegin = false;
                     }
 
-                    if (_inputController.DashDown && inputVector != Vector2.zero)
+                    if (_inputController.DashDown)
                     {
                         dashBegin = true;
                         finalDashPoint = inputVector;

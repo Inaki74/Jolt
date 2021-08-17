@@ -76,6 +76,7 @@ namespace Jolt
 
             private bool _wallFlipped = false;
 
+            public bool IsFacingRight { get => _isFacingRight; set => _isFacingRight = value; }
             public bool WallFlipped { get => _wallFlipped; set => _wallFlipped = value; }
             public bool IsDead { get; set; } = false;
 
@@ -175,6 +176,11 @@ namespace Jolt
 
             public void SetDashVectors(Vector3 startPos, Vector3 finalPos)
             {
+                if(finalPos == Vector3.zero)
+                {
+                    finalPos = _isFacingRight ? Vector3.right : Vector3.left;
+                }
+
                 Vector3 direction = (finalPos - startPos).normalized;
 
                 _dashStart = transform.position;
