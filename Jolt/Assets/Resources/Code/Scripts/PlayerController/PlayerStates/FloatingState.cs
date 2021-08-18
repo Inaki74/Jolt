@@ -26,6 +26,7 @@ namespace Jolt
                     base.Enter();
 
                     _player.SetGravityScale(_playerData.FloatGravity);
+                    _player.WallFlipped = false;
                 }
 
                 public override void Exit()

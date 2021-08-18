@@ -16,7 +16,7 @@ MonoBehaviour:
   _movementSpeed: 8
   _timeSlow: 0.1
   _preDashTimeOut: 0
-  _amountOfDashes: 2
+  _amountOfDashes: 200
   _circleRadius: 0.15
   _dashTimeOut: 0.12
   _dashSpeed: 30
