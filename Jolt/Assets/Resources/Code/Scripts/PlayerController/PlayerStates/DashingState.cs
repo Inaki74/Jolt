@@ -28,6 +28,7 @@ namespace Jolt
                 private bool _isTouchingRail;
 
                 private bool _flippedY;
+                
                 private int _amountOfDashes;
 
                 private bool _playOnce;
@@ -50,7 +51,7 @@ namespace Jolt
 
                     SetAnimationsEntry();
 
-                    FlipIfDashingDown();
+                    FlipYIfDashingDown();
                 }
 
                 public override void Exit()
@@ -62,7 +63,7 @@ namespace Jolt
 
                     ResetAnimationVariables();
 
-                    FlipIfDashingDown();
+                    UnflipIfFlippedY();
                 }
 
                 protected override bool StateChangeCheck()
@@ -245,7 +246,16 @@ namespace Jolt
                     _player.SetAnimationInt(PlayerAnimations.Constants.DASHY_INT, 0);
                 }
 
-                private void FlipIfDashingDown()
+                private void FlipYIfDashingDown()
+                {
+                    if (_moveInput.y < 0f)
+                    {
+                        _flippedY = true;
+                        _player.FlipY();
+                    }
+                }
+
+                private void UnflipIfFlippedY()
                 {
                     if (_flippedY)
                     {

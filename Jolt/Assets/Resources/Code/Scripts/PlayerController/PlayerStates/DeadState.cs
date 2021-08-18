@@ -34,6 +34,7 @@ namespace Jolt
                     //_player.SetRigidbodyVelocityY(0f);
                     _player.SetActivePhysicsCollider(false);
                     _player.InstantiateDeathParticles();
+                    _player.WallFlipped = false;
                 }
 
                 public override void Exit()
