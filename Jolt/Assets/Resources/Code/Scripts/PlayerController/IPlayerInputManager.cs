@@ -12,5 +12,7 @@ namespace Jolt.PlayerController
         bool JumpHeld { get; set; }
 
         bool Disabled { get; set; }
+
+        void ResetJumpTimer();
     }
 }

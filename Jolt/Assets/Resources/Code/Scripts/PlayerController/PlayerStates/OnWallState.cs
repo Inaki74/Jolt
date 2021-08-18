@@ -28,6 +28,8 @@ namespace Jolt
                     base.Enter();
                     //_player.SetRigidbodyVelocityX(0f);
 
+                    //_player.ResetJumpInputTimer();
+
                     if (!_player.WallFlipped)
                     {
                         _player.Flip();
@@ -60,12 +62,6 @@ namespace Jolt
                     _isTouchingWallRight = _player.CheckIsTouchingWallRight();
                     bool isTouchingWall = _isTouchingWallLeft || _isTouchingWallRight;
 
-                    if (_jumpPressed)
-                    {
-                        _stateMachine.ScheduleStateChange(_stateMachine.WallJumpState);
-                        return false;
-                    }
-
                     if (_isTouchingWallLeft)
                     {
                         _stateMachine.WallJumpState.JumpDirection = Vector2.right;
@@ -74,6 +70,12 @@ namespace Jolt
                     if (_isTouchingWallRight)
                     {
                         _stateMachine.WallJumpState.JumpDirection = Vector2.left;
+                    }
+
+                    if (_jumpPressed)
+                    {
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallJumpState);
+                        return false;
                     }
 
                     if (!isTouchingWall)

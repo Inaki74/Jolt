@@ -56,6 +56,7 @@ namespace Jolt
                         //TODO
                         if (_isTouchingWall)
                         {
+                            _player.ResetJumpInputTimer();
                             _stateMachine.ScheduleStateChange(_stateMachine.WallSlideJumpState);
                             return false;
                         }

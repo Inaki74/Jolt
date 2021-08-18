@@ -49,5 +49,6 @@ namespace Jolt.PlayerController
         void Flip();
         void FlipY();
         void ActivateInput(bool set);
+        void ResetJumpInputTimer();
     }
 }

@@ -344,8 +344,6 @@ namespace Jolt
             public void Flip()
             {
                 _isFacingRight = !_isFacingRight;
-                Vector2 flippedScale = new Vector2(-transform.localScale.x, transform.localScale.y);
-                // transform.localScale = flippedScale;
                 _playerAnimations.Flip();
             }
 
@@ -362,6 +360,11 @@ namespace Jolt
             public void ActivateInput(bool set)
             {
                 InputManager.Disabled = set;
+            }
+
+            public void ResetJumpInputTimer()
+            {
+                InputManager.ResetJumpTimer();
             }
         }
 

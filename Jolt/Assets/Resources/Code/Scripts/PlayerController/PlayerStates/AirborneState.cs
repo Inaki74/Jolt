@@ -72,7 +72,7 @@ namespace Jolt
 
                     if (isTouchingWall)
                     {
-                        if((_isTouchingWallLeft && isMovingLeft) ||
+                        if ((_isTouchingWallLeft && isMovingLeft) ||
                             (_isTouchingWallRight && isMovingRight))
                         {
                             _stateMachine.ScheduleStateChange(_stateMachine.WallSlideState);
