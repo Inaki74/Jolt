@@ -358,6 +358,11 @@ namespace Jolt
             {
                 _playerAnimations.SetAnimationInt(name, value);
             }
+
+            public void ActivateInput(bool set)
+            {
+                InputManager.Disabled = set;
+            }
         }
 
     }

@@ -48,5 +48,6 @@ namespace Jolt.PlayerController
         bool GetAnimationBool(string name);
         void Flip();
         void FlipY();
+        void ActivateInput(bool set);
     }
 }

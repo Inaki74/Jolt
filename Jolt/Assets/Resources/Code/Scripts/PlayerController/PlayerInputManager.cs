@@ -52,6 +52,7 @@ namespace Jolt
 
             private bool _jumpHeld;
             public bool JumpHeld { get => _jumpHeld; set => _jumpHeld = value; }
+            public bool Disabled { get; set; }
 
             private void Start()
             {
@@ -97,6 +98,11 @@ namespace Jolt
 
             private void Update()
             {
+                if (Disabled)
+                {
+                    return;
+                }
+
                 _playerInputController.ManageMovement(ref _movementVector);
 
                 _playerInputController.ManageDash(ref _dashBegin, ref _finalDashPoint);

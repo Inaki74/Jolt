@@ -35,6 +35,7 @@ namespace Jolt
                     _player.SetActivePhysicsCollider(false);
                     _player.InstantiateDeathParticles();
                     _player.WallFlipped = false;
+                    _player.ActivateInput(true);
                 }
 
                 public override void Exit()
@@ -47,6 +48,7 @@ namespace Jolt
                     _player.ResetPosition();
                     _player.SetActivePhysicsCollider(true);
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
+                    _player.ActivateInput(false);
                 }
 
                 protected override bool StateChangeCheck()
