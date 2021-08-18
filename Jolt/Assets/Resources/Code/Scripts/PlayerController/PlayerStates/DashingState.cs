@@ -196,7 +196,7 @@ namespace Jolt
                         {
                             newFinalDirection = new Vector3(newFinalDirection.x, 1f, 0f);
                         }
-                        else
+                        else if (_moveInput.y < 0f)
                         {
                             newFinalDirection = new Vector3(newFinalDirection.x, -1f, 0f);
                         }
