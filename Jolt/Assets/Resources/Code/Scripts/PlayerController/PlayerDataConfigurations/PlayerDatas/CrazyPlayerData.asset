@@ -40,9 +40,9 @@ MonoBehaviour:
   _floatingGravityScaleIntoWall: 3.5
   _startingWallSlideGravity: 0.5
   _finalWallSlideGravity: 4
-  _timeToReachFinalGravity: 2
+  _timeToReachFinalGravity: 1
   _startingFallSpeed: -1
-  _wallSlideMaxFallSpeed: -15
+  _wallSlideMaxFallSpeed: -6
   _wallJumpDuration: 0.15
   _wallJumpGravity: 4
   _wallJumpForceHorizontal: 8
