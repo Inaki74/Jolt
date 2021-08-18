@@ -191,6 +191,15 @@ namespace Jolt
                     {
                         _player.Flip();
                         _player.WallFlipped = false;
+
+                        if (_moveInput.y > 0f)
+                        {
+                            newFinalDirection = new Vector3(newFinalDirection.x, 1f, 0f);
+                        }
+                        else
+                        {
+                            newFinalDirection = new Vector3(newFinalDirection.x, -1f, 0f);
+                        }
                     }
 
                     _player.SetDashVectors(_player.InputManager.InitialDashPoint, newFinalDirection);
