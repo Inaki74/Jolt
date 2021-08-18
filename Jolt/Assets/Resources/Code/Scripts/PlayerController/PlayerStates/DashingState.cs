@@ -12,7 +12,7 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.cyan;
                 protected override string AnimString => PlayerAnimations.Constants.DASH_BOOL;
-                public override bool Flippable => false;
+                //public override bool Flippable => false;
 
                 public Node LastNode { private get; set; } = null;
 
@@ -46,7 +46,7 @@ namespace Jolt
                     _wasInNode = _player.CheckIsTouchingNode();
                     _playOnce = true;
                     _player.SetGravityScale(0f);
-                    
+
                     DecreaseAmountOfDashes();
 
                     SetAnimationsEntry();
@@ -189,6 +189,7 @@ namespace Jolt
 
                     if (onLeftWallAndMovingTowardsIt || onRightWallAndMovingTowardsIt)
                     {
+                        _player.Flip();
                         _player.WallFlipped = false;
                     }
 
