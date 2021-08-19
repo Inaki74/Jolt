@@ -58,6 +58,8 @@ namespace Jolt
                 {
                     base.Exit();
 
+                    WasInNode = false;
+
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                     _player.Velocity = Vector2.zero;
 
@@ -182,23 +184,26 @@ namespace Jolt
                     bool onLeftWallAndMovingTowardsIt = _isTouchingWallLeft && _moveInput.x < 0f;
                     bool onRightWallAndMovingTowardsIt = _isTouchingWallRight && _moveInput.x > 0f;
 
-                    Vector3 newFinalDirection;
+                    Vector3 newFinalDirection = _player.InputManager.FinalDashPoint;
 
-                    newFinalDirection = onLeftWallAndMovingTowardsIt ? Vector3.right : _player.InputManager.FinalDashPoint;
-                    newFinalDirection = onRightWallAndMovingTowardsIt ? Vector3.left : newFinalDirection;
-
-                    if (onLeftWallAndMovingTowardsIt || onRightWallAndMovingTowardsIt)
+                    if (!WasInNode)
                     {
-                        _player.Flip();
-                        _player.WallFlipped = false;
+                        newFinalDirection = onLeftWallAndMovingTowardsIt ? Vector3.right : _player.InputManager.FinalDashPoint;
+                        newFinalDirection = onRightWallAndMovingTowardsIt ? Vector3.left : newFinalDirection;
 
-                        if (_moveInput.y > 0f)
+                        if (onLeftWallAndMovingTowardsIt || onRightWallAndMovingTowardsIt)
                         {
-                            newFinalDirection = new Vector3(newFinalDirection.x, 1f, 0f);
-                        }
-                        else if (_moveInput.y < 0f)
-                        {
-                            newFinalDirection = new Vector3(newFinalDirection.x, -1f, 0f);
+                            _player.Flip();
+                            _player.WallFlipped = false;
+
+                            if (_moveInput.y > 0f)
+                            {
+                                newFinalDirection = new Vector3(newFinalDirection.x, 1f, 0f);
+                            }
+                            else if (_moveInput.y < 0f)
+                            {
+                                newFinalDirection = new Vector3(newFinalDirection.x, -1f, 0f);
+                            }
                         }
                     }
 
@@ -224,16 +229,17 @@ namespace Jolt
                         _isNotLastNode = true;
                     }
 
+                    bool lastNodeReset = WasInNode;
                     if (WasInNode)
                     {
                         if (!_isTouchingNode)
                         {
                             _stateMachine.DashingState.ResetLastnode();
-                            WasInNode = false;
+                            lastNodeReset = false;
                         }
                     }
 
-                    return _isTouchingNode && _isNotLastNode && !WasInNode;
+                    return _isTouchingNode && _isNotLastNode && !lastNodeReset;
                 }
 
                 private void SetAnimationsEntry()

@@ -12,6 +12,7 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.clear;
                 private bool _isStartingDash;
+                private Vector2 _moveInput;
 
                 public In_NodeState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -43,8 +44,9 @@ namespace Jolt
                     }
 
                     _isStartingDash = _player.InputManager.DashBegin;
+                    _moveInput = _player.InputManager.MovementVector;
 
-                    if (_isStartingDash)
+                    if (_isStartingDash && _moveInput != Vector2.zero)
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.ExitNodeState);
                         return false;
