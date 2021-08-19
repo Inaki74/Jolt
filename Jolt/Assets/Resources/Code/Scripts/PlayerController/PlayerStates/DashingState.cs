@@ -186,24 +186,21 @@ namespace Jolt
 
                     Vector3 newFinalDirection = _player.InputManager.FinalDashPoint;
 
-                    if (!WasInNode)
+                    newFinalDirection = onLeftWallAndMovingTowardsIt ? Vector3.right : newFinalDirection;
+                    newFinalDirection = onRightWallAndMovingTowardsIt ? Vector3.left : newFinalDirection;
+
+                    if (onLeftWallAndMovingTowardsIt || onRightWallAndMovingTowardsIt)
                     {
-                        newFinalDirection = onLeftWallAndMovingTowardsIt ? Vector3.right : _player.InputManager.FinalDashPoint;
-                        newFinalDirection = onRightWallAndMovingTowardsIt ? Vector3.left : newFinalDirection;
+                        _player.Flip();
+                        _player.WallFlipped = false;
 
-                        if (onLeftWallAndMovingTowardsIt || onRightWallAndMovingTowardsIt)
+                        if (_moveInput.y > 0f)
                         {
-                            _player.Flip();
-                            _player.WallFlipped = false;
-
-                            if (_moveInput.y > 0f)
-                            {
-                                newFinalDirection = new Vector3(newFinalDirection.x, 1f, 0f);
-                            }
-                            else if (_moveInput.y < 0f)
-                            {
-                                newFinalDirection = new Vector3(newFinalDirection.x, -1f, 0f);
-                            }
+                            newFinalDirection = new Vector3(newFinalDirection.x, 1f, 0f);
+                        }
+                        else if (_moveInput.y < 0f)
+                        {
+                            newFinalDirection = new Vector3(newFinalDirection.x, -1f, 0f);
                         }
                     }
 
@@ -229,17 +226,16 @@ namespace Jolt
                         _isNotLastNode = true;
                     }
 
-                    bool lastNodeReset = WasInNode;
                     if (WasInNode)
                     {
                         if (!_isTouchingNode)
                         {
                             _stateMachine.DashingState.ResetLastnode();
-                            lastNodeReset = false;
+                            WasInNode = false;
                         }
                     }
 
-                    return _isTouchingNode && _isNotLastNode && !lastNodeReset;
+                    return _isTouchingNode && _isNotLastNode && !WasInNode;
                 }
 
                 private void SetAnimationsEntry()

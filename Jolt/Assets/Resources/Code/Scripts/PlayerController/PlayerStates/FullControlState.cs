@@ -19,7 +19,6 @@ namespace Jolt
                 protected bool _jumpHeld;
                 protected bool _isStartingDash;
                 protected bool _canDash;
-                
 
                 public FullControlState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
