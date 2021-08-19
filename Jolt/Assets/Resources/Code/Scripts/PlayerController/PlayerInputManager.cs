@@ -106,6 +106,12 @@ namespace Jolt
             {
                 if (Disabled)
                 {
+                    _dashBegin = false;
+                    _jumpPressed = false;
+                    _jumpHeld = false;
+                    _finalDashPoint = Vector3.zero;
+                    _movementVector = Vector2.zero;
+                    _dashQueue.Clear();
                     return;
                 }
 

@@ -60,11 +60,8 @@ namespace Jolt
             [SerializeField]
             private Transform _groundCheckTwo;
 
-            [SerializeField]
-            private Transform _wallCheckOne;
-
-            [SerializeField]
-            private Transform _wallCheckTwo;
+            [SerializeField] private Transform[] _leftWallChecks;
+            [SerializeField] private Transform[] _rightWallChecks;
 
             private Vector3 _dashStart;
             private Vector3 _dashFinish;
@@ -242,12 +239,26 @@ namespace Jolt
 
             public bool CheckIsTouchingWallLeft()
             {
-                return Physics2D.OverlapCircle(_wallCheckTwo.position, _playerData.CheckWallRadius, _playerData.WhatIsGround);
+                bool isTouchingWall = false;
+
+                foreach(Transform wallCheck in _leftWallChecks)
+                {
+                    isTouchingWall = isTouchingWall || Physics2D.OverlapCircle(wallCheck.position, _playerData.CheckWallRadius, _playerData.WhatIsGround);
+                }
+
+                return isTouchingWall;
             }
 
             public bool CheckIsTouchingWallRight()
             {
-                return Physics2D.OverlapCircle(_wallCheckOne.position, _playerData.CheckWallRadius, _playerData.WhatIsGround);
+                bool isTouchingWall = false;
+
+                foreach (Transform wallCheck in _rightWallChecks)
+                {
+                    isTouchingWall = isTouchingWall || Physics2D.OverlapCircle(wallCheck.position, _playerData.CheckWallRadius, _playerData.WhatIsGround);
+                }
+
+                return isTouchingWall;
             }
 
             public bool CheckIsTouchingNode()
