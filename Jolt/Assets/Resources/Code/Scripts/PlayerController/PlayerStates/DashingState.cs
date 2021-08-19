@@ -24,6 +24,7 @@ namespace Jolt
                 
                 private bool _isGrounded;
                 private Vector2 _moveInput;
+                private Vector3 _dashFinalPoint;
                 private float _currentTime;
                 private bool _isTouchingNode;
                 private bool _isTouchingRail;
@@ -44,6 +45,7 @@ namespace Jolt
                     base.Enter();
 
                     _moveInput = _player.InputManager.MovementVector;
+                    _dashFinalPoint = _player.InputManager.FinalDashPoint;
                     _playOnce = true;
                     _player.SetGravityScale(0f);
 
@@ -77,6 +79,8 @@ namespace Jolt
                         return false;
                     }
 
+                    _currentTime = Time.time;
+
                     _isGrounded = _player.CheckIsGrounded();
                     _isTouchingNode = _player.CheckIsTouchingNode();
                     _isTouchingRail = _player.CheckIsTouchingRail();
@@ -98,7 +102,7 @@ namespace Jolt
                         return false;
                     }
 
-                    if (isTouchingWall && _moveInput.x != 0f && !onLeftWallAndMovingTowardsIt && !onRightWallAndMovingTowardsIt)
+                    if (isTouchingWall && _dashFinalPoint.x != 0f && (onLeftWallAndMovingTowardsIt || onRightWallAndMovingTowardsIt))
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.WallSlideState);
                         return false;
@@ -132,7 +136,7 @@ namespace Jolt
                         }
                     }
 
-                    if(_currentTime - _enterTime > _playerData.DashTimeOut / 10 && _isGrounded)
+                    if(_isGrounded && _currentTime - _enterTime > _playerData.DashTimeOut / 10) // Consider triple dash
                     {
                         ResetAmountOfDashes();
                     }
@@ -143,8 +147,6 @@ namespace Jolt
                 protected override void PlayerControlAction()
                 {
                     base.PlayerControlAction();
-
-                    _currentTime = Time.time;
 
                     if (_playOnce)
                     {
@@ -199,11 +201,11 @@ namespace Jolt
                         _player.Flip();
                         _player.WallFlipped = false;
 
-                        if (_moveInput.y > 0f)
+                        if (_dashFinalPoint.y > 0f)
                         {
                             newFinalDirection = new Vector3(newFinalDirection.x, 1f, 0f);
                         }
-                        else if (_moveInput.y < 0f)
+                        else if (_dashFinalPoint.y < 0f)
                         {
                             newFinalDirection = new Vector3(newFinalDirection.x, -1f, 0f);
                         }
@@ -245,15 +247,15 @@ namespace Jolt
 
                 private void SetAnimationsEntry()
                 {
-                    if (_moveInput.x == 0f && _moveInput.y == 0f)
+                    if (_dashFinalPoint.x == 0f && _dashFinalPoint.y == 0f)
                     {
                         _player.SetAnimationInt(PlayerAnimations.Constants.DASHX_INT, 1);
                         _player.SetAnimationInt(PlayerAnimations.Constants.DASHY_INT, 0);
                     }
                     else
                     {
-                        _player.SetAnimationInt(PlayerAnimations.Constants.DASHX_INT, (int)_moveInput.x);
-                        _player.SetAnimationInt(PlayerAnimations.Constants.DASHY_INT, (int)_moveInput.y);
+                        _player.SetAnimationInt(PlayerAnimations.Constants.DASHX_INT, (int)_dashFinalPoint.x);
+                        _player.SetAnimationInt(PlayerAnimations.Constants.DASHY_INT, (int)_dashFinalPoint.y);
                     }
                 }
 
@@ -265,7 +267,7 @@ namespace Jolt
 
                 private void FlipYIfDashingDown()
                 {
-                    if (_moveInput.y < 0f)
+                    if (_dashFinalPoint.y < 0f)
                     {
                         _flippedY = true;
                         _player.FlipY();

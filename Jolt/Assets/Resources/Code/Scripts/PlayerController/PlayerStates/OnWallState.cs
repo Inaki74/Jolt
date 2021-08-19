@@ -30,10 +30,23 @@ namespace Jolt
 
                     //_player.ResetJumpInputTimer();
 
+                    _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
+                    _isTouchingWallRight = _player.CheckIsTouchingWallRight();
+
+                    if (_isTouchingWallLeft)
+                    {
+                        _player.FlipRight();
+                    }
+
+                    if (_isTouchingWallRight)
+                    {
+                        _player.FlipLeft();
+                    }
+
                     if (!_player.WallFlipped)
                     {
-                        _player.Flip();
-                        _player.WallFlipped = true;
+                        //_player.Flip();
+                        //_player.WallFlipped = true;
                     }
                 }
 
@@ -43,8 +56,8 @@ namespace Jolt
 
                     if (_player.WallFlipped && _stateMachine.NextState.Flippable)
                     {
-                        _player.Flip();
-                        _player.WallFlipped = false;
+                        //_player.Flip();
+                        //_player.WallFlipped = false;
                     }
                 }
 
