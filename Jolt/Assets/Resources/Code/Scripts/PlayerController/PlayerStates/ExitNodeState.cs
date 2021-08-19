@@ -13,10 +13,8 @@ namespace Jolt
                 protected override Color AssociatedColor => Color.magenta;
                 // Known bug: If two nodes are too close to each other, doesnt work appropiately
 
-                private Vector2 _moveInput;
                 private bool _isDashStarted;
                 private float _currentTime;
-                private bool _flippedX;
 
                 public ExitNodeState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {

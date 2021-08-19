@@ -132,6 +132,11 @@ namespace Jolt
                         }
                     }
 
+                    if(_currentTime - _enterTime > _playerData.DashTimeOut / 10 && _isGrounded)
+                    {
+                        ResetAmountOfDashes();
+                    }
+
                     return true;
                 }
 

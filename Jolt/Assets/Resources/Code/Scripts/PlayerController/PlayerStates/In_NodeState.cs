@@ -16,7 +16,7 @@ namespace Jolt
                 private bool _isStartingDash;
                 private Vector3 _finalDashInput;
 
-                private float _dashPressedTimeout =MAX_DASH_TIMEOUT;
+                private float _dashPressedTimeout = MAX_DASH_TIMEOUT;
 
                 public In_NodeState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -34,7 +34,7 @@ namespace Jolt
 
                 public override void Exit()
                 {
-                    //base.Exit();
+                    base.Exit();
 
                     _player.Sr.color = Color.white;
                     _dashPressedTimeout = MAX_DASH_TIMEOUT;
@@ -55,7 +55,6 @@ namespace Jolt
 
                     if ((_isStartingDash || startedDashRecently) && _finalDashInput != Vector3.zero)
                     {
-                        Debug.Log(_finalDashInput);
                         _stateMachine.ScheduleStateChange(_stateMachine.ExitNodeState);
                         return false;
                     }
