@@ -36,6 +36,7 @@ namespace Jolt
 
                     //_stateMachine.DashingState.LastNode = new Node();
                     _stateMachine.DashingState.ResetAmountOfDashes();
+                    _stateMachine.DashingState.WasInNode = true;
                     //_stateMachine.DashingState.DecreaseAmountOfDashes();
                 }
 

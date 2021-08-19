@@ -15,12 +15,13 @@ namespace Jolt
                 //public override bool Flippable => false;
 
                 public Node LastNode { private get; set; } = null;
+                public bool WasInNode { private get; set; } = false;
 
                 private bool _isTouchingWallLeft;
                 private bool _isTouchingWallRight;
 
                 private bool _isNotLastNode;
-                private bool _wasInNode;
+                
                 private bool _isGrounded;
                 private Vector2 _moveInput;
                 private float _currentTime;
@@ -43,7 +44,6 @@ namespace Jolt
                     base.Enter();
 
                     _moveInput = _player.InputManager.MovementVector;
-                    _wasInNode = _player.CheckIsTouchingNode();
                     _playOnce = true;
                     _player.SetGravityScale(0f);
 
@@ -224,16 +224,16 @@ namespace Jolt
                         _isNotLastNode = true;
                     }
 
-                    if (_wasInNode)
+                    if (WasInNode)
                     {
                         if (!_isTouchingNode)
                         {
                             _stateMachine.DashingState.ResetLastnode();
-                            _wasInNode = false;
+                            WasInNode = false;
                         }
                     }
 
-                    return _isTouchingNode && _isNotLastNode && !_wasInNode;
+                    return _isTouchingNode && _isNotLastNode && !WasInNode;
                 }
 
                 private void SetAnimationsEntry()

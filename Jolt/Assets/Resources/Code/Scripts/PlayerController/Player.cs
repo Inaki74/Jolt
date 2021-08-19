@@ -111,30 +111,12 @@ namespace Jolt
 
                 StateMachine = new PlayerStateMachine(this, _playerData);
                 _playerArrowRendering = new PlayerArrowRendering(GetComponent<LineRenderer>());
-
-                //DashCollider.enabled = false;
             }
 
             private void SetRigidbody()
             {
                 _gravityScale = _playerData.PlayerPhysicsData.StandardGravity;
                 _maxFallSpeed = _playerData.PlayerPhysicsData.StandardMaxFallSpeed;
-                //Rb.drag = _playerData.PlayerPhysicsData.StandardLinearDrag;
-            }
-
-            private void OnDrawGizmos()
-            {
-                //Vector2 center = new Vector2(1f, 0);
-                //float radius = 4;
-
-                //float x, y;
-                //for (int i = 0; i <= 50; i += 1)
-                //{
-                //    x = radius * Mathf.Cos(Mathf.Rad2Deg * i) + center.x;
-                //    y = radius * Mathf.Sin(Mathf.Rad2Deg * i) + center.y;
-
-                //    Gizmos.DrawSphere(new Vector2(x, y), 0.1f);
-                //}
             }
             #endregion
 
