@@ -10,7 +10,7 @@ namespace Jolt
         {
             public class In_NodeState : ConductorState
             {
-                private const float MAX_DASH_TIMEOUT = 1f;
+                private const float MAX_DASH_TIMEOUT = 0.1f;
 
                 protected override Color AssociatedColor => Color.clear;
                 private bool _isStartingDash;

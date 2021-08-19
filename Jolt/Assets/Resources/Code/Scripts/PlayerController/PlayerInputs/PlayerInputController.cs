@@ -22,14 +22,6 @@ namespace Jolt
                     if (_inputController.DashHold)
                     {
                         dashBegin = false;
-                        //if (_inputController.Pointer)
-                        //{
-                        //    finalDashPoint = _inputController.PointerVector;
-                        //}
-                        //else
-                        //{
-                        //    finalDashPoint = inputVector;
-                        //}
                     }
 
                     if (_inputController.DashUp)
@@ -40,8 +32,9 @@ namespace Jolt
                     if (_inputController.DashDown)
                     {
                         dashBegin = true;
-                        finalDashPoint = inputVector;
                     }
+
+                    finalDashPoint = inputVector;
                 }
 
                 public void ManageJump(ref bool jumpingBool, ref bool holdJump)
