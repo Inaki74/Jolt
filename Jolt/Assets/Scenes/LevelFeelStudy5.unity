@@ -1100,13 +1100,13 @@ Transform:
   - {fileID: 1948886672}
   - {fileID: 96673438}
   - {fileID: 1221640448}
-  - {fileID: 931120623}
   - {fileID: 1984761305}
+  - {fileID: 931120623}
+  - {fileID: 1743231620}
   - {fileID: 187453888}
   - {fileID: 1112305178}
-  - {fileID: 1743231620}
-  - {fileID: 2100238428}
   - {fileID: 1411867125}
+  - {fileID: 2100238428}
   m_Father: {fileID: 1096742298}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8118,7 +8118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a2db6cdfcb1f481599acaa018fadb85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _controlScheme: 1
+  _controlScheme: 0
 --- !u!4 &6591592334533712184
 Transform:
   m_ObjectHideFlags: 0
