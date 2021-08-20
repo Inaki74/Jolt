@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 81b04d02e0e9448ca9feb2993a0c640a, type: 3}
-  m_Name: NormalPlayerData
+  m_Name: PlayerDataTwo
   m_EditorClassIdentifier: 
   _playerPhysicsData: {fileID: 11400000, guid: c854d886294874f0ba9fd64350b26df7, type: 2}
-  _movementSpeed: 8
+  _movementSpeed: 6.75
   _timeSlow: 0.1
-  _preDashTimeOut: 0.1
+  _preDashTimeOut: 0
   _amountOfDashes: 2
   _circleRadius: 0.15
-  _dashTimeOut: 0.12
+  _dashTimeOut: 0.1
   _dashSpeed: 30
+  _checkWallRadius: 0.05
   _checkGroundRadius: 0.05
   _whatIsGround:
     serializedVersion: 2
@@ -45,7 +46,24 @@ MonoBehaviour:
   - {x: 9.639347, y: 30.725397}
   - {x: 9.528975, y: 30.71233}
   _deadTimer: 1
-  _lastCheckpoint: {x: 0, y: 0}
+  _lastCheckpoint: {x: -20.38, y: -5.22}
   _recoilTimer: 0.2
-  _jumpForce: 15
-  _floatGravity: 0
+  _freeFallGravity: 6
+  _freeFallMaxFallSpeed: -40
+  _maxDeformedScale: 0.75
+  _scaleReductionModifier: 0.02
+  _jumpForce: 11
+  _jumpGravity: 4
+  _jumpCoyoteTiming: 0.075
+  _floatGravity: 4
+  _floatingGravityScaleIntoWall: 3.5
+  _startingWallSlideGravity: 0.5
+  _finalWallSlideGravity: 4
+  _timeToReachFinalGravity: 1
+  _startingFallSpeed: -1
+  _wallSlideMaxFallSpeed: -6
+  _wallJumpDuration: 0.15
+  _wallJumpGravity: 4
+  _wallJumpForceHorizontal: 9.5
+  _wallJumpForceVertical: 13.75
+  _wallJumpCoyoteTiming: 0.05
