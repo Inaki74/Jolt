@@ -132,7 +132,7 @@ namespace Jolt
                         }
 
                         Vector2 newScale = new Vector2(_freefallDeformedScaleX, 1f);
-                        _player.SetScale(newScale);
+                        //_player.SetScale(newScale);
 
                         _player.SetGravityScale(_playerData.FreeFallGravity);
                     }

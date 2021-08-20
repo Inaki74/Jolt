@@ -83,6 +83,8 @@ namespace Jolt
 
             private void Start()
             {
+                //Application.targetFrameRate = 10;
+
                 GetComponents();
                 SetRigidbody();
                 StateMachine.Initialize();

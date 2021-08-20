@@ -31,7 +31,7 @@ namespace Jolt
 
             void Update()
             {
-                CheckIfInsideCollider();
+                //CheckIfInsideCollider();
             }
 
             private void GetComponents()
