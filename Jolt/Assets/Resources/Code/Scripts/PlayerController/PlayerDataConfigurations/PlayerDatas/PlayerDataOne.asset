@@ -27,7 +27,7 @@ MonoBehaviour:
     m_Bits: 256
   _allPaths: []
   _deadTimer: 1
-  _lastCheckpoint: {x: -8.9, y: 0.4}
+  _lastCheckpoint: {x: -20.38, y: -5.22}
   _recoilTimer: 0.2
   _freeFallGravity: 6
   _freeFallMaxFallSpeed: -40
