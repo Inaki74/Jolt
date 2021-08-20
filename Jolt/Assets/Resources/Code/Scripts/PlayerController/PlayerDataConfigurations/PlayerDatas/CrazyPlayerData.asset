@@ -18,7 +18,7 @@ MonoBehaviour:
   _preDashTimeOut: 0
   _amountOfDashes: 2
   _circleRadius: 0.15
-  _dashTimeOut: 0.12
+  _dashTimeOut: 0.1
   _dashSpeed: 30
   _checkWallRadius: 0.05
   _checkGroundRadius: 0.05
@@ -27,7 +27,7 @@ MonoBehaviour:
     m_Bits: 256
   _allPaths: []
   _deadTimer: 1
-  _lastCheckpoint: {x: 37.3, y: 8.2}
+  _lastCheckpoint: {x: -8.9, y: 0.4}
   _recoilTimer: 0.2
   _freeFallGravity: 6
   _freeFallMaxFallSpeed: -40
@@ -46,5 +46,5 @@ MonoBehaviour:
   _wallJumpDuration: 0.15
   _wallJumpGravity: 4
   _wallJumpForceHorizontal: 8
-  _wallJumpForceVerticalRatioWithHorizontal: 2
+  _wallJumpForceVertical: 16
   _wallJumpCoyoteTiming: 0.05
