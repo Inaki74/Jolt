@@ -6,6 +6,7 @@ namespace Jolt
 {
     namespace PlayerController
     {
+        using System;
         using PlayerInput;
 
         public enum ControlSchemeAux
@@ -115,6 +116,8 @@ namespace Jolt
                     return;
                 }
 
+                CheckForChangeOfController();
+
                 _playerInputController.ManageMovement(ref _movementVector);
 
                 _playerInputController.ManageDash(ref _dashBegin, ref _finalDashPoint);
@@ -127,6 +130,21 @@ namespace Jolt
                 }
 
                 ManageJumpInput();
+            }
+
+            private void CheckForChangeOfController()
+            {
+                if (Input.GetAxisRaw(InputStringNames.JOYSTICK_HORIZONTAL_NAME) != 0f && _controlScheme != ControlSchemeAux.CONTROLLER)
+                {
+                    _controlScheme = ControlSchemeAux.CONTROLLER;
+                    _playerInputController.SetInputController(new JoystickInputController());
+                }
+
+                if (Input.GetAxisRaw(InputStringNames.KEYBOARD_HORIZONTAL_NAME) != 0f && _controlScheme != ControlSchemeAux.KEYBOARD)
+                {
+                    _controlScheme = ControlSchemeAux.KEYBOARD;
+                    _playerInputController.SetInputController(new KeyboardInputController());
+                }
             }
 
             private void ManageJumpInput()
