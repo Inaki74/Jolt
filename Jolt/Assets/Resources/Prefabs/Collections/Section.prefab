@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 
-  _sectionTransitionControllers: []
+  _sectionTransitionControllersContainer: {fileID: 3575380183564385069}
   _gameObjectPlacersContainer: {fileID: 7477832358994164}
   _cellsHeight: 9
   _cellsWidth: 16

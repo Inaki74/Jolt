@@ -11,9 +11,12 @@ namespace Jolt
             public const float CELLS_UNIT_RATIO = 2f / 3f;
 
             [SerializeField] private string _id;
-            [SerializeField] private List<ISectionTransitionController> _sectionTransitionControllers = new List<ISectionTransitionController>();
-            [SerializeField] private GameObject _gameObjectPlacersContainer;
             private SectionBoundaries _sectionBoundaries;
+            private List<IGameObjectPlacer> _gameObjectPlacers = new List<IGameObjectPlacer>();
+            private List<ISectionTransitionController> _sectionTransitionControllers = new List<ISectionTransitionController>();
+
+            [SerializeField] private GameObject _sectionTransitionControllersContainer;
+            [SerializeField] private GameObject _gameObjectPlacersContainer;
 
             [Header("Height and Width in amount of cells")]
             [SerializeField] private int _cellsHeight;
@@ -23,8 +26,6 @@ namespace Jolt
             public SectionBoundaries SectionBoundaries { get => _sectionBoundaries; }
             public List<ISectionTransitionController> SectionTransitioners { get => _sectionTransitionControllers; }
             public List<IGameObjectPlacer> GameObjectPlacers { get => _gameObjectPlacers; }
-
-            private List<IGameObjectPlacer> _gameObjectPlacers = new List<IGameObjectPlacer>();
 
             public void Enter()
             {
@@ -47,13 +48,22 @@ namespace Jolt
             {
                 GetBoundaries();
                 GetGameObjectPlacers();
+                GetTransitionControllers();
+            }
+
+            private void GetTransitionControllers()
+            {
+                foreach(ISectionTransitionController controller in _gameObjectPlacersContainer.GetComponentsInChildren<ISectionTransitionController>())
+                {
+                    _sectionTransitionControllers.Add(controller);
+                }
             }
 
             private void GetGameObjectPlacers()
             {
-                foreach(ISectionTransitionController placer in _gameObjectPlacersContainer.GetComponentsInChildren<ISectionTransitionController>())
+                foreach (IGameObjectPlacer placer in _gameObjectPlacersContainer.GetComponentsInChildren<IGameObjectPlacer>())
                 {
-                    _sectionTransitionControllers.Add(placer);
+                    _gameObjectPlacers.Add(placer);
                 }
             }
 
