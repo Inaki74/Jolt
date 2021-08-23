@@ -12,18 +12,25 @@ namespace Jolt
             {
                 protected override Color AssociatedColor => Color.cyan;
                 protected override string AnimString => PlayerAnimations.Constants.DASH_BOOL;
+                //public override bool Flippable => false;
 
                 public Node LastNode { private get; set; } = null;
+                public bool WasInNode { private get; set; } = false;
+
+                private bool _isTouchingWallLeft;
+                private bool _isTouchingWallRight;
 
                 private bool _isNotLastNode;
-                private bool _wasInNode;
+                
                 private bool _isGrounded;
                 private Vector2 _moveInput;
+                private Vector3 _dashFinalPoint;
                 private float _currentTime;
                 private bool _isTouchingNode;
                 private bool _isTouchingRail;
 
                 private bool _flippedY;
+                
                 private int _amountOfDashes;
 
                 private bool _playOnce;
@@ -37,44 +44,30 @@ namespace Jolt
                 {
                     base.Enter();
 
-
                     _moveInput = _player.InputManager.MovementVector;
+                    _dashFinalPoint = _player.InputManager.FinalDashPoint;
                     _playOnce = true;
                     _player.SetGravityScale(0f);
-                    _wasInNode = _player.CheckIsTouchingNode();
+
                     DecreaseAmountOfDashes();
 
-                    _player.SetAnimationInt(PlayerAnimations.Constants.DASHX_INT, (int)_moveInput.x);
-                    _player.SetAnimationInt(PlayerAnimations.Constants.DASHY_INT, (int)_moveInput.y);
+                    SetAnimationsEntry();
 
-                    if(_moveInput.y < 0)
-                    {
-                        _flippedY = true;
-                        _player.FlipY();
-                    }
-                    //_player.SetActivePhysicsCollider(false);
-                    //_player.SetDashCollider(true);
+                    FlipYIfDashingDown();
                 }
 
                 public override void Exit()
                 {
                     base.Exit();
 
+                    WasInNode = false;
+
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                     _player.Velocity = Vector2.zero;
 
-                    _player.SetAnimationInt(PlayerAnimations.Constants.DASHX_INT, 0);
-                    _player.SetAnimationInt(PlayerAnimations.Constants.DASHY_INT, 0);
+                    ResetAnimationVariables();
 
-                    if (_flippedY)
-                    {
-                        _flippedY = false;
-                        _player.FlipY();
-                    }
-                    //_player.SetActivePhysicsCollider(true);
-                    //_player.SetDashCollider(false);
-                    //_player.SetRigidbodyVelocityX(0f);
-                    //_player.SetRigidbodyVelocityY(0f);
+                    UnflipIfFlippedY();
                 }
 
                 protected override bool StateChangeCheck()
@@ -86,12 +79,16 @@ namespace Jolt
                         return false;
                     }
 
-                    _isGrounded = _player.CheckIsGrounded();
-                    //_moveInput = _player.InputManager.MovementVector;
+                    _currentTime = Time.time;
 
+                    _isGrounded = _player.CheckIsGrounded();
                     _isTouchingNode = _player.CheckIsTouchingNode();
                     _isTouchingRail = _player.CheckIsTouchingRail();
-                    bool isTouchingWall = _player.CheckIsTouchingWallLeft() || _player.CheckIsTouchingWallRight();
+                    _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
+                    _isTouchingWallRight = _player.CheckIsTouchingWallRight();
+                    bool isTouchingWall = _isTouchingWallLeft || _isTouchingWallRight;
+                    bool onLeftWallAndMovingTowardsIt = _isTouchingWallLeft && _moveInput.x < 0f;
+                    bool onRightWallAndMovingTowardsIt = _isTouchingWallRight && _moveInput.x > 0f;
 
                     if (CheckIsAdmittableToGetIntoNode())
                     {
@@ -105,7 +102,7 @@ namespace Jolt
                         return false;
                     }
 
-                    if (isTouchingWall && _moveInput.x != 0f)
+                    if (isTouchingWall && _dashFinalPoint.x != 0f && (onLeftWallAndMovingTowardsIt || onRightWallAndMovingTowardsIt))
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.WallSlideState);
                         return false;
@@ -128,9 +125,20 @@ namespace Jolt
                         }
                         else
                         {
+                            if (isTouchingWall)
+                            {
+                                _stateMachine.ScheduleStateChange(_stateMachine.WallAirborneState);
+                                return false;
+                            }
+
                             _stateMachine.ScheduleStateChange(_stateMachine.AirborneState);
                             return false;
                         }
+                    }
+
+                    if(_isGrounded && _currentTime - _enterTime > _playerData.DashTimeOut / 10) // Consider triple dash
+                    {
+                        ResetAmountOfDashes();
                     }
 
                     return true;
@@ -140,12 +148,9 @@ namespace Jolt
                 {
                     base.PlayerControlAction();
 
-                    _currentTime = Time.time;
-
                     if (_playOnce)
                     {
-                        _player.SetDashVectors(_player.InputManager.InitialDashPoint, _player.InputManager.FinalDashPoint);
-                        _player.Dash(_playerData.DashSpeed);
+                        Dash();
 
                         _playOnce = false;
                     }
@@ -181,6 +186,36 @@ namespace Jolt
                     _amountOfDashes--;
                 }
 
+                private void Dash()
+                {
+                    bool onLeftWallAndMovingTowardsIt = _isTouchingWallLeft && _moveInput.x < 0f;
+                    bool onRightWallAndMovingTowardsIt = _isTouchingWallRight && _moveInput.x > 0f;
+
+                    Vector3 newFinalDirection = _player.InputManager.FinalDashPoint;
+
+                    newFinalDirection = onLeftWallAndMovingTowardsIt ? Vector3.right : newFinalDirection;
+                    newFinalDirection = onRightWallAndMovingTowardsIt ? Vector3.left : newFinalDirection;
+
+                    if (onLeftWallAndMovingTowardsIt || onRightWallAndMovingTowardsIt)
+                    {
+                        _player.Flip();
+                        _player.WallFlipped = false;
+
+                        if (_dashFinalPoint.y > 0f)
+                        {
+                            newFinalDirection = new Vector3(newFinalDirection.x, 1f, 0f);
+                        }
+                        else if (_dashFinalPoint.y < 0f)
+                        {
+                            newFinalDirection = new Vector3(newFinalDirection.x, -1f, 0f);
+                        }
+                    }
+
+                    _player.SetDashVectors(_player.InputManager.InitialDashPoint, newFinalDirection);
+
+                    _player.Dash(_playerData.DashSpeed);
+                }
+
                 private bool CheckIsAdmittableToGetIntoNode()
                 {
                     _isNotLastNode = false;
@@ -198,16 +233,54 @@ namespace Jolt
                         _isNotLastNode = true;
                     }
 
-                    if (_wasInNode)
+                    if (WasInNode)
                     {
                         if (!_isTouchingNode)
                         {
                             _stateMachine.DashingState.ResetLastnode();
-                            _wasInNode = false;
+                            WasInNode = false;
                         }
                     }
 
-                    return _isTouchingNode && _isNotLastNode && !_wasInNode;
+                    return _isTouchingNode && _isNotLastNode && !WasInNode;
+                }
+
+                private void SetAnimationsEntry()
+                {
+                    if (_dashFinalPoint.x == 0f && _dashFinalPoint.y == 0f)
+                    {
+                        _player.SetAnimationInt(PlayerAnimations.Constants.DASHX_INT, 1);
+                        _player.SetAnimationInt(PlayerAnimations.Constants.DASHY_INT, 0);
+                    }
+                    else
+                    {
+                        _player.SetAnimationInt(PlayerAnimations.Constants.DASHX_INT, (int)_dashFinalPoint.x);
+                        _player.SetAnimationInt(PlayerAnimations.Constants.DASHY_INT, (int)_dashFinalPoint.y);
+                    }
+                }
+
+                private void ResetAnimationVariables()
+                {
+                    _player.SetAnimationInt(PlayerAnimations.Constants.DASHX_INT, 0);
+                    _player.SetAnimationInt(PlayerAnimations.Constants.DASHY_INT, 0);
+                }
+
+                private void FlipYIfDashingDown()
+                {
+                    if (_dashFinalPoint.y < 0f)
+                    {
+                        _flippedY = true;
+                        _player.FlipY();
+                    }
+                }
+
+                private void UnflipIfFlippedY()
+                {
+                    if (_flippedY)
+                    {
+                        _flippedY = false;
+                        _player.FlipY();
+                    }
                 }
             }
         }

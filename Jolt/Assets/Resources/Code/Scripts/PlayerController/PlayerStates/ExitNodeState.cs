@@ -22,11 +22,10 @@ namespace Jolt
 
                 public override void Enter()
                 {
-                    //base.Enter();
+                    base.Enter();
 
                     _enterTime = Time.time;
                     _isDashStarted = true;
-                    //Time.fixedDeltaTime = 0.1f * 0.02f; Works but doubles the CPU usage. Use RigidBodies with interpolate instead
                 }
 
                 public override void Exit()
@@ -35,8 +34,8 @@ namespace Jolt
 
                     //_stateMachine.DashingState.LastNode = new Node();
                     _stateMachine.DashingState.ResetAmountOfDashes();
+                    _stateMachine.DashingState.WasInNode = true;
                     //_stateMachine.DashingState.DecreaseAmountOfDashes();
-                    Time.timeScale = 1f;
                 }
 
                 protected override bool StateChangeCheck()
@@ -49,12 +48,14 @@ namespace Jolt
                     }
 
                     _currentTime = Time.time;
-                    _isDashStarted = _player.InputManager.DashBegin && (_currentTime - _enterTime < _playerData.PreDashTimeOut);
+                    _isDashStarted = _player.InputManager.DashBegin && (_currentTime - _enterTime < 0);
 
                     //Cant be Cancelled, go to dashing when stopped pressing or after timeout
                     if (!_isDashStarted)
                     {
-                        // transition to dashing
+                        float moveInputX = _player.InputManager.MovementVector.x;
+                        _player.CheckIfShouldFlip(moveInputX);
+
                         _stateMachine.ScheduleStateChange(_stateMachine.DashingState);
                         return false;
                     }

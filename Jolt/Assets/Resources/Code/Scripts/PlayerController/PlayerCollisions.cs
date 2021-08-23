@@ -110,11 +110,6 @@ namespace Jolt
                 {
                     IsTouchingNode = true;
                     NodeInfo = collision;
-
-                    if (state.ToString() == "DashingState")
-                    {
-                        
-                    }
                 }
             }
 

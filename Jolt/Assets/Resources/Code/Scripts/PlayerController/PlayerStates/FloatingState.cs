@@ -26,6 +26,7 @@ namespace Jolt
                     base.Enter();
 
                     _player.SetGravityScale(_playerData.FloatGravity);
+                    _player.WallFlipped = false;
                 }
 
                 public override void Exit()
@@ -54,6 +55,7 @@ namespace Jolt
 
                     if (_isTouchingWall)
                     {
+                        _player.ResetJumpInputTimer();
                         _stateMachine.WallSlideFloatingState.SetGravityScale(_playerData.FloatingGravityScaleIntoWall);
                         _stateMachine.ScheduleStateChange(_stateMachine.WallSlideFloatingState);
                         return false;

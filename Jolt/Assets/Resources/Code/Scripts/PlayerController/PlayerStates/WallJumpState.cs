@@ -96,13 +96,12 @@ namespace Jolt
 
                 private void WallJump()
                 {
-                    float speed = _playerData.WallJumpForceHorizontal;
-                    float horizontalForce = 1;
-                    float verticalForce = horizontalForce * _playerData.WallJumpForceVerticalRatioWithHorizontal;
+                    float horizontalForce = _playerData.WallJumpForceHorizontal;
+                    float verticalForce = _playerData.WallJumpForceVertical;
 
                     Vector2 impulseDirection = new Vector2(horizontalForce, verticalForce);
                     Vector2 side = new Vector2(JumpDirection.x, Mathf.Abs(JumpDirection.x));
-                    impulseDirection = impulseDirection * side * speed;
+                    impulseDirection = impulseDirection * side;
 
                     _player.Velocity = impulseDirection;
 

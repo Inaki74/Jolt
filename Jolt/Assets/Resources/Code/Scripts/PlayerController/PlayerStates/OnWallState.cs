@@ -16,6 +16,8 @@ namespace Jolt
                 public override bool Flippable => false;
 
                 protected bool _enteredTouchingRightWall;
+                protected bool _isTouchingWallLeft;
+                protected bool _isTouchingWallRight;
 
                 public OnWallState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -26,10 +28,25 @@ namespace Jolt
                     base.Enter();
                     //_player.SetRigidbodyVelocityX(0f);
 
+                    //_player.ResetJumpInputTimer();
+
+                    _isTouchingWallLeft = _player.CheckIsTouchingWallLeft();
+                    _isTouchingWallRight = _player.CheckIsTouchingWallRight();
+
+                    if (_isTouchingWallLeft)
+                    {
+                        _player.FlipRight();
+                    }
+
+                    if (_isTouchingWallRight)
+                    {
+                        _player.FlipLeft();
+                    }
+
                     if (!_player.WallFlipped)
                     {
-                        _player.Flip();
-                        _player.WallFlipped = true;
+                        //_player.Flip();
+                        //_player.WallFlipped = true;
                     }
                 }
 
@@ -39,9 +56,8 @@ namespace Jolt
 
                     if (_player.WallFlipped && _stateMachine.NextState.Flippable)
                     {
-                        Debug.Log("AA");
-                        _player.Flip();
-                        _player.WallFlipped = false;
+                        //_player.Flip();
+                        //_player.WallFlipped = false;
                     }
                 }
 
@@ -59,12 +75,6 @@ namespace Jolt
                     _isTouchingWallRight = _player.CheckIsTouchingWallRight();
                     bool isTouchingWall = _isTouchingWallLeft || _isTouchingWallRight;
 
-                    if (_jumpPressed)
-                    {
-                        _stateMachine.ScheduleStateChange(_stateMachine.WallJumpState);
-                        return false;
-                    }
-
                     if (_isTouchingWallLeft)
                     {
                         _stateMachine.WallJumpState.JumpDirection = Vector2.right;
@@ -73,6 +83,12 @@ namespace Jolt
                     if (_isTouchingWallRight)
                     {
                         _stateMachine.WallJumpState.JumpDirection = Vector2.left;
+                    }
+
+                    if (_jumpPressed)
+                    {
+                        _stateMachine.ScheduleStateChange(_stateMachine.WallJumpState);
+                        return false;
                     }
 
                     if (!isTouchingWall)

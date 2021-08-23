@@ -72,7 +72,7 @@ namespace Jolt
 
                     if (isTouchingWall)
                     {
-                        if((_isTouchingWallLeft && isMovingLeft) ||
+                        if ((_isTouchingWallLeft && isMovingLeft) ||
                             (_isTouchingWallRight && isMovingRight))
                         {
                             _stateMachine.ScheduleStateChange(_stateMachine.WallSlideState);
@@ -132,7 +132,7 @@ namespace Jolt
                         }
 
                         Vector2 newScale = new Vector2(_freefallDeformedScaleX, 1f);
-                        _player.SetScale(newScale);
+                        //_player.SetScale(newScale);
 
                         _player.SetGravityScale(_playerData.FreeFallGravity);
                     }

@@ -60,11 +60,8 @@ namespace Jolt
             [SerializeField]
             private Transform _groundCheckTwo;
 
-            [SerializeField]
-            private Transform _wallCheckOne;
-
-            [SerializeField]
-            private Transform _wallCheckTwo;
+            [SerializeField] private Transform[] _leftWallChecks;
+            [SerializeField] private Transform[] _rightWallChecks;
 
             private Vector3 _dashStart;
             private Vector3 _dashFinish;
@@ -76,6 +73,7 @@ namespace Jolt
 
             private bool _wallFlipped = false;
 
+            public bool IsFacingRight { get => _isFacingRight; set => _isFacingRight = value; }
             public bool WallFlipped { get => _wallFlipped; set => _wallFlipped = value; }
             public bool IsDead { get; set; } = false;
 
@@ -85,6 +83,8 @@ namespace Jolt
 
             private void Start()
             {
+                //Application.targetFrameRate = 10;
+
                 GetComponents();
                 SetRigidbody();
                 StateMachine.Initialize();
@@ -110,30 +110,12 @@ namespace Jolt
 
                 StateMachine = new PlayerStateMachine(this, _playerData);
                 _playerArrowRendering = new PlayerArrowRendering(GetComponent<LineRenderer>());
-
-                //DashCollider.enabled = false;
             }
 
             private void SetRigidbody()
             {
                 _gravityScale = _playerData.PlayerPhysicsData.StandardGravity;
                 _maxFallSpeed = _playerData.PlayerPhysicsData.StandardMaxFallSpeed;
-                //Rb.drag = _playerData.PlayerPhysicsData.StandardLinearDrag;
-            }
-
-            private void OnDrawGizmos()
-            {
-                //Vector2 center = new Vector2(1f, 0);
-                //float radius = 4;
-
-                //float x, y;
-                //for (int i = 0; i <= 50; i += 1)
-                //{
-                //    x = radius * Mathf.Cos(Mathf.Rad2Deg * i) + center.x;
-                //    y = radius * Mathf.Sin(Mathf.Rad2Deg * i) + center.y;
-
-                //    Gizmos.DrawSphere(new Vector2(x, y), 0.1f);
-                //}
             }
             #endregion
 
@@ -175,6 +157,11 @@ namespace Jolt
 
             public void SetDashVectors(Vector3 startPos, Vector3 finalPos)
             {
+                if(finalPos == Vector3.zero)
+                {
+                    finalPos = _isFacingRight ? Vector3.right : Vector3.left;
+                }
+
                 Vector3 direction = (finalPos - startPos).normalized;
 
                 _dashStart = transform.position;
@@ -254,12 +241,26 @@ namespace Jolt
 
             public bool CheckIsTouchingWallLeft()
             {
-                return Physics2D.OverlapCircle(_wallCheckTwo.position, _playerData.CheckWallRadius, _playerData.WhatIsGround);
+                bool isTouchingWall = false;
+
+                foreach(Transform wallCheck in _leftWallChecks)
+                {
+                    isTouchingWall = isTouchingWall || Physics2D.OverlapCircle(wallCheck.position, _playerData.CheckWallRadius, _playerData.WhatIsGround);
+                }
+
+                return isTouchingWall;
             }
 
             public bool CheckIsTouchingWallRight()
             {
-                return Physics2D.OverlapCircle(_wallCheckOne.position, _playerData.CheckWallRadius, _playerData.WhatIsGround);
+                bool isTouchingWall = false;
+
+                foreach (Transform wallCheck in _rightWallChecks)
+                {
+                    isTouchingWall = isTouchingWall || Physics2D.OverlapCircle(wallCheck.position, _playerData.CheckWallRadius, _playerData.WhatIsGround);
+                }
+
+                return isTouchingWall;
             }
 
             public bool CheckIsTouchingNode()
@@ -325,6 +326,22 @@ namespace Jolt
                 }
             }
 
+            public void FlipRight()
+            {
+                if (!_isFacingRight)
+                {
+                    Flip();
+                }
+            }
+
+            public void FlipLeft()
+            {
+                if (_isFacingRight)
+                {
+                    Flip();
+                }
+            }
+
             public void SetAnimationBool(string name, bool value)
             {
                 _playerAnimations.SetAnimationBool(name, value);
@@ -338,8 +355,6 @@ namespace Jolt
             public void Flip()
             {
                 _isFacingRight = !_isFacingRight;
-                Vector2 flippedScale = new Vector2(-transform.localScale.x, transform.localScale.y);
-                // transform.localScale = flippedScale;
                 _playerAnimations.Flip();
             }
 
@@ -351,6 +366,16 @@ namespace Jolt
             public void SetAnimationInt(string name, int value)
             {
                 _playerAnimations.SetAnimationInt(name, value);
+            }
+
+            public void ActivateInput(bool set)
+            {
+                InputManager.Disabled = set;
+            }
+
+            public void ResetJumpInputTimer()
+            {
+                InputManager.ResetJumpTimer();
             }
         }
 

@@ -6,6 +6,7 @@ namespace Jolt
 {
     namespace PlayerController
     {
+        using System;
         using PlayerInput;
 
         public enum ControlSchemeAux
@@ -17,6 +18,9 @@ namespace Jolt
 
         public class PlayerInputManager : MonoBehaviour, IPlayerInputManager
         {
+            private const int DASH_BUFFER_AMOUNT = 2;
+            private const float JUMP_TIMEOUT_TIME = 0.1f;
+
             [SerializeField]
             private ControlSchemeAux _controlScheme;
 
@@ -25,9 +29,9 @@ namespace Jolt
             private Vector2 _movementVector;
             public Vector2 MovementVector { get => _movementVector; set => _movementVector = value; }
 
-            private const int _dashBufferAmount = 2;
+            
             private bool _dashBegin;
-            private Queue<bool> _dashQueue = new Queue<bool>(_dashBufferAmount);
+            private Queue<bool> _dashQueue = new Queue<bool>(DASH_BUFFER_AMOUNT);
             public bool DashBegin
             {
                 get
@@ -47,15 +51,19 @@ namespace Jolt
             private Vector3 _finalDashPoint;
             public Vector3 FinalDashPoint { get => _finalDashPoint; set => _finalDashPoint = value; }
 
+            private float _jumpPressedTimeout = 0f;
             private bool _jumpPressed;
-            public bool JumpPressed { get => _jumpPressed; set => _jumpPressed = value; }
+            //public bool JumpPressed { get => _jumpPressed; set => _jumpPressed = value; }
+            public bool JumpPressed { get => _jumpPressedTimeout < JUMP_TIMEOUT_TIME; set => _jumpPressed = value; }
 
             private bool _jumpHeld;
             public bool JumpHeld { get => _jumpHeld; set => _jumpHeld = value; }
+            public bool Disabled { get; set; }
 
             private void Start()
             {
                 DecideControlScheme();
+                _jumpPressedTimeout = JUMP_TIMEOUT_TIME;
             }
 
             private void DecideControlScheme()
@@ -97,17 +105,64 @@ namespace Jolt
 
             private void Update()
             {
+                if (Disabled)
+                {
+                    _dashBegin = false;
+                    _jumpPressed = false;
+                    _jumpHeld = false;
+                    _finalDashPoint = Vector3.zero;
+                    _movementVector = Vector2.zero;
+                    _dashQueue.Clear();
+                    return;
+                }
+
+                CheckForChangeOfController();
+
                 _playerInputController.ManageMovement(ref _movementVector);
 
                 _playerInputController.ManageDash(ref _dashBegin, ref _finalDashPoint);
 
-                if (_dashBegin && _dashQueue.Count < _dashBufferAmount)
+                _playerInputController.ManageJump(ref _jumpPressed, ref _jumpHeld);
+
+                if (_dashBegin && _dashQueue.Count < DASH_BUFFER_AMOUNT)
                 {
                     _dashQueue.Enqueue(_dashBegin);
                 }
-                
 
-                _playerInputController.ManageJump(ref _jumpPressed, ref _jumpHeld);
+                ManageJumpInput();
+            }
+
+            private void CheckForChangeOfController()
+            {
+                if (Input.GetAxisRaw(InputStringNames.JOYSTICK_HORIZONTAL_NAME) != 0f && _controlScheme != ControlSchemeAux.CONTROLLER)
+                {
+                    _controlScheme = ControlSchemeAux.CONTROLLER;
+                    _playerInputController.SetInputController(new JoystickInputController());
+                }
+
+                if (Input.GetAxisRaw(InputStringNames.KEYBOARD_HORIZONTAL_NAME) != 0f && _controlScheme != ControlSchemeAux.KEYBOARD)
+                {
+                    _controlScheme = ControlSchemeAux.KEYBOARD;
+                    _playerInputController.SetInputController(new KeyboardInputController());
+                }
+            }
+
+            private void ManageJumpInput()
+            {
+                if (_jumpPressed)
+                {
+                    _jumpPressedTimeout = 0f;
+                }
+
+                if (_jumpPressedTimeout < JUMP_TIMEOUT_TIME)
+                {
+                    _jumpPressedTimeout += Time.deltaTime;
+                }
+            }
+
+            public void ResetJumpTimer()
+            {
+                _jumpPressedTimeout = JUMP_TIMEOUT_TIME;
             }
         }
     }

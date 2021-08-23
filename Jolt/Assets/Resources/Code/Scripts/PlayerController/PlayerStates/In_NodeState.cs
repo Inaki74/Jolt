@@ -10,8 +10,13 @@ namespace Jolt
         {
             public class In_NodeState : ConductorState
             {
+                private const float MAX_DASH_TIMEOUT = 0.1f;
+
                 protected override Color AssociatedColor => Color.clear;
                 private bool _isStartingDash;
+                private Vector3 _finalDashInput;
+
+                private float _dashPressedTimeout = MAX_DASH_TIMEOUT;
 
                 public In_NodeState(IPlayerStateMachine stateMachine, IPlayer player, IPlayerData playerData) : base(stateMachine, player, playerData)
                 {
@@ -24,13 +29,15 @@ namespace Jolt
                     _stateMachine.DashingState.LastNode = _player.GetNodeInfo().GetComponent<Node>();
 
                     _player.Sr.color = AssociatedColor;
+                    _dashPressedTimeout = MAX_DASH_TIMEOUT;
                 }
 
                 public override void Exit()
                 {
-                    //base.Exit();
+                    base.Exit();
 
                     _player.Sr.color = Color.white;
+                    _dashPressedTimeout = MAX_DASH_TIMEOUT;
                 }
 
                 protected override bool StateChangeCheck()
@@ -43,11 +50,23 @@ namespace Jolt
                     }
 
                     _isStartingDash = _player.InputManager.DashBegin;
+                    _finalDashInput = _player.InputManager.FinalDashPoint;
+                    bool startedDashRecently = _dashPressedTimeout < MAX_DASH_TIMEOUT;
 
-                    if (_isStartingDash)
+                    if ((_isStartingDash || startedDashRecently) && _finalDashInput != Vector3.zero)
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.ExitNodeState);
                         return false;
+                    }
+
+                    if (_isStartingDash)
+                    {
+                        _dashPressedTimeout = 0f;
+                    }
+
+                    if(startedDashRecently)
+                    {
+                        _dashPressedTimeout += Time.deltaTime;
                     }
 
                     return true;

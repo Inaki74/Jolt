@@ -24,6 +24,7 @@ namespace Jolt
                 {
                     base.Enter();
                     _player.Velocity = new Vector2(0f, _player.Velocity.y);
+                    _player.WallFlipped = false;
                     //_player.SetRigidbodyVelocityX(0f);
                 }
 

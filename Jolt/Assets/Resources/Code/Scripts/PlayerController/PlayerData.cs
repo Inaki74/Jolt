@@ -67,7 +67,7 @@ namespace Jolt
             [SerializeField] private float _wallJumpDuration;
             [SerializeField] private float _wallJumpGravity;
             [SerializeField] private float _wallJumpForceHorizontal;
-            [SerializeField] private float _wallJumpForceVerticalRatioWithHorizontal;
+            [SerializeField] private float _wallJumpForceVertical;
             [SerializeField] private float _wallJumpCoyoteTiming;
 
             public IPlayerPhysicsData PlayerPhysicsData { get { return _playerPhysicsData;  } }
@@ -126,7 +126,7 @@ namespace Jolt
 
             public float WallJumpForceHorizontal { get { return _wallJumpForceHorizontal; } }
 
-            public float WallJumpForceVerticalRatioWithHorizontal { get { return _wallJumpForceVerticalRatioWithHorizontal;  } }
+            public float WallJumpForceVertical { get { return _wallJumpForceVertical;  } }
 
             public float WallJumpCoyoteTiming { get { return _wallJumpCoyoteTiming; } }
 
