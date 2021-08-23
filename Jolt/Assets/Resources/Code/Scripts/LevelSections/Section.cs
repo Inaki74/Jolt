@@ -8,7 +8,7 @@ namespace Jolt
     {
         public class Section : MonoBehaviour, ISection
         {
-            private const float CELLS_UNIT_RATIO = 2f / 3f;
+            public const float CELLS_UNIT_RATIO = 2f / 3f;
 
             [SerializeField] private string _id;
             [SerializeField] private List<ISectionTransitionController> _sectionTransitionControllers = new List<ISectionTransitionController>();
@@ -83,7 +83,7 @@ namespace Jolt
                     _gizmosWidth = TransformWidthToFloatValue(_cellsWidth);
                 }
 
-                Vector3 center = new Vector3(transform.position.x, transform.position.y - CELLS_UNIT_RATIO / 2, 0f);
+                Vector3 center = new Vector3(transform.position.x - (_cellsWidth % 2 == 0 ? 0 : 1) * CELLS_UNIT_RATIO / 2, transform.position.y - (_cellsHeight % 2 == 0 ? 0 : 1) * CELLS_UNIT_RATIO / 2, 0f);
                 Vector3 size = new Vector3(_gizmosWidth, _gizmosHeight, 0f);
 
                 Gizmos.color = Color.green;
