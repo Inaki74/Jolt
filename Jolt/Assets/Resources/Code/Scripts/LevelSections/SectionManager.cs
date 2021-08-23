@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace Jolt
 {
@@ -25,7 +26,13 @@ namespace Jolt
                   Can even lower the games volume while transitioning or things like that.
                  */
 
-                throw new System.NotImplementedException();
+                ISection fromSection = _sections.First(s => s.ID == fromId);
+                ISection toSection = _sections.First(s => s.ID == toId);
+
+                toSection.Enter();
+                fromSection.Exit();
+
+                SectionCameraAdjuster.Current.Transition(toSection);
             }
 
             // Start is called before the first frame update
@@ -47,6 +54,11 @@ namespace Jolt
                 {
                     _sections.Add(section);
                 }
+            }
+
+            private void GetSectionWithId()
+            {
+
             }
         }
     }

@@ -6,7 +6,7 @@ namespace Jolt
 {
     namespace LevelSections
     {
-        public class SectionCameraAdjuster : MonoBehaviour, ISectionCameraAdjuster
+        public class SectionCameraAdjuster : MonoSingleton<SectionCameraAdjuster>, ISectionCameraAdjuster
         {
             public void Transition(ISection sectionToTransition)
             {
