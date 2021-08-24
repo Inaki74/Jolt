@@ -11,7 +11,7 @@ namespace Jolt
             public void Transition(ISection sectionToTransition)
             {
                 // Transitions camera to new section
-
+                
                 throw new System.NotImplementedException();
             }
 
