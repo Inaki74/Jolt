@@ -7,7 +7,7 @@ namespace Jolt
         {
             //CinemachineVirtualCamera CinemachineCamera { get; set; }
 
-            void Transition(ISection sectionToTransition);
+            void Transition(ISection sectionToTransition, ISection sectionTransitionedFrom);
         }
     }
 }

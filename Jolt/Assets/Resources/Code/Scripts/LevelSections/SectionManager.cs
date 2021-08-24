@@ -29,16 +29,20 @@ namespace Jolt
                 ISection fromSection = _sections.First(s => s.ID == fromId);
                 ISection toSection = _sections.First(s => s.ID == toId);
 
+                CurrentSection = fromSection;
+
                 toSection.Enter();
                 fromSection.Exit();
 
-                SectionCameraAdjuster.Current.Transition(toSection);
+                //SectionCameraAdjuster.Current.Transition(toSection, fromSection);
             }
 
             // Start is called before the first frame update
             void Start()
             {
                 GetSections();
+                CurrentSection = Sections[0];
+                CurrentSection.Enter();
             }
 
             public override void Init()
@@ -54,11 +58,6 @@ namespace Jolt
                 {
                     _sections.Add(section);
                 }
-            }
-
-            private void GetSectionWithId()
-            {
-
             }
         }
     }
