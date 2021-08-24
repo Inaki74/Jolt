@@ -74,7 +74,7 @@ namespace Jolt
 
             private void GetTransitionControllers()
             {
-                foreach(ISectionTransitionController controller in _gameObjectPlacersContainer.GetComponentsInChildren<ISectionTransitionController>())
+                foreach(ISectionTransitionController controller in _sectionTransitionControllersContainer.GetComponentsInChildren<ISectionTransitionController>())
                 {
                     _sectionTransitionControllers.Add(controller);
                 }
