@@ -25,6 +25,7 @@ namespace Jolt
             [SerializeField]
             private SpriteRenderer _sr;
 
+            public IPlayerRespawn PlayerRespawn { get; private set; }
             public IPlayerStateMachine StateMachine { get; private set; }
             public IPlayerInputManager InputManager { get; private set; }
             public IPlayerController PlayerController { get; private set; }
@@ -102,6 +103,7 @@ namespace Jolt
 
             private void GetComponents()
             {
+                PlayerRespawn = GetComponent<PlayerRespawn>();
                 PlayerController = GetComponent<PlayerController>();
                 Bc = GetComponent<BoxCollider2D>();
                 DashCollider = GetComponent<CircleCollider2D>();
@@ -306,7 +308,7 @@ namespace Jolt
                 // Instantiate particles
                 // Move player to last _checkpoint (but here we will have only one _checkpoint, so skip)
                 //transform.position = _checkpoint;
-                transform.position = _playerData.LastCheckpoint;
+                PlayerRespawn.RespawnPlayer();
                 // Reset objects (but here they are immutable so skip)
             }
 

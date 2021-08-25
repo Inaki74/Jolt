@@ -14,9 +14,12 @@ namespace Jolt
 
             [SerializeField] private string _from;
             [SerializeField] private string _to;
+            [SerializeField] private Transform _respawnTransform;
 
             public override string FromID { get => _from; }
             public override string ToID { get => _to; }
+
+            public override Transform RespawnTransform => _respawnTransform;
 
             protected override bool DetectPlayer()
             {
