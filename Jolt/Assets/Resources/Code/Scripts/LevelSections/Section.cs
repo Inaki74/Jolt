@@ -26,6 +26,9 @@ namespace Jolt
             [SerializeField] private int _cellsHeight;
             [SerializeField] private int _cellsWidth;
 
+            public int CellsHeight { get => _cellsHeight; }
+            public int CellsWidth { get => _cellsWidth; }
+
             public string ID { get => _id; }
             public CinemachineVirtualCamera Camera { get => _camera; }
             public List<ISectionTransitionController> SectionTransitioners { get => _sectionTransitionControllers; }
@@ -110,31 +113,10 @@ namespace Jolt
                 _sectionBoundaries.SetPath(0, path);
             }
 
-            private float TransformHeightToFloatValue(int cells) => cells * CELLS_UNIT_RATIO;
+            public float TransformHeightToFloatValue(int cells) => cells * CELLS_UNIT_RATIO;
 
-            private float TransformWidthToFloatValue(int cells) => cells * CELLS_UNIT_RATIO;
+            public float TransformWidthToFloatValue(int cells) => cells * CELLS_UNIT_RATIO;
 
-            // Gizmos
-            private float _gizmosHeight;
-            private float _gizmosWidth;
-            [SerializeField] private bool _resetHeightAndWidth = false;
-
-            private void OnDrawGizmos()
-            {
-                if (!_resetHeightAndWidth)
-                {
-                    _resetHeightAndWidth = true;
-
-                    _gizmosHeight = TransformHeightToFloatValue(_cellsHeight);
-                    _gizmosWidth = TransformWidthToFloatValue(_cellsWidth);
-                }
-
-                Vector3 center = new Vector3(transform.position.x - (_cellsWidth % 2 == 0 ? 0 : 1) * CELLS_UNIT_RATIO / 2, transform.position.y - (_cellsHeight % 2 == 0 ? 0 : 1) * CELLS_UNIT_RATIO / 2, 0f);
-                Vector3 size = new Vector3(_gizmosWidth, _gizmosHeight, 0f);
-
-                Gizmos.color = Color.green;
-                Gizmos.DrawWireCube(center, size);
-            }
         }
     }
 }

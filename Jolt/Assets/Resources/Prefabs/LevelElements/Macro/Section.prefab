@@ -114,7 +114,7 @@ MonoBehaviour:
   m_BoundingVolume: {fileID: 0}
   m_BoundingShape2D: {fileID: 7275855849802134108}
   m_ConfineScreenEdges: 1
-  m_Damping: 0.1
+  m_Damping: 0
 --- !u!1 &3044300265248727404
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,6 +127,7 @@ GameObject:
   - component: {fileID: -8534757753824218899}
   - component: {fileID: 1483586630464327057}
   - component: {fileID: 7275855849802134108}
+  - component: {fileID: 3087183430597189595}
   m_Layer: 0
   m_Name: Section
   m_TagString: Untagged
@@ -184,7 +185,6 @@ MonoBehaviour:
   _gameObjectPlacersContainer: {fileID: 7477832358994164}
   _cellsHeight: 9
   _cellsWidth: 16
-  _resetHeightAndWidth: 1
 --- !u!60 &7275855849802134108
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -214,6 +214,19 @@ PolygonCollider2D:
       - {x: 1, y: 1}
       - {x: 1, y: -1}
       - {x: -1, y: -1}
+--- !u!114 &3087183430597189595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3044300265248727404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b107866d397241e0bbd5aed8cdddb91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mySection: {fileID: 1483586630464327057}
 --- !u!1 &3575380183564385069
 GameObject:
   m_ObjectHideFlags: 0
