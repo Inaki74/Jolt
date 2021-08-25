@@ -84,7 +84,7 @@ namespace Jolt
 
                         if (rayHitRightToLeft)
                         {
-                            Debug.DrawRay(startPositionLeft, Vector2.left * rayHitRightToLeft.distance, Color.green, 3f);
+                            Debug.DrawRay(startPositionLeft, Vector2.left * rayHitRightToLeft.distance, Color.green);
                             transform.Translate(-rayHitRightToLeft.distance + _skinWidth, 0f, 0f);
                             break;
                         }
@@ -98,7 +98,7 @@ namespace Jolt
 
                         if (rayHitLeftToRight)
                         {
-                            Debug.DrawRay(startPositionLeft, Vector2.right * rayHitLeftToRight.distance, Color.green, 3f);
+                            Debug.DrawRay(startPositionLeft, Vector2.right * rayHitLeftToRight.distance, Color.green);
                             transform.Translate(rayHitLeftToRight.distance + _skinWidth, 0f, 0f);
                             break;
                         }
@@ -117,7 +117,7 @@ namespace Jolt
                         if (rayHitUpToDown)
                         {
                             //
-                            Debug.DrawRay(startPositionTop, Vector2.down * rayHitUpToDown.distance, Color.green, 3f);
+                            Debug.DrawRay(startPositionTop, Vector2.down * rayHitUpToDown.distance, Color.green);
                             transform.Translate(0f, -rayHitUpToDown.distance + _skinWidth, 0f);
                             break;
                         }
@@ -131,7 +131,7 @@ namespace Jolt
 
                         if (rayHitDownToUp)
                         {
-                            Debug.DrawRay(startPositionBottom, Vector2.up * rayHitDownToUp.distance, Color.green, 3f);
+                            Debug.DrawRay(startPositionBottom, Vector2.up * rayHitDownToUp.distance, Color.green);
                             transform.Translate(0f, rayHitDownToUp.distance + _skinWidth, 0f);
                             break;
                         }

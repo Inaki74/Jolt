@@ -70,6 +70,7 @@ namespace Jolt
 
                 public virtual void PhysicsUpdate()
                 {
+                    //_player.Move(_player.Velocity);
                 }
             }
         }

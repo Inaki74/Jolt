@@ -102,7 +102,7 @@ namespace Jolt
                         return false;
                     }
 
-                    if (isTouchingWall && _dashFinalPoint.x != 0f && (onLeftWallAndMovingTowardsIt || onRightWallAndMovingTowardsIt))
+                    if (isTouchingWall && _dashFinalPoint.x == 0f && (onLeftWallAndMovingTowardsIt || onRightWallAndMovingTowardsIt))
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.WallSlideState);
                         return false;
