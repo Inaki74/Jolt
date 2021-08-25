@@ -17,6 +17,12 @@ namespace Jolt
             [SerializeField] private LayerMask _whatIsGround;
 
             private RaycastPositions _raycastPositions;
+
+            private Vector2[] _topRaycastPositions;
+            private Vector2[] _rightRaycastPositions;
+            private Vector2[] _bottomRaycastPositions;
+            private Vector2[] _leftRaycastPositions;
+
             [SerializeField] private int _horizontalRayCount;
             [SerializeField] private int _verticalRayCount;
             private float _horizontalRaySpacing;
@@ -49,6 +55,25 @@ namespace Jolt
                 _raycastPositions.bottomRight = new Vector2(colliderBounds.max.x, colliderBounds.min.y);
                 _raycastPositions.bottomLeft = new Vector2(colliderBounds.min.x, colliderBounds.min.y);
                 _raycastPositions.center = colliderBounds.center;
+
+                CalculateRaySpacing();
+
+                SetRaycastPositionsArray(ref _topRaycastPositions, _horizontalRayCount, _raycastPositions.topLeft, Vector2.right, _horizontalRaySpacing);
+                SetRaycastPositionsArray(ref _bottomRaycastPositions, _horizontalRayCount, _raycastPositions.bottomLeft, Vector2.right, _horizontalRaySpacing);
+                SetRaycastPositionsArray(ref _rightRaycastPositions, _verticalRayCount, _raycastPositions.bottomRight, Vector2.up, _verticalRaySpacing);
+                SetRaycastPositionsArray(ref _leftRaycastPositions, _verticalRayCount, _raycastPositions.bottomLeft, Vector2.up, _verticalRaySpacing);
+            }
+
+            private void SetRaycastPositionsArray(ref Vector2[] array, int count, Vector2 startPosition, Vector2 direction,  float spacing)
+            {
+                array = new Vector2[count];
+
+                array[0] = startPosition;
+                // Top left -> top right
+                for (int i = 1; i < count; i++)
+                {
+                    array[i] = startPosition + i * direction * spacing;
+                }
             }
 
             private void CalculateRaySpacing()
@@ -66,7 +91,6 @@ namespace Jolt
             private void CheckIfInsideCollider()
             {
                 SetRaycastPositions();
-                CalculateRaySpacing();
 
                 Vector2 startPositionLeft = _raycastPositions.bottomLeft;
                 Vector2 startPositionTop = _raycastPositions.topLeft;
@@ -133,50 +157,77 @@ namespace Jolt
 
             public void Move(Vector2 direction)
             {
-                MoveX(Mathf.Sign(direction.x), Mathf.Abs(direction.x));
-                MoveY(Mathf.Sign(direction.y), Mathf.Abs(direction.y));
-            }
+                Vector2 finalTranslation = new Vector2(direction.x * Time.deltaTime, direction.y * Time.deltaTime);
 
-            public void MoveX(float direction, float speed)
-            {
                 SetRaycastPositions();
 
-                CalculateRaySpacing();
+                finalTranslation = FindFinalTranslation(finalTranslation);
 
-                float hitDistance = CheckHorizontalCollisions(direction * speed * Time.deltaTime);
-
-                float moveDistance;
-                if(hitDistance == 0f)
-                {
-                    moveDistance = speed * Time.deltaTime;
-                }
-                else
-                {
-                    moveDistance = (hitDistance - _skinWidth);
-                }
-
-                transform.Translate(direction * moveDistance, 0f, 0f);
+                transform.Translate(finalTranslation);
             }
 
-            public void MoveY(float direction, float speed)
+
+            private Vector2 FindFinalTranslation(Vector2 translation)
             {
-                SetRaycastPositions();
+                // Find all collisions
+                Vector2[] collisions = GetCollisions(translation);
+                Vector2 smallest = translation;
 
-                CalculateRaySpacing();
-
-                float hitDistance = CheckVerticalCollisions(direction * speed * Time.deltaTime);
-
-                float moveDistance;
-                if (hitDistance == 0f)
+                foreach(Vector2 collision in collisions)
                 {
-                    moveDistance = speed * Time.deltaTime;
-                }
-                else
-                {
-                    moveDistance = (hitDistance - _skinWidth);
+                    if(collision.magnitude < smallest.magnitude)
+                    {
+                        smallest = collision;
+                    }
                 }
 
-                transform.Translate(0f, direction * moveDistance, 0f);
+                return smallest;
+            }
+
+            private Vector2[] GetCollisions(Vector2 translation)
+            {
+                List<Vector2> collisions = new List<Vector2>();
+
+                if(translation.x > 0f)
+                {
+                    CheckCollisions(ref collisions, _rightRaycastPositions, translation);
+                }
+                else if (translation.x < 0f)
+                {
+                    CheckCollisions(ref collisions, _leftRaycastPositions, translation);
+                }
+
+                if(translation.y > 0f)
+                {
+                    CheckCollisions(ref collisions, _topRaycastPositions, translation);
+                }
+                else if (translation.y < 0f)
+                {
+                    CheckCollisions(ref collisions, _bottomRaycastPositions, translation);
+                }
+
+                return collisions.ToArray();
+            }
+
+            private void CheckCollisions(ref List<Vector2> addVectorsHere, Vector2[] raycastPositions, Vector2 translation)
+            {
+                Vector2 normalizedTranslation = translation.normalized;
+
+                foreach (Vector2 position in raycastPositions)
+                {
+                    RaycastHit2D rayHit = Physics2D.Raycast(position, normalizedTranslation, translation.magnitude, _whatIsGround);
+
+                    if (rayHit)
+                    {
+                        Debug.DrawRay(position, normalizedTranslation * rayHit.distance, Color.green);
+                        addVectorsHere.Add(normalizedTranslation * rayHit.distance);
+                    }
+                    else
+                    {
+                        Debug.DrawRay(position, translation, Color.blue);
+                        addVectorsHere.Add(translation);
+                    }
+                }
             }
 
             private float CheckHorizontalCollisions(float distance)

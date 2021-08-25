@@ -136,16 +136,6 @@ namespace Jolt
                 PlayerController.Move(vector);
             }
 
-            public void MoveX(float direction, float velocity)
-            {
-                PlayerController.MoveX(direction, velocity);
-            }
-
-            public void MoveY(float direction, float velocity)
-            {
-                PlayerController.MoveY(direction, velocity);
-            }
-
             public void Dash(float velocity)
             {
                 _auxVector2 = _dashFinish - _auxVector3;
