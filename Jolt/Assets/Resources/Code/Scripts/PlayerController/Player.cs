@@ -83,7 +83,7 @@ namespace Jolt
 
             private void Start()
             {
-                //Application.targetFrameRate = 10;
+                //Application.targetFrameRate = 6;
 
                 GetComponents();
                 SetRigidbody();
