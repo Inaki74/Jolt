@@ -153,7 +153,7 @@ namespace Jolt
                 }
             }
 
-            public void MoveX(float direction, float speed)
+            private void MoveX(float direction, float speed)
             {
                 SetRaycastPositions();
 
@@ -174,7 +174,7 @@ namespace Jolt
                 transform.Translate(direction * moveDistance, 0f, 0f);
             }
 
-            public void MoveY(float direction, float speed)
+            private void MoveY(float direction, float speed)
             {
                 SetRaycastPositions();
 
