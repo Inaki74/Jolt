@@ -42,6 +42,7 @@ namespace Jolt
 
                 public override void Enter()
                 {
+                    //Debug.Break();
                     base.Enter();
 
                     _moveInput = _player.InputManager.MovementVector;

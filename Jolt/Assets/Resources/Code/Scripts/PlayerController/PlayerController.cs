@@ -22,6 +22,8 @@ namespace Jolt
             private float _horizontalRaySpacing;
             private float _verticalRaySpacing;
 
+            private bool _enteredColliderLastFrame;
+
             // Start is called before the first frame update
             void Start()
             {
@@ -63,7 +65,7 @@ namespace Jolt
                 _verticalRaySpacing = colliderBounds.size.y / (_verticalRayCount - 1);
             }
 
-            private void CheckIfInsideCollider(float directionx, float directiony)
+            private bool CheckIfInsideCollider(float directionx, float directiony)
             {
                 SetRaycastPositions();
 
@@ -73,8 +75,8 @@ namespace Jolt
                 Vector2 startPositionTop = _raycastPositions.topLeft;
                 Vector2 startPositionRight = _raycastPositions.bottomRight;
                 Vector2 startPositionBottom = _raycastPositions.bottomLeft;
-                float boundingBoxWidth = Mathf.Abs(_raycastPositions.bottomLeft.x - _raycastPositions.center.x);
-                float boundingBoxHeight = Mathf.Abs(_raycastPositions.topLeft.y - _raycastPositions.center.y);
+                float boundingBoxWidth = Mathf.Abs(_raycastPositions.bottomLeft.x - _raycastPositions.bottomRight.x);
+                float boundingBoxHeight = Mathf.Abs(_raycastPositions.topLeft.y - _raycastPositions.bottomLeft.y);
 
                 for (int i = 0; i < _verticalRayCount; i++)
                 {
@@ -85,8 +87,8 @@ namespace Jolt
                         if (rayHitRightToLeft)
                         {
                             Debug.DrawRay(startPositionLeft, Vector2.left * rayHitRightToLeft.distance, Color.green);
-                            transform.Translate(-rayHitRightToLeft.distance + _skinWidth, 0f, 0f);
-                            break;
+                            transform.Translate(-rayHitRightToLeft.distance - _skinWidth, 0f, 0f);
+                            return true;
                         }
 
                         Debug.DrawRay(startPositionRight, Vector2.left * boundingBoxWidth, Color.cyan);
@@ -100,7 +102,7 @@ namespace Jolt
                         {
                             Debug.DrawRay(startPositionLeft, Vector2.right * rayHitLeftToRight.distance, Color.green);
                             transform.Translate(rayHitLeftToRight.distance + _skinWidth, 0f, 0f);
-                            break;
+                            return true;
                         }
 
                         Debug.DrawRay(startPositionLeft, Vector2.right * boundingBoxWidth, Color.cyan);
@@ -118,8 +120,8 @@ namespace Jolt
                         {
                             //
                             Debug.DrawRay(startPositionTop, Vector2.down * rayHitUpToDown.distance, Color.green);
-                            transform.Translate(0f, -rayHitUpToDown.distance + _skinWidth, 0f);
-                            break;
+                            transform.Translate(0f, -rayHitUpToDown.distance - _skinWidth, 0f);
+                            return true;
                         }
 
                         Debug.DrawRay(startPositionTop, Vector2.down * boundingBoxHeight, Color.cyan);
@@ -133,23 +135,28 @@ namespace Jolt
                         {
                             Debug.DrawRay(startPositionBottom, Vector2.up * rayHitDownToUp.distance, Color.green);
                             transform.Translate(0f, rayHitDownToUp.distance + _skinWidth, 0f);
-                            break;
+                            return true;
                         }
 
                         Debug.DrawRay(startPositionBottom, Vector2.up * boundingBoxHeight, Color.cyan);
                         startPositionBottom += Vector2.right * _horizontalRaySpacing;
                     }
                 }
+
+                return false;
             }
 
             public void Move(Vector2 direction)
             {
                 if(direction != Vector2.zero)
                 {
-                    MoveX(Mathf.Sign(direction.x), Mathf.Abs(direction.x));
-                    MoveY(Mathf.Sign(direction.y), Mathf.Abs(direction.y));
+                    _enteredColliderLastFrame = CheckIfInsideCollider(direction.x, direction.y);
 
-                    CheckIfInsideCollider(direction.x, direction.y);
+                    if (!_enteredColliderLastFrame)
+                    {
+                        MoveX(Mathf.Sign(direction.x), Mathf.Abs(direction.x));
+                        MoveY(Mathf.Sign(direction.y), Mathf.Abs(direction.y));
+                    }
                 }
             }
 

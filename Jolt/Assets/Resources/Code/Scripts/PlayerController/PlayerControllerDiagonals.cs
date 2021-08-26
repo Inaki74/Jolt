@@ -156,20 +156,23 @@ namespace Jolt
 
                         if (Mathf.Abs(normal.x) > 0.05f && Mathf.Abs(normal.y) < 0.05f)
                         {
-                            normalizedTranslation = new Vector2(0f, translation.y);
+                            normalizedTranslation = new Vector2(normalizedTranslation.x * (rayHit.distance - _skinWidth), translation.y);
                             Debug.DrawRay(position, normalizedTranslation, Color.green);
                             addVectorsHere.Add(normalizedTranslation);
+                            continue;
                         }
-                        else if (normal.y < 0f)
+                        else if (Mathf.Abs(normal.y) > 0f)
                         {
-                            normalizedTranslation = new Vector2(translation.x, 0f);
+                            normalizedTranslation = new Vector2(translation.x, normalizedTranslation.y * (rayHit.distance - _skinWidth));
                             Debug.DrawRay(position, normalizedTranslation, Color.green);
                             addVectorsHere.Add(normalizedTranslation);
+                            continue;
                         }
                         else
                         {
                             Debug.DrawRay(position, normalizedTranslation * (rayHit.distance - _skinWidth), Color.green);
                             addVectorsHere.Add(normalizedTranslation * (rayHit.distance - _skinWidth));
+                            continue;
                         }
                     }
                     else

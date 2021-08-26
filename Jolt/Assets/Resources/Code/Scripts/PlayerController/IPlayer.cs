@@ -40,8 +40,6 @@ namespace Jolt.PlayerController
         void SetDashVectors(Vector3 startPos, Vector3 finalPos);
         void Dash(float velocity);
         void Move(Vector2 vector);
-        void MoveX(float direction, float velocity);
-        void MoveY(float direction, float velocity);
         void CheckIfShouldFlip(float direction);
         void FlipRight();
         void FlipLeft();

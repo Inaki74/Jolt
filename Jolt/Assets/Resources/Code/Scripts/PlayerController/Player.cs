@@ -7,7 +7,7 @@ namespace Jolt
 {
     namespace PlayerController
     {
-        [RequireComponent(typeof(PlayerController))]
+        [RequireComponent(typeof(IPlayerController))]
         [RequireComponent(typeof(BoxCollider2D))]
         [RequireComponent(typeof(PlayerInputManager))]
         [RequireComponent(typeof(PlayerCollisions))]
@@ -84,7 +84,7 @@ namespace Jolt
 
             private void Start()
             {
-                //Application.targetFrameRate = 6;
+                //Application.targetFrameRate = 24;
 
                 GetComponents();
                 SetRigidbody();
@@ -104,7 +104,7 @@ namespace Jolt
             private void GetComponents()
             {
                 PlayerRespawn = GetComponent<PlayerRespawn>();
-                PlayerController = GetComponent<PlayerController>();
+                PlayerController = GetComponent<IPlayerController>();
                 Bc = GetComponent<BoxCollider2D>();
                 DashCollider = GetComponent<CircleCollider2D>();
                 InputManager = GetComponent<PlayerInputManager>();
@@ -136,16 +136,6 @@ namespace Jolt
             public void Move(Vector2 vector)
             {
                 PlayerController.Move(vector);
-            }
-
-            public void MoveX(float direction, float velocity)
-            {
-                PlayerController.MoveX(direction, velocity);
-            }
-
-            public void MoveY(float direction, float velocity)
-            {
-                PlayerController.MoveY(direction, velocity);
             }
 
             public void Dash(float velocity)
