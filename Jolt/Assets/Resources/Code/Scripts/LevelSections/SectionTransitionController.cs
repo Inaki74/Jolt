@@ -10,6 +10,7 @@ namespace Jolt
         {
             [SerializeField] private Transform _raycastBeginTransform;
             [SerializeField] private float _raycastDistance;
+            [SerializeField] private Vector2 _raycastDirection;
             [SerializeField] private LayerMask _whatIsPlayer;
 
             [SerializeField] private string _from;
@@ -21,20 +22,28 @@ namespace Jolt
 
             public override Transform RespawnTransform => _respawnTransform;
 
+            private void Start()
+            {
+                if(_raycastDirection == Vector2.zero)
+                {
+                    _raycastDirection = new Vector2(0f, -1f);
+                }
+            }
+
             protected override bool DetectPlayer()
             {
                 // Detect player via raycast.
                 Vector2 raycastBeginPosition = _raycastBeginTransform.position;
 
-                var hit = Physics2D.Raycast(raycastBeginPosition, Vector2.down, _raycastDistance, _whatIsPlayer);
+                var hit = Physics2D.Raycast(raycastBeginPosition, _raycastDirection, _raycastDistance, _whatIsPlayer);
 
                 if (hit)
                 {
-                    Debug.DrawRay(raycastBeginPosition, Vector2.down * hit.distance, Color.red, 2f);
+                    Debug.DrawRay(raycastBeginPosition, _raycastDirection * hit.distance, Color.red, 2f);
                 }
                 else
                 {
-                    Debug.DrawRay(raycastBeginPosition, Vector2.down * _raycastDistance, Color.green);
+                    Debug.DrawRay(raycastBeginPosition, _raycastDirection * _raycastDistance, Color.green);
                 }
 
                 return hit;
