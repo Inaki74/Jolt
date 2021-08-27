@@ -38,7 +38,7 @@ namespace Jolt.PlayerController
         void ResetGravity();
         void SetVelocity(Vector2 velocity);
         void SetDashVectors(Vector3 startPos, Vector3 finalPos);
-        void Dash(float velocity);
+        void Dash(float distance, float velocity);
         void Move(Vector2 vector);
         void CheckIfShouldFlip(float direction);
         void FlipRight();

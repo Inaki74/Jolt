@@ -68,7 +68,7 @@ namespace Jolt
             private Vector3 _dashFinish;
 
             private Vector2 _auxVector2;
-            private Vector3 _auxVector3;
+            private Vector3 _startDashPosition;
 
             private bool _isFacingRight = true;
 
@@ -138,12 +138,20 @@ namespace Jolt
                 PlayerController.Move(vector);
             }
 
-            public void Dash(float velocity)
+            public void Dash(float distance, float velocity)
             {
-                _auxVector2 = _dashFinish - _auxVector3;
-                _dashFinish = _auxVector2;
-                _auxVector2.Set(_dashFinish.normalized.x, _dashFinish.normalized.y);
-                Velocity = _auxVector2 * velocity;
+                Vector3 direction = _dashFinish - _dashStart;
+
+                Debug.Log("Direction: " + direction);
+                Debug.Log("Where to: " + (_dashStart + direction * distance));
+
+                PlayerController.MoveTowards(_dashStart + direction * distance, velocity);
+
+                return;
+                
+                _dashFinish = direction;
+                //direction.Set(_dashFinish.normalized.x, _dashFinish.normalized.y);
+                Velocity = direction * velocity;
                 Velocity = Vector2.ClampMagnitude(Velocity, velocity);
             }
 
@@ -158,8 +166,6 @@ namespace Jolt
 
                 _dashStart = transform.position;
                 _dashFinish = transform.position + direction;
-
-                _auxVector3 = transform.position;
             }
 
             public void SetArrowRendering()

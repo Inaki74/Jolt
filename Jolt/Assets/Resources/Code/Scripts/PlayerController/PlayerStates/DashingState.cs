@@ -49,6 +49,7 @@ namespace Jolt
                     _dashFinalPoint = _player.InputManager.FinalDashPoint;
                     _playOnce = true;
                     _player.SetGravityScale(0f);
+                    _player.Velocity = Vector2.zero;
 
                     DecreaseAmountOfDashes();
 
@@ -151,10 +152,12 @@ namespace Jolt
 
                     if (_playOnce)
                     {
-                        Dash();
+                        PrepareDash();
 
                         _playOnce = false;
                     }
+
+                    _player.Dash(_playerData.DashSpeed * _playerData.DashTimeOut, _playerData.DashSpeed);
                 }
 
                 public override void PhysicsUpdate()
@@ -187,7 +190,7 @@ namespace Jolt
                     _amountOfDashes--;
                 }
 
-                private void Dash()
+                private void PrepareDash()
                 {
                     bool onLeftWallAndMovingTowardsIt = _isTouchingWallLeft && _moveInput.x < 0f;
                     bool onRightWallAndMovingTowardsIt = _isTouchingWallRight && _moveInput.x > 0f;
@@ -213,8 +216,6 @@ namespace Jolt
                     }
 
                     _player.SetDashVectors(_player.InputManager.InitialDashPoint, newFinalDirection);
-
-                    _player.Dash(_playerData.DashSpeed);
                 }
 
                 private bool CheckIsAdmittableToGetIntoNode()

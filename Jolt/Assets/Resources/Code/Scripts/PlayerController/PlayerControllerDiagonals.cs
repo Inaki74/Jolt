@@ -8,7 +8,7 @@ namespace Jolt
     namespace PlayerController
     {
         [RequireComponent(typeof(BoxCollider2D))]
-        public class PlayerControllerDiagonals : MonoBehaviour, IPlayerController
+        public class PlayerControllerDiagonals : MonoBehaviour//, IPlayerController
         {
             private Collider2D _collider;
 

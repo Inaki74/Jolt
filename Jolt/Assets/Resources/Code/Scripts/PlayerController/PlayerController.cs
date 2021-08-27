@@ -160,6 +160,66 @@ namespace Jolt
                 }
             }
 
+            public void MoveTowards(Vector2 destination, float speed)
+            {
+                //Debug.Break();
+                _enteredColliderLastFrame = CheckIfInsideCollider(destination.x, destination.y);
+
+                if (!_enteredColliderLastFrame)
+                {
+                    MoveTowardsX(destination, speed);
+                    MoveTowardsY(destination, speed);
+                }
+            }
+
+            private void MoveTowardsX(Vector2 destination, float speed)
+            {
+                SetRaycastPositions();
+
+                CalculateRaySpacing();
+
+                Vector2 stepTowards = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
+                Vector2 distance = stepTowards - (Vector2)transform.position;
+
+                float hitDistance = CheckHorizontalCollisions(distance.x);
+
+                float moveDistance;
+                if (hitDistance == 0f)
+                {
+                    moveDistance = distance.x;
+                }
+                else
+                {
+                    moveDistance = hitDistance - _skinWidth;
+                }
+
+                transform.Translate(moveDistance, 0f, 0f);
+            }
+
+            private void MoveTowardsY(Vector2 destination, float speed)
+            {
+                SetRaycastPositions();
+
+                CalculateRaySpacing();
+
+                Vector2 stepTowards = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
+                Vector2 distance = stepTowards - (Vector2)transform.position;
+
+                float hitDistance = CheckVerticalCollisions(distance.y);
+
+                float moveDistance;
+                if (hitDistance == 0f)
+                {
+                    moveDistance = distance.y;
+                }
+                else
+                {
+                    moveDistance = (hitDistance - _skinWidth);
+                }
+
+                transform.Translate(0f, moveDistance, 0f);
+            }
+
             private void MoveX(float direction, float speed)
             {
                 SetRaycastPositions();
