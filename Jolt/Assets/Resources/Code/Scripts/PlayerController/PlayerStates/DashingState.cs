@@ -10,6 +10,8 @@ namespace Jolt
         {
             public class DashingState : AliveState, ICanDash
             {
+                private const float DASH_COLLIDER_OFFSET = 0.4f;
+
                 protected override Color AssociatedColor => Color.cyan;
                 protected override string AnimString => PlayerAnimations.Constants.DASH_BOOL;
                 //public override bool Flippable => false;
@@ -66,6 +68,8 @@ namespace Jolt
 
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                     _player.Velocity = Vector2.zero;
+
+                    _player.SetDashColliderOffset(Vector2.zero);
 
                     ResetAnimationVariables();
 
@@ -216,6 +220,11 @@ namespace Jolt
                     }
 
                     _player.SetDashVectors(_player.InputManager.InitialDashPoint, newFinalDirection);
+
+                    float newFinalDirectionDirectionY = newFinalDirection.y == 0f ? 0f : Mathf.Sign(newFinalDirection.y);
+                    float newFinalDirectionDirectionX = newFinalDirection.x == 0f ? 0f : Mathf.Sign(newFinalDirection.x);
+
+                    _player.SetDashColliderOffset(new Vector2(newFinalDirectionDirectionX * DASH_COLLIDER_OFFSET, newFinalDirectionDirectionY * DASH_COLLIDER_OFFSET));
                 }
 
                 private bool CheckIsAdmittableToGetIntoNode()

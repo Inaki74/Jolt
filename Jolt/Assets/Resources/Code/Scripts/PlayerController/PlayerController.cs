@@ -162,7 +162,6 @@ namespace Jolt
 
             public void MoveTowards(Vector2 destination, float speed)
             {
-                //Debug.Break();
                 _enteredColliderLastFrame = CheckIfInsideCollider(destination.x, destination.y);
 
                 if (!_enteredColliderLastFrame)

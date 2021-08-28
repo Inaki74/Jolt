@@ -142,17 +142,7 @@ namespace Jolt
             {
                 Vector3 direction = _dashFinish - _dashStart;
 
-                Debug.Log("Direction: " + direction);
-                Debug.Log("Where to: " + (_dashStart + direction * distance));
-
                 PlayerController.MoveTowards(_dashStart + direction * distance, velocity);
-
-                return;
-                
-                _dashFinish = direction;
-                //direction.Set(_dashFinish.normalized.x, _dashFinish.normalized.y);
-                Velocity = direction * velocity;
-                Velocity = Vector2.ClampMagnitude(Velocity, velocity);
             }
 
             public void SetDashVectors(Vector3 startPos, Vector3 finalPos)
@@ -219,6 +209,11 @@ namespace Jolt
             public void SetDashCollider(bool set)
             {
                 DashCollider.enabled = set;
+            }
+
+            public void SetDashColliderOffset(Vector2 newOffset)
+            {
+                DashCollider.offset = newOffset;
             }
 
             public void SetActiveSpriteRenderer(bool set)
