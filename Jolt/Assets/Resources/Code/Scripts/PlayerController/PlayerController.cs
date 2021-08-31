@@ -24,6 +24,8 @@ namespace Jolt
 
             private bool _enteredColliderLastFrame;
 
+            [SerializeField] private bool a;
+
             // Start is called before the first frame update
             void Start()
             {
@@ -190,6 +192,7 @@ namespace Jolt
                 else
                 {
                     moveDistance = hitDistance - _skinWidth;
+                    moveDistance *= Mathf.Sign(distance.x);
                 }
 
                 transform.Translate(moveDistance, 0f, 0f);
@@ -213,7 +216,8 @@ namespace Jolt
                 }
                 else
                 {
-                    moveDistance = (hitDistance - _skinWidth);
+                    moveDistance = hitDistance - _skinWidth;
+                    moveDistance *= Mathf.Sign(distance.y);
                 }
 
                 transform.Translate(0f, moveDistance, 0f);
@@ -234,7 +238,7 @@ namespace Jolt
                 }
                 else
                 {
-                    moveDistance = (hitDistance - _skinWidth);
+                    moveDistance = hitDistance - _skinWidth;
                 }
 
                 transform.Translate(direction * moveDistance, 0f, 0f);
@@ -255,7 +259,7 @@ namespace Jolt
                 }
                 else
                 {
-                    moveDistance = (hitDistance - _skinWidth);
+                    moveDistance = hitDistance - _skinWidth;
                 }
 
                 transform.Translate(0f, direction * moveDistance, 0f);

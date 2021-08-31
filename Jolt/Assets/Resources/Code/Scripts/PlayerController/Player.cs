@@ -39,7 +39,7 @@ namespace Jolt
             [SerializeField] private Transform _playerSet;
 
             #region Auxiliary Variables
-            private const float GRAVITY = -9.8f;
+            public const float GRAVITY = -9.8f;
 
             [SerializeField] private float _universalGravityScale;
             private float _gravityScale;
