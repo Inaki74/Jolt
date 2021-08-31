@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace Jolt
 {
@@ -23,19 +24,22 @@ namespace Jolt
                 if (!_shown && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.E) && Input.GetKey(KeyCode.V))
                 {
                     _shown = true;
-                    _console.enabled = true;
+                    _console.gameObject.SetActive(true);
+
+                    _console.ActivateInputField();
+                    _console.Select();
                 }
             }
 
             private void DisableConsole()
             {
-                _console.enabled = false;
+                _console.gameObject.SetActive(false);
                 _shown = false;
             }
 
             public void ParseInput()
             {
-                // "/lss command section"
+                // "/lss command section gateway"
                 string input = _console.text;
 
                 if (string.IsNullOrEmpty(input))

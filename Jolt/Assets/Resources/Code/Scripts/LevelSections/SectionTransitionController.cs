@@ -13,11 +13,11 @@ namespace Jolt
             [SerializeField] private Vector2 _raycastDirection;
             [SerializeField] private LayerMask _whatIsPlayer;
 
-            [SerializeField] private string _from;
+            [SerializeField] private string _gatewayName;
             [SerializeField] private string _to;
             [SerializeField] private Transform _respawnTransform;
 
-            public override string FromID { get => _from; }
+            public override string GatewayName => _gatewayName;
             public override string ToID { get => _to; }
 
             public override Transform RespawnTransform => _respawnTransform;

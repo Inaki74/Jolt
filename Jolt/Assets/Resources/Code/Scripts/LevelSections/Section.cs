@@ -51,7 +51,7 @@ namespace Jolt
                 Camera.Follow = null;
                 Camera.enabled = false;
 
-                SetTransitioners(false);
+                //SetTransitioners(false);
             }
 
             // Start is called before the first frame update

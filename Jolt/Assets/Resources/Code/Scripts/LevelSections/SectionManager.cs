@@ -16,7 +16,7 @@ namespace Jolt
             public List<ISection> Sections { get => _sections; }
             public ISection CurrentSection { get; set; }
 
-            public void OnPlayerTransitionedSection(string fromId, string toId)
+            public void OnPlayerTransitionedSection(string toId)
             {
                 /*
                   Gets exit section via id and runs its Exit function.
@@ -26,10 +26,10 @@ namespace Jolt
                   Can even lower the games volume while transitioning or things like that.
                  */
 
-                ISection fromSection = _sections.First(s => s.ID == fromId);
+                ISection fromSection = CurrentSection;
                 ISection toSection = _sections.First(s => s.ID == toId);
 
-                CurrentSection = fromSection;
+                CurrentSection = toSection;
 
                 toSection.Enter();
                 fromSection.Exit();
