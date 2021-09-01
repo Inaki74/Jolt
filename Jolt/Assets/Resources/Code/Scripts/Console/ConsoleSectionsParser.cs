@@ -103,9 +103,9 @@ namespace Jolt
                     return;
                 }
 
-                Debug.Log("\n" +
-                    "Note: [p] indicates mandatory parameter, {p} indicates optional parameter. \n" +
-                    "tp [sectionName] {gatewayName}, teleports to a specific section to a certain gateway. No gateway teleports to default gateway. \n");
+                Debug.Log("Note: [p] indicates mandatory parameter, {p} indicates optional parameter.");
+                Debug.Log("     tp [sectionName] {gatewayName}, teleports to a specific section to a certain gateway. No gateway teleports to default gateway.");
+                Debug.Log("     e.g: tp T_04 g2, teleports to section T_04, gateway g2.");
             }
         }
     }
