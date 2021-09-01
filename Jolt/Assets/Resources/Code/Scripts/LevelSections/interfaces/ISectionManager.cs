@@ -9,7 +9,7 @@ namespace Jolt
             List<ISection> Sections { get; }
             ISection CurrentSection { get; set; }
 
-            void OnPlayerTransitionedSection(string fromId, string toId);
+            void OnPlayerTransitionedSection(string toId);
         }
     }
 }

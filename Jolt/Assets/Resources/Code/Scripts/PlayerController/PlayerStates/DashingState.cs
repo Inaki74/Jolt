@@ -10,6 +10,8 @@ namespace Jolt
         {
             public class DashingState : AliveState, ICanDash
             {
+                private const float DASH_COLLIDER_OFFSET = 0.4f;
+
                 protected override Color AssociatedColor => Color.cyan;
                 protected override string AnimString => PlayerAnimations.Constants.DASH_BOOL;
                 //public override bool Flippable => false;
@@ -42,12 +44,14 @@ namespace Jolt
 
                 public override void Enter()
                 {
+                    //Debug.Break();
                     base.Enter();
 
                     _moveInput = _player.InputManager.MovementVector;
                     _dashFinalPoint = _player.InputManager.FinalDashPoint;
                     _playOnce = true;
                     _player.SetGravityScale(0f);
+                    _player.Velocity = Vector2.zero;
 
                     DecreaseAmountOfDashes();
 
@@ -64,6 +68,8 @@ namespace Jolt
 
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
                     _player.Velocity = Vector2.zero;
+
+                    _player.SetDashColliderOffset(Vector2.zero);
 
                     ResetAnimationVariables();
 
@@ -102,7 +108,7 @@ namespace Jolt
                         return false;
                     }
 
-                    if (isTouchingWall && _dashFinalPoint.x != 0f && (onLeftWallAndMovingTowardsIt || onRightWallAndMovingTowardsIt))
+                    if (isTouchingWall && _dashFinalPoint.x == 0f && (onLeftWallAndMovingTowardsIt || onRightWallAndMovingTowardsIt))
                     {
                         _stateMachine.ScheduleStateChange(_stateMachine.WallSlideState);
                         return false;
@@ -150,10 +156,12 @@ namespace Jolt
 
                     if (_playOnce)
                     {
-                        Dash();
+                        PrepareDash();
 
                         _playOnce = false;
                     }
+
+                    _player.Dash(_playerData.DashSpeed * _playerData.DashTimeOut, _playerData.DashSpeed);
                 }
 
                 public override void PhysicsUpdate()
@@ -186,7 +194,7 @@ namespace Jolt
                     _amountOfDashes--;
                 }
 
-                private void Dash()
+                private void PrepareDash()
                 {
                     bool onLeftWallAndMovingTowardsIt = _isTouchingWallLeft && _moveInput.x < 0f;
                     bool onRightWallAndMovingTowardsIt = _isTouchingWallRight && _moveInput.x > 0f;
@@ -213,7 +221,10 @@ namespace Jolt
 
                     _player.SetDashVectors(_player.InputManager.InitialDashPoint, newFinalDirection);
 
-                    _player.Dash(_playerData.DashSpeed);
+                    float newFinalDirectionDirectionY = newFinalDirection.y == 0f ? 0f : Mathf.Sign(newFinalDirection.y);
+                    float newFinalDirectionDirectionX = newFinalDirection.x == 0f ? 0f : Mathf.Sign(newFinalDirection.x);
+
+                    _player.SetDashColliderOffset(new Vector2(newFinalDirectionDirectionX * DASH_COLLIDER_OFFSET, newFinalDirectionDirectionY * DASH_COLLIDER_OFFSET));
                 }
 
                 private bool CheckIsAdmittableToGetIntoNode()

@@ -7,7 +7,7 @@ namespace Jolt
 {
     namespace PlayerController
     {
-        [RequireComponent(typeof(PlayerController))]
+        [RequireComponent(typeof(IPlayerController))]
         [RequireComponent(typeof(BoxCollider2D))]
         [RequireComponent(typeof(PlayerInputManager))]
         [RequireComponent(typeof(PlayerCollisions))]
@@ -25,6 +25,7 @@ namespace Jolt
             [SerializeField]
             private SpriteRenderer _sr;
 
+            public IPlayerRespawn PlayerRespawn { get; private set; }
             public IPlayerStateMachine StateMachine { get; private set; }
             public IPlayerInputManager InputManager { get; private set; }
             public IPlayerController PlayerController { get; private set; }
@@ -38,7 +39,7 @@ namespace Jolt
             [SerializeField] private Transform _playerSet;
 
             #region Auxiliary Variables
-            private const float GRAVITY = -9.8f;
+            public const float GRAVITY = -9.8f;
 
             [SerializeField] private float _universalGravityScale;
             private float _gravityScale;
@@ -67,7 +68,7 @@ namespace Jolt
             private Vector3 _dashFinish;
 
             private Vector2 _auxVector2;
-            private Vector3 _auxVector3;
+            private Vector3 _startDashPosition;
 
             private bool _isFacingRight = true;
 
@@ -83,7 +84,7 @@ namespace Jolt
 
             private void Start()
             {
-                //Application.targetFrameRate = 10;
+                //Application.targetFrameRate = 24;
 
                 GetComponents();
                 SetRigidbody();
@@ -102,7 +103,8 @@ namespace Jolt
 
             private void GetComponents()
             {
-                PlayerController = GetComponent<PlayerController>();
+                PlayerRespawn = GetComponent<PlayerRespawn>();
+                PlayerController = GetComponent<IPlayerController>();
                 Bc = GetComponent<BoxCollider2D>();
                 DashCollider = GetComponent<CircleCollider2D>();
                 InputManager = GetComponent<PlayerInputManager>();
@@ -136,23 +138,11 @@ namespace Jolt
                 PlayerController.Move(vector);
             }
 
-            public void MoveX(float direction, float velocity)
+            public void Dash(float distance, float velocity)
             {
-                PlayerController.MoveX(direction, velocity);
-            }
+                Vector3 direction = _dashFinish - _dashStart;
 
-            public void MoveY(float direction, float velocity)
-            {
-                PlayerController.MoveY(direction, velocity);
-            }
-
-            public void Dash(float velocity)
-            {
-                _auxVector2 = _dashFinish - _auxVector3;
-                _dashFinish = _auxVector2;
-                _auxVector2.Set(_dashFinish.normalized.x, _dashFinish.normalized.y);
-                Velocity = _auxVector2 * velocity;
-                Velocity = Vector2.ClampMagnitude(Velocity, velocity);
+                PlayerController.MoveTowards(_dashStart + direction * distance, velocity);
             }
 
             public void SetDashVectors(Vector3 startPos, Vector3 finalPos)
@@ -166,8 +156,6 @@ namespace Jolt
 
                 _dashStart = transform.position;
                 _dashFinish = transform.position + direction;
-
-                _auxVector3 = transform.position;
             }
 
             public void SetArrowRendering()
@@ -221,6 +209,11 @@ namespace Jolt
             public void SetDashCollider(bool set)
             {
                 DashCollider.enabled = set;
+            }
+
+            public void SetDashColliderOffset(Vector2 newOffset)
+            {
+                DashCollider.offset = newOffset;
             }
 
             public void SetActiveSpriteRenderer(bool set)
@@ -306,7 +299,7 @@ namespace Jolt
                 // Instantiate particles
                 // Move player to last _checkpoint (but here we will have only one _checkpoint, so skip)
                 //transform.position = _checkpoint;
-                transform.position = _playerData.LastCheckpoint;
+                PlayerRespawn.RespawnPlayer();
                 // Reset objects (but here they are immutable so skip)
             }
 

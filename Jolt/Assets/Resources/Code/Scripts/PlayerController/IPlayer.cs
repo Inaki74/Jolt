@@ -28,6 +28,7 @@ namespace Jolt.PlayerController
         void ResetPosition();
         void SetActivePhysicsCollider(bool set);
         void SetDashCollider(bool set);
+        void SetDashColliderOffset(Vector2 newOffset);
         void SetActiveSpriteRenderer(bool set);
         void SetArrowRendering();
         void SetGravityScale(float gravity);
@@ -38,10 +39,8 @@ namespace Jolt.PlayerController
         void ResetGravity();
         void SetVelocity(Vector2 velocity);
         void SetDashVectors(Vector3 startPos, Vector3 finalPos);
-        void Dash(float velocity);
+        void Dash(float distance, float velocity);
         void Move(Vector2 vector);
-        void MoveX(float direction, float velocity);
-        void MoveY(float direction, float velocity);
         void CheckIfShouldFlip(float direction);
         void FlipRight();
         void FlipLeft();
