@@ -8,6 +8,8 @@ namespace Jolt
 {
     namespace Console
     {
+        using PlayerController;
+
         public class ConsoleHandler : MonoBehaviour
         {
             [SerializeField] private InputField _console;
@@ -21,10 +23,11 @@ namespace Jolt
 
             private void Update()
             {
-                if (!_shown && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.E) && Input.GetKey(KeyCode.V))
+                if (!_shown && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.D))
                 {
                     _shown = true;
                     _console.gameObject.SetActive(true);
+                    FindObjectOfType<PlayerInputManager>().Disabled = true;
 
                     _console.ActivateInputField();
                     _console.Select();
@@ -35,6 +38,7 @@ namespace Jolt
             {
                 _console.gameObject.SetActive(false);
                 _shown = false;
+                FindObjectOfType<PlayerInputManager>().Disabled = false;
             }
 
             public void ParseInput()

@@ -31,8 +31,8 @@ namespace Jolt
 
                 CurrentSection = toSection;
 
-                toSection.Enter();
                 fromSection.Exit();
+                toSection.Enter();
 
                 //SectionCameraAdjuster.Current.Transition(toSection, fromSection);
             }

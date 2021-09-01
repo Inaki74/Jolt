@@ -65,7 +65,7 @@ namespace Jolt
                         }
                         else
                         {
-                            if (section.SectionTransitioners.Any(g => g.ToID == location))
+                            if (section.SectionTransitioners.Any(g => g.ToID == location && g.GatewayName == gatewayName))
                             {
                                 found = true;
                                 gateway = section.SectionTransitioners.First(g => g.ToID == location && g.GatewayName == gatewayName);
