@@ -20,6 +20,7 @@ namespace Jolt
             public AirborneState AirborneState { get; private set; }
             public RecoilState RecoilState { get; private set; }
             public DashingState DashingState { get; private set; }
+            public DashFloatingState DashFloatingState { get; private set; }
             public In_NodeState InNodeState { get; private set; }
             public ExitNodeState ExitNodeState { get; private set; }
             public In_RailState InRailState { get; private set; }
@@ -44,6 +45,7 @@ namespace Jolt
                 AirborneState = new AirborneState(this, player, playerData);
                 RecoilState = new RecoilState(this, player, playerData);
                 DashingState = new DashingState(this, player, playerData);
+                DashFloatingState = new DashFloatingState(this, player, playerData);
                 InNodeState = new In_NodeState(this, player, playerData);
                 ExitNodeState = new ExitNodeState(this, player, playerData);
                 InRailState = new In_RailState(this, player, playerData);

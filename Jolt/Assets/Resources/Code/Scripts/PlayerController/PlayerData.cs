@@ -25,6 +25,10 @@ namespace Jolt
             [SerializeField] private float _dashTimeOut;
             [SerializeField] private float _dashSpeed;
 
+            [Header("Dash Floating State Variables")]
+            [SerializeField] private float _dashFloatingTimeout;
+            [SerializeField] private float _dashFloatingGravityScale;
+
             [Header("Checks Variables")]
             [SerializeField] private float _checkWallRadius;
             [SerializeField] private float _checkGroundRadius = 0.05f;
@@ -85,6 +89,10 @@ namespace Jolt
             public float DashTimeOut { get { return _dashTimeOut; } }
 
             public float DashSpeed { get { return _dashSpeed; } }
+
+            public float DashFloatingTimeout { get { return _dashFloatingTimeout; } }
+
+            public float DashFloatingGravityScale { get { return _dashFloatingGravityScale; } }
 
             public float CheckGroundRadius { get { return _checkGroundRadius; } }
 

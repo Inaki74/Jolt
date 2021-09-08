@@ -19,7 +19,9 @@ MonoBehaviour:
   _amountOfDashes: 2
   _circleRadius: 0.15
   _dashTimeOut: 0.1
-  _dashSpeed: 30
+  _dashSpeed: 20
+  _dashFloatingTimeout: 0.05
+  _dashFloatingGravityScale: 0
   _checkWallRadius: 0.15
   _checkGroundRadius: 0.05
   _whatIsGround:

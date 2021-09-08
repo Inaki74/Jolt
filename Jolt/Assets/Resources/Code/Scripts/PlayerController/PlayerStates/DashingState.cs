@@ -67,7 +67,7 @@ namespace Jolt
                     WasInNode = false;
 
                     _player.SetGravityScale(_playerData.PlayerPhysicsData.StandardGravity);
-                    _player.Velocity = Vector2.zero;
+                    //_player.Velocity = Vector2.zero;
 
                     _player.SetDashColliderOffset(Vector2.zero);
 
@@ -131,13 +131,7 @@ namespace Jolt
                         }
                         else
                         {
-                            if (isTouchingWall)
-                            {
-                                _stateMachine.ScheduleStateChange(_stateMachine.WallAirborneState);
-                                return false;
-                            }
-
-                            _stateMachine.ScheduleStateChange(_stateMachine.AirborneState);
+                            _stateMachine.ScheduleStateChange(_stateMachine.DashFloatingState);
                             return false;
                         }
                     }

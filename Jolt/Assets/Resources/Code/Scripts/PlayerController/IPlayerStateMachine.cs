@@ -12,6 +12,7 @@ namespace Jolt.PlayerController
         AirborneState AirborneState { get; }
         RecoilState RecoilState { get; }
         DashingState DashingState { get; }
+        DashFloatingState DashFloatingState { get; }
         In_NodeState InNodeState { get; }
         ExitNodeState ExitNodeState { get; }
         In_RailState InRailState { get; }

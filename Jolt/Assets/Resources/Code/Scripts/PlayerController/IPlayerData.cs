@@ -13,6 +13,8 @@ namespace Jolt.PlayerController
         float CircleRadius { get; }
         float DashTimeOut { get; }
         float DashSpeed { get; }
+        float DashFloatingTimeout { get; }
+        float DashFloatingGravityScale { get; }
         float CheckWallRadius { get; }
         float CheckGroundRadius { get; }
         LayerMask WhatIsGround { get; }
