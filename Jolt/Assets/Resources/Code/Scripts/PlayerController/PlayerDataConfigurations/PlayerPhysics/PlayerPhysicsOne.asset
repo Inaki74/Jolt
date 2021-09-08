@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PlayerPhysicsOne
   m_EditorClassIdentifier: 
   _standardScale: {x: 1, y: 1}
-  _standardGravity: 4
+  _standardGravity: 5
   _standardMaxFallSpeed: -20

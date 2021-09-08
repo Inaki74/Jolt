@@ -12,41 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81b04d02e0e9448ca9feb2993a0c640a, type: 3}
   m_Name: PlayerDataThree
   m_EditorClassIdentifier: 
-  _playerPhysicsData: {fileID: 0}
-  _movementSpeed: 6
+  _playerPhysicsData: {fileID: 11400000, guid: c854d886294874f0ba9fd64350b26df7, type: 2}
+  _movementSpeed: 6.075
   _timeSlow: 0.1
   _preDashTimeOut: 0
-  _amountOfDashes: 0
-  _circleRadius: 0
-  _dashTimeOut: 0
-  _dashSpeed: 0
-  _dashFloatingTimeout: 0
-  _dashFloatingGravityScale: 0
-  _checkWallRadius: 0
+  _amountOfDashes: 2
+  _circleRadius: 0.15
+  _dashTimeOut: 0.075
+  _dashSpeed: 26.667
+  _dashFloatingTimeout: 0.05
+  _dashFloatingGravityScale: 0.1
+  _checkWallRadius: 0.15
   _checkGroundRadius: 0.05
   _whatIsGround:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   _allPaths: []
-  _deadTimer: 5
+  _deadTimer: 1
   _lastCheckpoint: {x: 0, y: 0}
   _recoilTimer: 0.2
-  _freeFallGravity: 0
-  _freeFallMaxFallSpeed: 0
-  _maxDeformedScale: 0
-  _scaleReductionModifier: 0
-  _jumpForce: 0
-  _jumpGravity: 0
-  _jumpCoyoteTiming: 0
-  _floatGravity: 0
-  _floatingGravityScaleIntoWall: 0
-  _startingWallSlideGravity: 0
-  _finalWallSlideGravity: 0
-  _timeToReachFinalGravity: 0
-  _startingFallSpeed: 0
-  _wallSlideMaxFallSpeed: 0
-  _wallJumpDuration: 0
-  _wallJumpGravity: 0
-  _wallJumpForceHorizontal: 0
-  _wallJumpForceVertical: 0
-  _wallJumpCoyoteTiming: 0
+  _freeFallGravity: 6
+  _freeFallMaxFallSpeed: -30
+  _maxDeformedScale: 0.75
+  _scaleReductionModifier: 0.02
+  _jumpForce: 9
+  _jumpGravity: 5
+  _jumpCoyoteTiming: 0.075
+  _floatGravity: 2.5
+  _floatingGravityScaleIntoWall: 3.5
+  _startingWallSlideGravity: 0.5
+  _finalWallSlideGravity: 5
+  _timeToReachFinalGravity: 1
+  _startingFallSpeed: -1
+  _wallSlideMaxFallSpeed: -6
+  _wallJumpDuration: 0.15
+  _wallJumpGravity: 4
+  _wallJumpForceHorizontal: 8
+  _wallJumpForceVertical: 12
+  _wallJumpCoyoteTiming: 0.05
