@@ -62,6 +62,9 @@ namespace Jolt
                     case "lss":
                         parser = new ConsoleSectionsParser();
                         break;
+                    case "player":
+                        parser = new ConsolePlayerParser();
+                        break;
                     default:
                         Debug.LogError("Console Error: Unidentified command.");
                         DisableConsole();

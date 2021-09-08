@@ -10,7 +10,7 @@ namespace Jolt
         {
             public class DashingState : AliveState, ICanDash
             {
-                private const float DASH_COLLIDER_OFFSET = 0.4f;
+                private const float DASH_COLLIDER_OFFSET = 0.25f;
 
                 protected override Color AssociatedColor => Color.cyan;
                 protected override string AnimString => PlayerAnimations.Constants.DASH_BOOL;

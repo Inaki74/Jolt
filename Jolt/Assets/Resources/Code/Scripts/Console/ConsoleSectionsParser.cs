@@ -95,7 +95,7 @@ namespace Jolt
                 playerRespawn.PlayerRespawnLocation = gateway.RespawnTransform.position;
             }
 
-            private void Help(int amArg)
+            public override void Help(int amArg)
             {
                 if (amArg > 2)
                 {

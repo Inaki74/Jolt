@@ -20,7 +20,7 @@ MonoBehaviour:
   _circleRadius: 0.15
   _dashTimeOut: 0.1
   _dashSpeed: 30
-  _checkWallRadius: 0.05
+  _checkWallRadius: 0.15
   _checkGroundRadius: 0.05
   _whatIsGround:
     serializedVersion: 2

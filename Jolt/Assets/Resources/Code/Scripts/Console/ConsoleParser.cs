@@ -10,6 +10,8 @@ namespace Jolt
         {
             public abstract void Parse(string[] command);
 
+            public abstract void Help(int amArg);
+
             public virtual void UnknownCommand()
             {
                 Debug.LogError("Console Error: Unidentified command.");
